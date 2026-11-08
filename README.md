@@ -1,6 +1,6 @@
-# Quest For Glory V16
+# Quest For Glory V17
 
-`board_game_tracker_v16.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
+`board_game_tracker_v17.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
 
 ## Development checks
 
@@ -24,4 +24,4 @@ TEST_FILTER='^(40|58|62) ' npm test
 
 On Windows PowerShell set `$env:TEST_FILTER='^(40|58|62) '` before `npm test`. Filtered runs write `filtered-results.json`; full runs write `baseline-results.json`. A failed assertion exits with status 1. Test fixtures are generated in the suite; no private saves are bundled.
 
-The production HTML is the test target, not a separate instrumented build. Full results in this bundle: 69 passed, zero failed. Real iOS Safari and direct-file persistence require separate device testing.
+The production HTML is the test target, not a separate instrumented build. V17 passed all 74 browser checks, including the five new live-preview regression cases. Real iOS Safari and direct-file persistence require separate device testing.

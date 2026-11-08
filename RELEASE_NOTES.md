@@ -1,37 +1,21 @@
-# Quest For Glory — Version 16
+# Quest For Glory — Version 17
 
-Fixed the baseline audit findings in priority order. The original V15 attachment remains unchanged. This release is still one standalone HTML file with embedded assets and no runtime dependencies.
+Challenge and Combat now show a live preview when selecting a card for a Fate adjustment. The preview shows the current and resulting Action Hand totals, the added or removed value, final difficulty, and Success or Failure. An exact match is identified explicitly.
 
-## High priority: saves and imports
+Selecting a different card updates the preview immediately. Previewing does not spend Fate or move cards; the existing confirmation button applies the adjustment. Back clears the preview. Challenge suit restrictions, normal Luck face values, combat retry difficulty reductions and revealed modifiers all remain in effect.
 
-- Unreadable or invalid stored data is preserved, with a persistent recovery notice, a download of the original bytes, and a retry control. Startup no longer silently writes an empty character collection over damaged data.
-- Failed storage writes remain visible. Players can export the current in-memory characters and retry saving after storage becomes available.
-- Stored and imported character data is validated before rendering, including resources, all card locations, the full 52-card partition, budgets, encounter fields/stages, eligible suits, wound allocations, rollback snapshots, logs and dice.
-- Encounter fields containing executable HTML are rejected. Invalid imports leave existing slots unchanged.
-- Missing legacy pool/budget fields are derived. Explicitly contradictory balances are rejected rather than silently modifying a character.
+V17 replaces the V16 release file on this branch. The save key and JSON format are unchanged; existing V16 exports remain supported. Earlier versions remain available in Git history.
 
-## Gameplay and state
+All 74 browser checks passed, including live add/remove previews in both action types, exact matches, normal Luck values, combat retries, Back and confirmation behavior, and mobile touch interaction.
 
-- Dice results belong to the character that initiated the roll. Leaving for the menu finishes the pending roll before changing characters. A label tap no longer produces a duplicate synthetic roll.
-- No-Supply Rest resumes after reload or returning through the menu without charging another five-point wound. Cancelling that Rest is persisted.
-- Exact matches allow zero, one or two selected recovery cards, up to the hand size, in both Challenge and Combat, as specified. Remaining hand cards enter Fatigue.
-- Attribute purchases independently enforce the point limit. Resource increments and Fate upgrades reject safe-integer overflow.
+V17 regression results are recorded in `docs/validation/v17-results.json`; run `npm test` to repeat the suite.
 
-## Presentation
+## Existing fixes retained
 
-- Dice Roller, Roll History, Inventory and Recent Activity reset to collapsed when entering a character.
-- The stylesheet boundary is repaired and the embedded Gothic font loads.
-- The app identifies itself as Version 16. Irrelevant character-edit controls are hidden on the initial menu.
-- Storage key `quest-for-glory-v12-slots` and the version-12 JSON export wrapper are retained for compatibility; the app release number is independent of the save format.
-
-## Verification
-
-69 browser checks passed, zero failed, using Playwright 1.62.1 and Chromium 156.0.8078.79 on Linux. The full suite includes the original 57 checks (release assertion updated to V16 and the zero-resource test updated to require the disabled control), plus 12 regression cases covering recovery backup/retry, schema/rollback validation, legacy fields, save retry, optional exact recovery, Rest resumption/cancellation, in-combat reload, old slot keys, numeric overflow, dice event handling and collapse defaults.
-
-Checked offline operation with browser networking disabled, mobile touch emulation, save/export/import flows, synthetic legacy migration, cancellation after multiple combat retries and the V15 delegated deck-panel interaction fix. Embedded font assets are unchanged. `docs/validation/v16-results.json` records the release verification and source SHA-256; subsequent test runs write `results/baseline-results.json`.
-
-Real iOS Safari, Windows and direct-file storage behavior remain unverified. WebKit download was blocked during the audit; managed Chromium blocks file:// navigation. These limits are not represented as passing tests.
+V17 retains the V16 save protection, storage recovery exports and retries, import validation, character-bound dice results, resumable no-Supply Rest, optional exact-match recovery, card budget enforcement, collapsed section defaults and typography fixes. The original V15 file is preserved.
 
 ## Using the release
 
-Open `board_game_tracker_v16.html` in a browser. To transfer characters between differently named files or browser origins, export them from V15 and import them into V16. Keep the old V15 file until the transfer is complete. Storage corruption is preserved for manual recovery; V16 does not guess how to repair contradictory character data.
+Open `board_game_tracker_v17.html` in a browser. To transfer characters between differently named files or browser origins, export them from the old version and import them into V17. The app remains a single offline HTML file with embedded assets.
+
+Verification used Chromium 156.0.8078.79 and Playwright 1.62.1 on Linux, including mobile touch emulation. Real iOS Safari and direct-file persistence remain unverified.

@@ -21,10 +21,16 @@
       "WV": 0,
       "F": 1,
       "C": 2,
-      "KW": ["Keyword 1", "Keyword 2"],
+      "KW": [
+        "Keyword 1",
+        "Keyword 2"
+      ],
       "Item": {
         "description": "Replace with the reward item's description.",
-        "keywords": "Replace with the reward item's keywords.",
+        "keywords": [
+          "Item keyword 1",
+          "Item keyword 2"
+        ],
         "baseValue": 1
       }
     }

@@ -13,7 +13,7 @@
       "KW": [],
       "Item": null
     },
-	{
+    {
       "id": "Skeleton",
       "name": "Skeleton",
       "description": "An undead Skeleton weaponless",
@@ -21,10 +21,12 @@
       "WV": 1,
       "F": 1,
       "C": 1,
-      "KW": ["resistant slash"],
+      "KW": [
+        "resistant slash"
+      ],
       "Item": null
     },
-	{
+    {
       "id": "Zombie",
       "name": "Zombie",
       "description": "An undead Zombie weaponless",
@@ -32,10 +34,12 @@
       "WV": 2,
       "F": 1,
       "C": 2,
-      "KW": ["Unprotected fire"],
+      "KW": [
+        "Unprotected fire"
+      ],
       "Item": null
     },
-	{
+    {
       "id": "Giant Spiders",
       "name": "Giant Spiders",
       "description": "A giant venomous spider the size of a dog",
@@ -57,7 +61,9 @@
       "KW": [],
       "Item": {
         "description": "A dagger",
-        "keywords": "weapon",
+        "keywords": [
+          "weapon"
+        ],
         "baseValue": 5
       }
     }

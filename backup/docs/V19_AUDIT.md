@@ -28,7 +28,7 @@ The pre-existing 2-Fate cost to form an ongoing action hand from Fatigue remains
 - Victory with pending rewards uses the explicit `reward` stage. `rewardsGranted` separates resource collection from the item decision. `rewardChoosing` remembers whether the replacement list is open; no item is discarded until selection is confirmed.
 - The new fields and item structures are validated when importing or loading characters. Encounter values are validated as safe integers, text is escaped for rendering, and malformed reward state is rejected without overwriting an existing save.
 - New fields are ordinary character data, so existing autosave, JSON import/export and state snapshots include them. The browser storage key remains `quest-for-glory-v12-slots` and character exports retain their existing envelope.
-- V18 is archived as `backup/board_game_tracker_v18.html`, with its original tests and supporting files alongside it. Compatibility was exercised with synthetic old saves, including a V18 combat lacking new fields. Real historical exports beyond the supplied application were not provided.
+- V18 is available in Git history. Compatibility was exercised with synthetic old saves, including a V18 combat lacking new fields. Real historical exports beyond the supplied application were not provided.
 
 ## Audit findings addressed during development
 

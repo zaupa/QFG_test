@@ -1,0 +1,11 @@
+{
+  "name": "quest-for-glory-v16",
+  "version": "16.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node tests/baseline.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

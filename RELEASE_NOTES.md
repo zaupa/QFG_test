@@ -1,3 +1,15 @@
+# V22
+
+V21 is archived in `backup/` with its matching development files; the older V20 backup has been removed.
+
+- Expanded enemy details spell out Challenge Value and Wound Value. Compact library rows retain CV/WV.
+- Combat always asks Keep item / Discard item for an item reward, including when inventory has space. Keep at capacity opens the existing single-item replacement list. Fate/Coin rewards remain saved once while the item decision is pending.
+- All items now have a required `name` and optional `description`: inventory, enemy setup/library, combat rewards, replacement and Heal item selection. Old descriptions migrate into names without losing the original text, keywords or value. New exports use envelope version 14; the library schema uses version 2.
+- New keyword input rejects commas and splits on `-`. Spaces remain within a keyword. Legacy spelling is preserved on migration.
+- Rest asks “Rest will move to the next Round.” with Rest/Cancel before the existing process. Heal and Rest start with value 5. Round advances on completed Rest as before.
+- Heal offers Use item to the right of Healing value. Selecting one item shows “Heal will consume item [name]”; confirmation consumes it with healing. Cancellation and invalid healing do not consume it; Undo restores it.
+- Round hover matches resource totals. Wound / Select Cards replace the requested button labels. The adjustment explanation is removed from Combat/Challenge while costs remain on their buttons.
+
 # V21
 
 - Combat starts with a choice between custom enemy creation and the enemy library. A raised information box shows the enemy name, description, original CV, WV, Fate/Coin rewards, italic keywords and item reward throughout combat.

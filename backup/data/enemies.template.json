@@ -1,0 +1,38 @@
+{
+  "format": "quest-for-glory-enemy-cards",
+  "version": 1,
+  "enemies": [
+    {
+      "id": "Enemy Name 1",
+      "name": "Enemy Name 1",
+      "description": "Replace with this enemy's description.",
+      "CV": 5,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": null
+    },
+    {
+      "id": "Enemy Name 2",
+      "name": "Enemy Name 2",
+      "description": "Replace with this enemy's description.",
+      "CV": 5,
+      "WV": 0,
+      "F": 1,
+      "C": 2,
+      "KW": [
+        "Keyword 1",
+        "Keyword 2"
+      ],
+      "Item": {
+        "description": "Replace with the reward item's description.",
+        "keywords": [
+          "Item keyword 1",
+          "Item keyword 2"
+        ],
+        "baseValue": 1
+      }
+    }
+  ]
+}

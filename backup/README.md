@@ -1,6 +1,6 @@
-# Quest For Glory V20
+# Quest For Glory V21
 
-`board_game_tracker_v20.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
+`board_game_tracker_v21.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
 
 ## Development checks
 
@@ -24,10 +24,18 @@ TEST_FILTER='^(40|58|62) ' npm test
 
 On Windows PowerShell set `$env:TEST_FILTER='^(40|58|62) '` before `npm test`. Filtered runs write `filtered-results.json`; full runs write `baseline-results.json`. A failed assertion exits with status 1. Test fixtures are generated in the suite; no private saves are bundled.
 
-The production HTML is the test target, not a separate instrumented build. V20 has 131 browser checks. Read `docs/V20_AUDIT.md` for requirements, state migration, animation safety and verification limits; executed results are recorded in `docs/validation/v20-results.json`.
+The production HTML is the test target, not a separate instrumented build. V21 has 153 browser checks. Read `docs/V21_AUDIT.md` for requirements, state migration, animation safety and verification limits; executed results are recorded in `docs/validation/v21-results.json`.
 
-V20 remains a standalone offline HTML app. It adds minimum-one Challenge Values, a saved Round counter and editor, collapsible sections, revised resource controls, combat reward animation and wound feedback. Righteous remains embedded for titles and names. Existing character saves and JSON exports remain supported. Real iOS Safari and direct-file persistence need separate device verification.
+V21 remains a standalone offline HTML app. Combat now offers custom enemies or the embedded enemy library, and shows enemy details throughout the encounter. Inventory keywords use arrays and italic display; buying and selling animate Coin changes. Older character saves are migrated on load. Real iOS Safari and direct-file persistence need separate device verification.
 
-The older V19 archive is no longer retained.
+## Updating enemies
 
-This is the V20 archive. Run its tests from this directory. The active V21 app is in the repository root.
+Edit `data/enemies.json` using `data/enemies.template.json` and `data/README.md`, then run:
+
+```sh
+npm run build
+```
+
+The build validates every entry and embeds a snapshot in V21. Distribute the rebuilt HTML; gameplay needs no separate JSON file or network connection. Rebuild whenever library data changes. Ongoing saved combats retain their original enemy snapshot. No fixed enemy count is imposed.
+
+This is the V21 archive, including matching data, build scripts, tests and documentation. Run its build/tests from this directory. The older V20 backup has been removed.

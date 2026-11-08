@@ -1,9 +1,10 @@
 {
-  "name": "quest-for-glory-v20",
-  "version": "20.0.0",
+  "name": "quest-for-glory-v21",
+  "version": "21.0.0",
   "private": true,
   "scripts": {
-    "test": "node tests/baseline.cjs"
+    "test": "node tests/baseline.cjs",
+    "build": "node scripts/build-v21.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

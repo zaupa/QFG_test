@@ -1,0 +1,71 @@
+{
+  "format": "quest-for-glory-enemy-cards",
+  "version": 1,
+  "enemies": [
+    {
+      "id": "Giant Rats",
+      "name": "Giant Rats",
+      "description": "A group of giant rats each teh size of a big cat",
+      "CV": 6,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": null
+    },
+    {
+      "id": "Skeleton",
+      "name": "Skeleton",
+      "description": "An undead Skeleton weaponless",
+      "CV": 8,
+      "WV": 1,
+      "F": 1,
+      "C": 1,
+      "KW": [
+        "resistant slash"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Zombie",
+      "name": "Zombie",
+      "description": "An undead Zombie weaponless",
+      "CV": 8,
+      "WV": 2,
+      "F": 1,
+      "C": 2,
+      "KW": [
+        "Unprotected fire"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Giant Spiders",
+      "name": "Giant Spiders",
+      "description": "A giant venomous spider the size of a dog",
+      "CV": 10,
+      "WV": 3,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": null
+    },
+    {
+      "id": "Thief",
+      "name": "Thief",
+      "description": "A human Thief",
+      "CV": 9,
+      "WV": 1,
+      "F": 1,
+      "C": 2,
+      "KW": [],
+      "Item": {
+        "description": "A dagger",
+        "keywords": [
+          "weapon"
+        ],
+        "baseValue": 5
+      }
+    }
+  ]
+}

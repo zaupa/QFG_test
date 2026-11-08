@@ -1,3 +1,12 @@
+# V21
+
+- Combat starts with a choice between custom enemy creation and the enemy library. A raised information box shows the enemy name, description, original CV, WV, Fate/Coin rewards, italic keywords and item reward throughout combat.
+- Enemy cards use `id`, `name`, `description`, `CV`, `WV`, `F`, `C`, `KW` and `Item`. WV may be zero; a failed zero-wound combat skips wound allocation and offers retry/flee under the existing rules.
+- Library data is validated and embedded by `npm run build`, preserving standalone offline play. Active combats keep an independent enemy snapshot.
+- Inventory and reward-item keywords are arrays displayed in italics with ` - ` separators. Older text keywords migrate on load; internal hyphens and phrases are preserved.
+- Purchases and sales animate the Coin resource box and count toward the saved total. Free, zero-price and rejected transactions do not animate. Undo, navigation and reduced-motion handling remain supported.
+- Character exports use envelope version 13. Existing storage keys and older imports remain supported. V20 is archived in `backup/`; the older V19 backup is removed.
+
 # Quest For Glory — Version 20
 
 - Challenge and Combat setup, retry effective bases and modifier-adjusted totals never fall below **1**.

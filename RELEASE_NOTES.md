@@ -1,21 +1,25 @@
-# Quest For Glory — Version 17
+# Quest For Glory — Version 18
 
-Challenge and Combat now show a live preview when selecting a card for a Fate adjustment. The preview shows the current and resulting Action Hand totals, the added or removed value, final difficulty, and Success or Failure. An exact match is identified explicitly.
+The app title is now **Quest For Glory - Companion App**. The header keeps **Quest For Glory** centered on its own line, with a smaller centered **Companion App** below; controls appear beneath the title.
 
-Selecting a different card updates the preview immediately. Previewing does not spend Fate or move cards; the existing confirmation button applies the adjustment. Back clears the preview. Challenge suit restrictions, normal Luck face values, combat retry difficulty reductions and revealed modifiers all remain in effect.
+The supplied Righteous WOFF2 font is embedded directly in the HTML and used for the app title, character names and Adventure Module names, including menu labels. It loads without network access or installation.
 
-V17 replaces the V16 release file on this branch. The save key and JSON format are unchanged; existing V16 exports remain supported. Earlier versions remain available in Git history.
+Selected cards now have the approved subtle 1px dark-brown border (`#49352B`) across the app, including hover and focus, while keeping the ivory fill, 8% enlargement, 5° tilt and shadow.
 
-All 74 browser checks passed, including live add/remove previews in both action types, exact matches, normal Luck values, combat retries, Back and confirmation behavior, and mobile touch interaction.
+Inventory shows a one-time purchase tip when Purchased is first checked and a separate one-time sale tip when Sold is first checked. These preferences are saved per character, included in JSON exports, and preserved through Undo and action cancellation. Seeing a tip is remembered even if the transaction is cancelled.
 
-V17 regression results are recorded in `docs/validation/v17-results.json`; run `npm test` to repeat the suite.
+Main Menu character actions keep fixed columns. Long character and Adventure Module labels are displayed on one line with an ellipsis; the full label remains available on hover and in saved data. On narrow screens the three buttons share an evenly spaced row.
 
-## Existing fixes retained
+The Action Hand add/remove preview now uses **Total Challenge Value** in place of **Final difficulty**, consistently in Combat and Challenge. This is a wording change only; preview calculations and gameplay rules are unchanged.
 
-V17 retains the V16 save protection, storage recovery exports and retries, import validation, character-bound dice results, resumable no-Supply Rest, optional exact-match recovery, card budget enforcement, collapsed section defaults and typography fixes. The original V15 file is preserved.
+## Verification
 
-## Using the release
+All 78 browser checks passed on the final V18 release file.
 
-Open `board_game_tracker_v17.html` in a browser. To transfer characters between differently named files or browser origins, export them from the old version and import them into V17. The app remains a single offline HTML file with embedded assets.
+The regression suite covers gameplay, saving, JSON export/import, per-character inventory tips, Undo, encounter cancellation, selection borders, embedded fonts and mobile touch interaction. Results are recorded in `docs/validation/v18-results.json`. Additional focused border, font and centered-title checks are included alongside that report, each with its tested source SHA-256. Menu alignment and ellipsis checks passed at 320, 390, 520, 521 and 900 pixels; centered-title layout checks passed on menu and gameplay screens at 320, 390, 520, 900 and 1280 pixels.
 
-Verification used Chromium 156.0.8078.79 and Playwright 1.62.1 on Linux, including mobile touch emulation. Real iOS Safari and direct-file persistence remain unverified.
+## Using V18
+
+Open `board_game_tracker_v18.html`. To transfer characters between differently named files or browser origins, export from the old version and import into V18. The save key and JSON format are unchanged. V18 retains the previous gameplay, save-recovery and live-preview fixes. Earlier releases are available in Git history.
+
+Real iOS Safari and direct-file persistence remain unverified. Browser checks use Chromium on Linux, including mobile touch emulation and offline routing.

@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-08T01:05:25.042Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "ae17d371c1ffb90a2dfba1fe617d4f445c7fe9f6b1fac6d79dd75cddd8cafc46",
+  "passed": 3,
+  "failed": 0,
+  "results": [
+    {
+      "name": "47 release identifies itself as Version 18",
+      "status": "PASS",
+      "ms": 492
+    },
+    {
+      "name": "48 mobile touch: zone tiles, modal and no horizontal page overflow",
+      "status": "PASS",
+      "ms": 2280
+    },
+    {
+      "name": "49 supplied Righteous font is embedded, loads and applies to titles and names",
+      "status": "PASS",
+      "ms": 841
+    }
+  ],
+  "layoutVerification": {
+    "widths": [
+      320,
+      390,
+      520,
+      900,
+      1280
+    ],
+    "screens": [
+      "menu",
+      "game"
+    ],
+    "centeredTitleAndSmallerSubtitle": true,
+    "noOverflow": true
+  }
+}

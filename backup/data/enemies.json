@@ -1,6 +1,6 @@
 {
   "format": "quest-for-glory-enemy-cards",
-  "version": 1,
+  "version": 2,
   "enemies": [
     {
       "id": "Giant Rats",
@@ -60,6 +60,7 @@
       "C": 2,
       "KW": [],
       "Item": {
+        "name": "A dagger",
         "description": "A dagger",
         "keywords": [
           "weapon"

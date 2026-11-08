@@ -1,6 +1,6 @@
-# Quest For Glory V22
+# Quest For Glory V23
 
-`board_game_tracker_v22.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
+`board_game_tracker_v23.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
 
 ## Development checks
 
@@ -24,9 +24,9 @@ TEST_FILTER='^(40|58|62) ' npm test
 
 On Windows PowerShell set `$env:TEST_FILTER='^(40|58|62) '` before `npm test`. Filtered runs write `filtered-results.json`; full runs write `baseline-results.json`. A failed assertion exits with status 1. Test fixtures are generated in the suite; no private saves are bundled.
 
-The production HTML is the test target, not a separate instrumented build. V22 has 173 browser checks. Read `docs/V22_AUDIT.md` for requirements, state migration, animation safety and verification limits; executed results are recorded in `docs/validation/v22-results.json`.
+The production HTML is the test target, not a separate instrumented build. V23 has 205 browser checks. Read `docs/V23_AUDIT.md` for requirements, state migration, animation safety and verification limits; executed results are recorded in `docs/validation/v23-results.json`.
 
-V22 remains a standalone offline HTML app. It adds item names, optional item descriptions, explicit combat item-reward consent, optional item consumption during Heal, Rest confirmation, default Heal/Rest values of 5, and the requested wording/hover changes. Existing saves migrate on load; new character exports use envelope version 14. Real iOS Safari and direct-file persistence need separate device verification.
+V23 remains a standalone offline HTML app. It adds equipped weapon/armor slots, durability and repairs, combat equipment modifiers, inventory swaps and optional starting equipment/items. Item names and descriptions have distinct typography, and Heal uses the revised inline value controls and red consumption name. Older saves migrate to empty equipment slots without guessing item types. New exports use version 15; the enemy library uses schema version 3. Real iOS Safari and direct-file persistence need separate device verification.
 
 ## Updating enemies
 
@@ -36,8 +36,6 @@ Edit `data/enemies.json` using `data/enemies.template.json` and `data/README.md`
 npm run build
 ```
 
-The build validates every entry and embeds a snapshot in V22. Distribute the rebuilt HTML; gameplay needs no separate JSON file or network connection. Rebuild whenever library data changes. Ongoing saved combats retain their original enemy snapshot. No fixed enemy count is imposed.
+The build validates every entry and embeds a snapshot in V23. Distribute the rebuilt HTML; gameplay needs no separate JSON file or network connection. Rebuild whenever library data changes. Ongoing saved combats retain their original enemy snapshot. No fixed enemy count is imposed.
 
-V21 is archived in `backup/`, including its standalone app, matching data, build scripts, tests, documentation and validation records. The older V20 backup has been removed.
-
-The archived V21 app and library retain their original schema. The root build and data files target V22.
+V22 is archived in `backup/`, including its standalone app, matching data, build scripts, tests, docs and validation records. The older V21 backup has been removed. The root build and data files target V23.

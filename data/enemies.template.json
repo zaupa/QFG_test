@@ -1,6 +1,6 @@
 {
   "format": "quest-for-glory-enemy-cards",
-  "version": 2,
+  "version": 3,
   "enemies": [
     {
       "id": "Enemy Name 1",
@@ -32,7 +32,18 @@
           "Item keyword 1",
           "Item keyword 2"
         ],
-        "baseValue": 1
+        "baseValue": 1,
+        "equipment": {
+          "type": "weapon",
+          "modifier": 1,
+          "usage": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "enabled": true
+        }
       }
     }
   ]

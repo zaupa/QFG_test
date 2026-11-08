@@ -1,6 +1,6 @@
 # Enemy library and template
 
-`enemies.json` contains the enemy library. `enemies.template.json` provides sample entries to copy when adding enemies. V22 embeds a validated snapshot of this library during the build. After editing the JSON, run `npm run build` from the repository root and distribute the rebuilt `board_game_tracker_v22.html`. The standalone HTML works offline without fetching a separate file.
+`enemies.json` contains the enemy library. `enemies.template.json` provides sample entries to copy when adding enemies. V23 embeds a validated snapshot of this library during the build. After editing the JSON, run `npm run build` from the repository root and distribute the rebuilt `board_game_tracker_v23.html`. The standalone HTML works offline without fetching a separate file.
 
 Add as many enemy objects as needed inside the `enemies` array. Separate objects with commas, with no comma after the last entry. Remove unused sample entries. JSON does not allow comments.
 
@@ -14,7 +14,7 @@ Add as many enemy objects as needed inside the `enemies` array. Separate objects
 | `F` | Fate reward, nonnegative integer. |
 | `C` | Coin reward, nonnegative integer. |
 | `KW` | Array of enemy keywords, or `[]`. Display: *Keyword 1 - Keyword 2*. |
-| `Item` | Reward item using the V22 inventory structure below, or `null` for no item. |
+| `Item` | Reward item using the V23 inventory structure below, or `null` for no item. |
 
 ## Item reward
 
@@ -38,12 +38,40 @@ Enemy-level keywords use the abbreviated key `KW`. Keywords inside an item keep 
 
 Use `"Item": null` when there is no reward. The first template sample has no item; the second demonstrates keyword arrays, an item reward and the minimum Wound Value of 0. Neither template entry is a real enemy definition.
 
-The V22 JSON wrapper uses `format: "quest-for-glory-enemy-cards"`, `version: 2`, with an `enemies` array. All nine Enemy Card fields are required; unknown enemy fields and duplicate names are rejected. Numeric values must be safe integers; CV also reserves room for the +6 modifier.
+The V23 JSON wrapper uses `format: "quest-for-glory-enemy-cards"`, `version: 3`, with an `enemies` array. All nine Enemy Card fields are required; unknown enemy fields and duplicate names are rejected. Numeric values must be safe integers; CV also reserves room for the +6 modifier.
 
 In app text fields, `-` is the keyword separator, with or without surrounding spaces. Spaces alone stay within a keyword: `resistant slash-magic` creates `["resistant slash", "magic"]`. Commas are rejected in enemy and item keyword input. JSON still uses arrays with normal JSON commas **between** entries; do not put a comma inside a keyword string. For example, `["weapon", "heavy metal"]` is valid; `["weapon, heavy metal"]` is not.
 
 Older character items migrate their previous description into the required name while keeping the description, keywords and base value. Keyword-only legacy items use their keyword text as a name. Legacy internal hyphens and comma text are preserved during save migration; new keyword entry uses the current separator rules. An existing active combat retains a copy of its enemy, so rebuilding the library changes future combats only.
 
-The library wrapper version increases from 1 to 2 because item names are now required. The five supplied enemy definitions retain their stats and text; the Thief reward has gained `name: "A dagger"`. The template demonstrates a separately named reward with optional description. To convert another version-1 library, add names to each non-null Item and set the wrapper version to 2 before building V22.
+The library wrapper version is 3 for equipment metadata. All five supplied enemies keep their existing stats and text. The Thief reward explicitly has `"equipment": null`: its name or keywords alone do not define equipment or invent a combat modifier. Set an equipment object when you have assigned its actual game modifier. The template's second entry demonstrates a weapon reward; neither template enemy is a real definition.
 
-The build rejects malformed data before replacing the HTML. Advanced usage: `node scripts/build-v22.cjs --data path/to/library.json --output path/to/app.html`. The default library is `data/enemies.json`; the template is not included automatically.
+## Equipment rewards
+
+Ordinary items may omit `equipment` or use `null`. A weapon or armor uses:
+
+```json
+"Item": {
+  "name": "Training sword",
+  "description": "A basic blade",
+  "keywords": ["weapon", "metal"],
+  "baseValue": 5,
+  "equipment": {
+    "type": "weapon",
+    "modifier": 2,
+    "usage": [true, true, true, true],
+    "enabled": true
+  }
+}
+```
+
+- `type`: required `"weapon"` or `"armor"`.
+- `modifier`: required positive safe integer, at most `Number.MAX_SAFE_INTEGER - 364` so an Action Hand can be added safely.
+- `usage`: four booleans; checked points are `true`. Omitted usage defaults to four checked points.
+- `enabled`: boolean; omitted defaults to `true`. Zero remaining points always normalizes to disabled/broken.
+- These fields stay with the item through inventory, equipping, rewards, imports and swaps. Equipment received as a reward enters Inventory after Keep; it is not automatically equipped.
+- Ordinary items omit equipment metadata in canonical app saves/embedded snapshots. Explicit `null` is accepted in authoring files.
+
+To update an older library, retain/add item names as required by V22, set wrapper version to 3, and optionally supply equipment objects. Existing V22 character items remain ordinary until explicitly marked Weapon or Armor in the app.
+
+The build rejects malformed data before replacing the HTML. Advanced usage: `node scripts/build-v23.cjs --data path/to/library.json --output path/to/app.html`. The default library is `data/enemies.json`; the template is not included automatically.

@@ -1,6 +1,6 @@
 {
   "format": "quest-for-glory-enemy-cards",
-  "version": 1,
+  "version": 2,
   "enemies": [
     {
       "id": "Enemy Name 1",
@@ -26,6 +26,7 @@
         "Keyword 2"
       ],
       "Item": {
+        "name": "Reward item name",
         "description": "Replace with the reward item's description.",
         "keywords": [
           "Item keyword 1",

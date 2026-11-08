@@ -1,6 +1,6 @@
 {
   "format": "quest-for-glory-enemy-cards",
-  "version": 2,
+  "version": 3,
   "enemies": [
     {
       "id": "Giant Rats",
@@ -65,7 +65,8 @@
         "keywords": [
           "weapon"
         ],
-        "baseValue": 5
+        "baseValue": 5,
+        "equipment": null
       }
     }
   ]

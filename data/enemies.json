@@ -1,6 +1,6 @@
 {
   "format": "quest-for-glory-enemy-cards",
-  "version": 3,
+  "version": 4,
   "enemies": [
     {
       "id": "Giant Rats",

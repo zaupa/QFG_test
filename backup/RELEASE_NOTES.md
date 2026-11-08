@@ -1,3 +1,15 @@
+# V23
+
+V22 is archived in `backup/` with its matching development files; the older V21 backup is removed.
+
+- Inventory item names are bold; descriptions are smaller and regular weight. Heal's label sits left of its value box, Use item sits closer, and consumption reads “Heal will consume item:” with the item name in bold red.
+- Weapons and Armors is a collapsible section with one equipped slot per type. Gear adds a positive modifier, four red usage checkboxes and an enable switch. Zero usage produces a red broken warning and prevents modifiers.
+- Enabled weapons add to combat Action Hand totals, live Fate previews and exact-match resolution. A failed attempt spends one weapon point. Enabled armor reduces failed-combat wounds, floored at zero, and spends one point only when it reduces wounds. Challenges/manual wounds are unaffected.
+- Broken equipment offers Fix with custom nonnegative Coin cost and Cancel/Fix. Valid confirmation pays once, restores all four points, and enables the item. Repair, wear, equipping and swaps are saved and undoable.
+- Shared item forms allow equipment classification and require type/modifier when checked. Inventory Equip swaps with the matching slot, preserving condition; empty slots move the item out of Inventory. Full-inventory swaps do not discard an item.
+- Character Creation optionally adds a starting weapon, armor and up to eight inventory items through the shared item form. Starting equipment has four points; starting items have no purchase cost.
+- Existing saves gain empty equipment slots without guessing from names/keywords. Exports use envelope version 15. Enemy data/template/README use library version 3 and support equipment rewards; existing enemy stats remain unchanged.
+
 # V22
 
 V21 is archived in `backup/` with its matching development files; the older V20 backup has been removed.

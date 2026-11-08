@@ -1,6 +1,6 @@
 # Enemy library and template
 
-`enemies.json` contains the enemy library. `enemies.template.json` provides sample entries to copy when adding enemies. V23 embeds a validated snapshot of this library during the build. After editing the JSON, run `npm run build` from the repository root and distribute the rebuilt `board_game_tracker_v23.html`. The standalone HTML works offline without fetching a separate file.
+`enemies.json` contains the enemy library. `enemies.template.json` provides sample entries to copy when adding enemies. V24 embeds a validated snapshot of this library during the build. After editing the JSON, run `npm run build` from the repository root and distribute the rebuilt `board_game_tracker_v24.html`. The standalone HTML works offline without fetching a separate file.
 
 Add as many enemy objects as needed inside the `enemies` array. Separate objects with commas, with no comma after the last entry. Remove unused sample entries. JSON does not allow comments.
 
@@ -14,7 +14,7 @@ Add as many enemy objects as needed inside the `enemies` array. Separate objects
 | `F` | Fate reward, nonnegative integer. |
 | `C` | Coin reward, nonnegative integer. |
 | `KW` | Array of enemy keywords, or `[]`. Display: *Keyword 1 - Keyword 2*. |
-| `Item` | Reward item using the V23 inventory structure below, or `null` for no item. |
+| `Item` | Reward item using the V24 inventory structure below, or `null` for no item. |
 
 ## Item reward
 
@@ -38,13 +38,13 @@ Enemy-level keywords use the abbreviated key `KW`. Keywords inside an item keep 
 
 Use `"Item": null` when there is no reward. The first template sample has no item; the second demonstrates keyword arrays, an item reward and the minimum Wound Value of 0. Neither template entry is a real enemy definition.
 
-The V23 JSON wrapper uses `format: "quest-for-glory-enemy-cards"`, `version: 3`, with an `enemies` array. All nine Enemy Card fields are required; unknown enemy fields and duplicate names are rejected. Numeric values must be safe integers; CV also reserves room for the +6 modifier.
+The V24 JSON wrapper uses `format: "quest-for-glory-enemy-cards"`, `version: 4`, with an `enemies` array. All nine Enemy Card fields are required; unknown enemy fields and duplicate names are rejected. Numeric values must be safe integers; CV also reserves room for the +6 modifier.
 
 In app text fields, `-` is the keyword separator, with or without surrounding spaces. Spaces alone stay within a keyword: `resistant slash-magic` creates `["resistant slash", "magic"]`. Commas are rejected in enemy and item keyword input. JSON still uses arrays with normal JSON commas **between** entries; do not put a comma inside a keyword string. For example, `["weapon", "heavy metal"]` is valid; `["weapon, heavy metal"]` is not.
 
-Older character items migrate their previous description into the required name while keeping the description, keywords and base value. Keyword-only legacy items use their keyword text as a name. Legacy internal hyphens and comma text are preserved during save migration; new keyword entry uses the current separator rules. An existing active combat retains a copy of its enemy, so rebuilding the library changes future combats only.
+Older character items migrate their previous description into the required name while keeping the description, keywords and base value. Keyword-only legacy items use their keyword text as a name. Legacy internal hyphens remain intact; old comma-separated/spaced-hyphen lists migrate to separate array entries. Commas cannot remain inside keyword entries; new keyword entry uses the current separator rules. An existing active combat retains a copy of its enemy, so rebuilding the library changes future combats only.
 
-The library wrapper version is 3 for equipment metadata. All five supplied enemies keep their existing stats and text. The Thief reward explicitly has `"equipment": null`: its name or keywords alone do not define equipment or invent a combat modifier. Set an equipment object when you have assigned its actual game modifier. The template's second entry demonstrates a weapon reward; neither template enemy is a real definition.
+The library wrapper version is 4 for automatic equipment activation. All five supplied enemies keep their existing stats and text. The Thief reward explicitly has `"equipment": null`: its name or keywords alone do not define equipment or invent a combat modifier. Set an equipment object when you have assigned its actual game modifier. The template's second entry demonstrates a weapon reward; neither template enemy is a real definition.
 
 ## Equipment rewards
 
@@ -59,8 +59,7 @@ Ordinary items may omit `equipment` or use `null`. A weapon or armor uses:
   "equipment": {
     "type": "weapon",
     "modifier": 2,
-    "usage": [true, true, true, true],
-    "enabled": true
+    "usage": [true, true, true, true]
   }
 }
 ```
@@ -68,10 +67,51 @@ Ordinary items may omit `equipment` or use `null`. A weapon or armor uses:
 - `type`: required `"weapon"` or `"armor"`.
 - `modifier`: required positive safe integer, at most `Number.MAX_SAFE_INTEGER - 364` so an Action Hand can be added safely.
 - `usage`: four booleans; checked points are `true`. Omitted usage defaults to four checked points.
-- `enabled`: boolean; omitted defaults to `true`. Zero remaining points always normalizes to disabled/broken.
-- These fields stay with the item through inventory, equipping, rewards, imports and swaps. Equipment received as a reward enters Inventory after Keep; it is not automatically equipped.
+- Equipment is active automatically while at least one usage point remains. There is no `enabled` field in V24. Old flags are ignored during migration. Zero remaining points means broken.
+- Usage is read-only in the app; failed combat/armor use spends points and Fix restores four points. These fields stay with the item through inventory, equipping, rewards, imports and swaps. Equipment received as a reward enters Inventory after Keep; it is not automatically equipped.
 - Ordinary items omit equipment metadata in canonical app saves/embedded snapshots. Explicit `null` is accepted in authoring files.
 
-To update an older library, retain/add item names as required by V22, set wrapper version to 3, and optionally supply equipment objects. Existing V22 character items remain ordinary until explicitly marked Weapon or Armor in the app.
+To update an older library, retain/add item names as required by V22, set wrapper version to 4, and optionally supply equipment objects. Existing V22 character items remain ordinary until explicitly marked Weapon or Armor in the app.
 
-The build rejects malformed data before replacing the HTML. Advanced usage: `node scripts/build-v23.cjs --data path/to/library.json --output path/to/app.html`. The default library is `data/enemies.json`; the template is not included automatically.
+The build rejects malformed data before replacing the HTML. Advanced usage: `node scripts/build-v24.cjs --data path/to/library.json --output path/to/app.html`. The default library is `data/enemies.json`; the template is not included automatically.
+
+## Standard enemy keyword associations
+
+Store an association as a complete string in the enemy `KW` array. Target keywords match an active equipped weapon/armor keyword exactly, without case sensitivity; extra whitespace is normalized. Spaces inside a target, such as `Full Body`, remain one keyword.
+
+| Enemy association | Required equipment match | Effect |
+|---|---|---|
+| `Unprotected against slash` | Weapon has `slash` | CV −6 |
+| `Resistant against slash` | Weapon has `slash` | CV +6 |
+| `Weak against metal` | Armor has `metal` | WV −2 |
+| `Strong against metal` | Armor has `metal` | WV +2 |
+
+The older abbreviations `resistant slash` and `Unprotected fire` also work. Distinct matching associations add together; repeated copies of the same association apply once. Opposing effects offset. CV is floored at 1, then retry reduction and the random modifier retain their existing minimum-one rules. WV is floored at 0 after keyword effects, then armor's flat modifier reduces it, also floored at 0. The corrected example is CV 16 + 6 = 22, WV 4 + 2 = 6 before the armor's flat reduction.
+
+Broken equipment supplies neither its modifier nor its keyword matches. A last usage point still applies to that attempt; its breakage changes later attempts. Armor spends one point on a failure when its flat modifier or a net weakness effect actually prevents wounds. Special enemy-specific effects in descriptions remain manual; no arbitrary prose is executed or interpreted as a formula.
+
+The app shows combat values and matched adjustments while retaining original enemy stats in the saved card. Resolved-attempt availability is saved so breakage/reload keeps the previous explanation consistent; retry uses current remaining usage. Positive associations reserve safe numeric room when validating CV/WV.
+
+## Suggested keywords (`keywords.json`)
+
+The independent authoring catalog uses:
+
+```json
+{
+  "format": "quest-for-glory-keywords",
+  "version": 1,
+  "keywords": [
+    {"keyword": "slash", "category": "Damage type", "uses": ["weapon"]},
+    {"keyword": "metal", "category": "Material", "uses": ["weapon", "armor", "generic"]},
+    {"keyword": "heal", "category": "Effect", "uses": ["generic"]}
+  ]
+}
+```
+
+The supplied 36 entries cover the requested weapon, armor and generic categories, including `cristal`, `Partial Protection`, `Full Body`, `heal` and `rest`. Dice columns are omitted. `uses` contains one or more of weapon/armor/generic; keyword/category must be nonempty. Catalog keyword strings cannot contain comma or hyphen delimiters. Duplicate category/keyword entries are rejected.
+
+Suggestions appear in shared inventory, starting-item, equipped-item and enemy-reward forms. Clicking a chip adds it with ` - `, highlights selected words and avoids duplicates. Free custom keywords remain allowed and need not appear in this catalog. Changing item type filters suggestions without rewriting typed text. The combined Description/Keywords limit remains 300 characters; an oversized suggestion is refused without truncating text.
+
+Run `npm run build` after changes to either JSON catalog. Both snapshots are embedded so the distributed HTML works offline. Advanced build flags include `--data`, `--keywords` and `--output`; invalid catalogs are rejected before output is replaced. If embedded suggestions are unavailable, custom keyword entry still works.
+
+Heal's Use item picker accepts only an exact `heal` keyword (case-insensitive). `healing`, `heal potion` and `rest` are different keywords; adding `rest` to the suggestion catalog does not add a new Rest-item mechanic.

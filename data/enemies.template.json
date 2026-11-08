@@ -1,6 +1,6 @@
 {
   "format": "quest-for-glory-enemy-cards",
-  "version": 3,
+  "version": 4,
   "enemies": [
     {
       "id": "Enemy Name 1",
@@ -22,15 +22,16 @@
       "F": 1,
       "C": 2,
       "KW": [
-        "Keyword 1",
-        "Keyword 2"
+        "Resistant against slash",
+        "Strong against metal"
       ],
       "Item": {
         "name": "Reward item name",
         "description": "Replace with the reward item's description.",
         "keywords": [
-          "Item keyword 1",
-          "Item keyword 2"
+          "melee",
+          "slash",
+          "metal"
         ],
         "baseValue": 1,
         "equipment": {
@@ -41,8 +42,7 @@
             true,
             true,
             true
-          ],
-          "enabled": true
+          ]
         }
       }
     }

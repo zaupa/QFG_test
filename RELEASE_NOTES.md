@@ -1,3 +1,16 @@
+# V24
+
+V23 is archived in `backup/` with its matching development files; the older V22 backup is removed.
+
+- All item/equipment/enemy keyword fields reject commas, use `-` as the separator, and retain spaces within a keyword. Legacy comma-delimited lists normalize into arrays.
+- Shared item forms offer grouped, optional keyword chips from `data/keywords.json`, filtered for weapons, armor or generic items. Custom text remains allowed; duplicate/oversized chip additions do not alter existing content. All supplied terms are included without dice metadata.
+- Standard enemy associations match active equipped keywords: Unprotected −6 CV, Resistant +6 CV, Weak −2 WV, Strong +2 WV. Whole-keyword matches ignore case. Distinct effects stack; duplicates apply once. Combat shows matched adjustments, respects CV/WV floors, retries and armor reduction, and retains original enemy stats.
+- Equipment activates automatically when usage remains. Usage appears as read-only red available/gray spent squares without checkmarks or enable controls. Edit is small at the card's top right; Fix sits beside Move to inventory.
+- All ordinary inventory/equipment additions, edits, removals, swaps and repairs are locked throughout combat. Dedicated victory-item Keep/Discard/replacement remains available.
+- Occupied Wounds tiles turn red and Fatigue tiles muted blue; empty zones retain normal colors. The Resources adjustment hint is removed.
+- Heal's Use item picker shows only items with exact `heal` keyword, ignoring case, and consumes the correct inventory entry after confirmation.
+- Character exports use envelope version 16; enemy library version 4 removes manual activation metadata. Old flags are discarded and remaining usage determines availability. The standalone app embeds both validated data catalogs.
+
 # V23
 
 V22 is archived in `backup/` with its matching development files; the older V21 backup is removed.

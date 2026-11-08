@@ -1,8 +1,0 @@
-{
-  "date": "2026-11-08T21:22:10.095Z",
-  "browser": "156.0.8078.79",
-  "sourceSHA256": "a5625022708fb871a262e874a56c984c525174afd45c9073c59d7d69c35a9d04",
-  "status": "BLOCKED",
-  "error": "page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at file:///workspace/QuestForGloryApp/board_game_tracker_v22.html\nCall log:\n\u001b[2m  - navigating to \"file:///workspace/QuestForGloryApp/board_game_tracker_v22.html\", waiting until \"load\"\u001b[22m\n",
-  "errors": []
-}

@@ -1,0 +1,540 @@
+{
+  "date": "2026-11-08T17:32:26.025Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "7d65cf9235a8098f49e72b6da27945b1c3ba4f58ccec3ace1d3d1f800489013e",
+  "passed": 106,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 creation defaults, random name, double Diamond cost, initial pool",
+      "status": "PASS",
+      "ms": 696
+    },
+    {
+      "name": "02 creation rejects overspend and supports custom starting values",
+      "status": "PASS",
+      "ms": 800
+    },
+    {
+      "name": "03 autosave and reload preserve resources, cards, inventory",
+      "status": "PASS",
+      "ms": 1004
+    },
+    {
+      "name": "04 independent slots and five-slot creation/import capacity",
+      "status": "PASS",
+      "ms": 889
+    },
+    {
+      "name": "05 deletion requires in-app confirmation and Cancel preserves character",
+      "status": "PASS",
+      "ms": 794
+    },
+    {
+      "name": "06 JSON download/import roundtrip preserves character",
+      "status": "PASS",
+      "ms": 832
+    },
+    {
+      "name": "07 invalid duplicate-card JSON rejected without overwriting save",
+      "status": "PASS",
+      "ms": 843
+    },
+    {
+      "name": "08 resource edits logged, zero protected and Undo restores state",
+      "status": "PASS",
+      "ms": 822
+    },
+    {
+      "name": "09 delegated card-zone tiles work after repeated UI refreshes",
+      "status": "PASS",
+      "ms": 1163
+    },
+    {
+      "name": "10 challenge success moves hand to Fatigue and preserves all cards",
+      "status": "PASS",
+      "ms": 1015
+    },
+    {
+      "name": "11 challenge failure is logged and cards move to Fatigue",
+      "status": "PASS",
+      "ms": 950
+    },
+    {
+      "name": "12 modifier six equal random buckets produce -6,-3,0,0,3,6",
+      "status": "PASS",
+      "ms": 3014
+    },
+    {
+      "name": "13 excluded suits blocked at hand selection and Fate-add stage",
+      "status": "PASS",
+      "ms": 960
+    },
+    {
+      "name": "14 first Fate adjustment costs one and the next costs two",
+      "status": "PASS",
+      "ms": 1537
+    },
+    {
+      "name": "15 exact-match recovery returns selected cards and conserves deck",
+      "status": "PASS",
+      "ms": 1109
+    },
+    {
+      "name": "16 exact-match permits choosing fewer than two cards (spec: up to two)",
+      "status": "PASS",
+      "ms": 1102
+    },
+    {
+      "name": "17 challenge Cancel restores complete pre-action persistent state",
+      "status": "PASS",
+      "ms": 1077
+    },
+    {
+      "name": "18 combat success and exact recovery",
+      "status": "PASS",
+      "ms": 1297
+    },
+    {
+      "name": "19 combat retries reduce difficulty by two and Cancel restores before all retries",
+      "status": "PASS",
+      "ms": 1356
+    },
+    {
+      "name": "20 combat fleeing costs two Fate; insufficient Fate disables flee",
+      "status": "PASS",
+      "ms": 1519
+    },
+    {
+      "name": "21 empty deck cannot begin challenge",
+      "status": "PASS",
+      "ms": 721
+    },
+    {
+      "name": "22 combat retry uses Fatigue hand for explicit two-Fate cost",
+      "status": "PASS",
+      "ms": 1263
+    },
+    {
+      "name": "23 wounds use Fatigue exclusively when it can cover target",
+      "status": "PASS",
+      "ms": 888
+    },
+    {
+      "name": "24 insufficient Fatigue is fully allocated before deck cards",
+      "status": "PASS",
+      "ms": 969
+    },
+    {
+      "name": "25 all owned cards wounded means persistent Game Over and disabled actions",
+      "status": "PASS",
+      "ms": 1043
+    },
+    {
+      "name": "26 successful challenge does not trigger empty-deck failure death",
+      "status": "PASS",
+      "ms": 990
+    },
+    {
+      "name": "27 failed challenge detects empty deck + Fatigue + Wounds + Fate below two",
+      "status": "PASS",
+      "ms": 926
+    },
+    {
+      "name": "28 Rest spends one Supply and enforces recovery value",
+      "status": "PASS",
+      "ms": 967
+    },
+    {
+      "name": "29 Rest without Supply wounds five points before recovery",
+      "status": "PASS",
+      "ms": 976
+    },
+    {
+      "name": "30 Healing recovers owned Wounds only, within value",
+      "status": "PASS",
+      "ms": 924
+    },
+    {
+      "name": "31 upgrades use leftover budget, Diamonds double, Fate buys three points",
+      "status": "PASS",
+      "ms": 975
+    },
+    {
+      "name": "32 inventory purchase/sale, custom price, persisted data and Undo",
+      "status": "PASS",
+      "ms": 1079
+    },
+    {
+      "name": "33 insufficient Coin rejects item purchase with no state mutation",
+      "status": "PASS",
+      "ms": 869
+    },
+    {
+      "name": "34 inventory eight-item limit and combined 300-character bound",
+      "status": "PASS",
+      "ms": 842
+    },
+    {
+      "name": "35 dice open does not roll; all types roll on tap with valid ranges",
+      "status": "PASS",
+      "ms": 4726
+    },
+    {
+      "name": "36 2D6 concatenates independent digits and history is newest-first capped at 20",
+      "status": "PASS",
+      "ms": 1569
+    },
+    {
+      "name": "37 legacy v11 slot migration retains cards, inventory and resources",
+      "status": "PASS",
+      "ms": 757
+    },
+    {
+      "name": "38 save import requires full card-pool partition",
+      "status": "PASS",
+      "ms": 804
+    },
+    {
+      "name": "39 malformed active-action JSON is rejected before storing",
+      "status": "PASS",
+      "ms": 753
+    },
+    {
+      "name": "40 corrupt localStorage is preserved for recovery rather than erased",
+      "status": "PASS",
+      "ms": 609
+    },
+    {
+      "name": "41 paid no-Supply Rest can resume after reload without a second wound",
+      "status": "PASS",
+      "ms": 1162
+    },
+    {
+      "name": "42 dice roll belongs to original character when switching during animation",
+      "status": "PASS",
+      "ms": 1606
+    },
+    {
+      "name": "43 character UI collapse defaults reset on character switch",
+      "status": "PASS",
+      "ms": 843
+    },
+    {
+      "name": "44 Game Over prevents new dice results",
+      "status": "PASS",
+      "ms": 1503
+    },
+    {
+      "name": "45 challenge mid-action reload retains hand and Cancel rollback",
+      "status": "PASS",
+      "ms": 1167
+    },
+    {
+      "name": "46 selected cards keep ivory, tilt and shadow with a thin dark border",
+      "status": "PASS",
+      "ms": 1219
+    },
+    {
+      "name": "47 release identifies itself as Version 19",
+      "status": "PASS",
+      "ms": 415
+    },
+    {
+      "name": "48 mobile touch: zone tiles, modal and no horizontal page overflow",
+      "status": "PASS",
+      "ms": 1894
+    },
+    {
+      "name": "49 supplied Righteous font is embedded, loads and applies to titles and names",
+      "status": "PASS",
+      "ms": 759
+    },
+    {
+      "name": "50 old v6 single-character storage migrates into an independent slot",
+      "status": "PASS",
+      "ms": 832
+    },
+    {
+      "name": "51 no-Supply Rest that wounds every card stops with Game Over",
+      "status": "PASS",
+      "ms": 865
+    },
+    {
+      "name": "52 eligible-suit filtering also applies to two-Fate Fatigue hand",
+      "status": "PASS",
+      "ms": 835
+    },
+    {
+      "name": "53 combat Fate adjustment costs one and subsequent use costs two",
+      "status": "PASS",
+      "ms": 1054
+    },
+    {
+      "name": "54 imported point balance cannot authorize purchases above point limit",
+      "status": "PASS",
+      "ms": 818
+    },
+    {
+      "name": "55 storage write failure remains visible to player",
+      "status": "PASS",
+      "ms": 812
+    },
+    {
+      "name": "56 imported encounter strings cannot insert executable markup",
+      "status": "PASS",
+      "ms": 845
+    },
+    {
+      "name": "57 app can create and resolve a challenge with networking disabled",
+      "status": "PASS",
+      "ms": 1778
+    },
+    {
+      "name": "58 corrupt storage backup contains original bytes and loading retry recovers",
+      "status": "PASS",
+      "ms": 773
+    },
+    {
+      "name": "59 malformed slot data is preserved atomically instead of filtered or overwritten",
+      "status": "PASS",
+      "ms": 596
+    },
+    {
+      "name": "60 nested import fields and forged rollback are rejected without altering existing slot",
+      "status": "PASS",
+      "ms": 1508
+    },
+    {
+      "name": "61 legacy missing pool and budget fields are derived without losing cards",
+      "status": "PASS",
+      "ms": 737
+    },
+    {
+      "name": "62 storage write failure stays visible across actions and retry saves unsaved state",
+      "status": "PASS",
+      "ms": 877
+    },
+    {
+      "name": "63 exact-match optional recovery covers zero and one card in both encounter types",
+      "status": "PASS",
+      "ms": 2468
+    },
+    {
+      "name": "64 no-Supply Rest resumes through menu and persisted cancellation starts a fresh Rest",
+      "status": "PASS",
+      "ms": 1222
+    },
+    {
+      "name": "65 active combat and allocated wounds survive reload and retain safe Cancel",
+      "status": "PASS",
+      "ms": 1261
+    },
+    {
+      "name": "66 v9 and v10 slot migrations preserve independent characters",
+      "status": "PASS",
+      "ms": 931
+    },
+    {
+      "name": "67 numeric overflow is blocked for resource increments and Fate upgrades",
+      "status": "PASS",
+      "ms": 864
+    },
+    {
+      "name": "68 a dice label starts one 2D6 roll rather than a duplicate synthetic click",
+      "status": "PASS",
+      "ms": 1569
+    },
+    {
+      "name": "69 character collapse defaults include Roll History and Inventory",
+      "status": "PASS",
+      "ms": 942
+    },
+    {
+      "name": "70 live add previews update failure, exact match and success without spending Fate",
+      "status": "PASS",
+      "ms": 1705
+    },
+    {
+      "name": "71 live remove previews update success, exact match and failure before confirmation",
+      "status": "PASS",
+      "ms": 1844
+    },
+    {
+      "name": "72 preview respects Luck eligibility and face value; Back discards the preview",
+      "status": "PASS",
+      "ms": 1102
+    },
+    {
+      "name": "73 combat retry preview uses reduced difficulty plus the revealed modifier",
+      "status": "PASS",
+      "ms": 1190
+    },
+    {
+      "name": "74 mobile touch selection updates the live preview without horizontal overflow",
+      "status": "PASS",
+      "ms": 1777
+    },
+    {
+      "name": "75 purchase tip is one-time per character and remembered after cancel/reload",
+      "status": "PASS",
+      "ms": 1446
+    },
+    {
+      "name": "76 sale tip is independent and appears only for the first Sold checkbox",
+      "status": "PASS",
+      "ms": 1246
+    },
+    {
+      "name": "77 Undo and encounter cancellation do not repeat already-seen inventory tips",
+      "status": "PASS",
+      "ms": 1327
+    },
+    {
+      "name": "78 inventory tips persist through JSON export/import and malformed preferences are rejected",
+      "status": "PASS",
+      "ms": 1125
+    },
+    {
+      "name": "79 repeated Fate additions/removals share costs 1, 2, 4, 8 in each action",
+      "status": "PASS",
+      "ms": 2186
+    },
+    {
+      "name": "80 initial hand has at most five cards; paid additions can exceed five",
+      "status": "PASS",
+      "ms": 2032
+    },
+    {
+      "name": "81 doubling cost survives reload, Back does not charge, Cancel restores the complete state",
+      "status": "PASS",
+      "ms": 2544
+    },
+    {
+      "name": "82 combat retry resets the next adjustment cost to one and preserves enemy rewards",
+      "status": "PASS",
+      "ms": 1397
+    },
+    {
+      "name": "83 enemy prompt defaults and cancellation leave the character unchanged",
+      "status": "PASS",
+      "ms": 873
+    },
+    {
+      "name": "84 ordinary victory adds configured Fate, Coin and inventory item exactly once",
+      "status": "PASS",
+      "ms": 1284
+    },
+    {
+      "name": "85 exact-match victory grants rewards only after the recovery choice",
+      "status": "PASS",
+      "ms": 1249
+    },
+    {
+      "name": "86 failed combat and fleeing do not grant configured rewards",
+      "status": "PASS",
+      "ms": 1176
+    },
+    {
+      "name": "87 full inventory decline retains all existing items and resource rewards",
+      "status": "PASS",
+      "ms": 1138
+    },
+    {
+      "name": "88 full inventory replacement lists all items and discards only the selected item without sale proceeds",
+      "status": "PASS",
+      "ms": 1166
+    },
+    {
+      "name": "89 pending reward survives reload and JSON transfer without duplicating resources",
+      "status": "PASS",
+      "ms": 1794
+    },
+    {
+      "name": "90 Undo of victory/replacement restores awards consistently without duplication",
+      "status": "PASS",
+      "ms": 1322
+    },
+    {
+      "name": "91 enemy and reward fields reject invalid values and enforce combined text length",
+      "status": "PASS",
+      "ms": 1041
+    },
+    {
+      "name": "92 malformed enemy rewards and adjustment counters are rejected on import",
+      "status": "PASS",
+      "ms": 1258
+    },
+    {
+      "name": "93 V18 encounters migrate previous Fate usage without retroactive enemy rewards",
+      "status": "PASS",
+      "ms": 796
+    },
+    {
+      "name": "94 rewards that overflow resources remain pending until safely collectible",
+      "status": "PASS",
+      "ms": 1059
+    },
+    {
+      "name": "95 low Fate during adjustment disables confirmation and does not move cards",
+      "status": "PASS",
+      "ms": 1113
+    },
+    {
+      "name": "96 the five-card cap also applies to eligible Fatigue hands during an ongoing action",
+      "status": "PASS",
+      "ms": 868
+    },
+    {
+      "name": "97 mobile enemy and full-inventory reward dialogs remain usable and text is escaped",
+      "status": "PASS",
+      "ms": 1811
+    },
+    {
+      "name": "98 full inventory without an item reward finishes normally and Game Over grants no reward",
+      "status": "PASS",
+      "ms": 1607
+    },
+    {
+      "name": "99 extreme or blank initial difficulty is rejected before an unsafe modifier calculation",
+      "status": "PASS",
+      "ms": 1069
+    },
+    {
+      "name": "100 restored pending reward uses a free inventory slot without re-awarding resources",
+      "status": "PASS",
+      "ms": 801
+    },
+    {
+      "name": "101 cancellation after escalating Fate costs and multiple retries restores the original character",
+      "status": "PASS",
+      "ms": 1750
+    },
+    {
+      "name": "102 an expanded paid hand and the next Fate cost survive reload",
+      "status": "PASS",
+      "ms": 1538
+    },
+    {
+      "name": "103 exponential adjustment costs stop safely at the numeric limit",
+      "status": "PASS",
+      "ms": 889
+    },
+    {
+      "name": "104 combat retries cannot create an unsafe difficulty from a boundary save",
+      "status": "PASS",
+      "ms": 743
+    },
+    {
+      "name": "105 new dialogs keep keyboard focus inside and Escape never silently discards a reward",
+      "status": "PASS",
+      "ms": 1233
+    },
+    {
+      "name": "106 the V19 enemy, paid adjustment and victory reward flow works fully offline",
+      "status": "PASS",
+      "ms": 2074
+    }
+  ],
+  "scriptSHA256": "8579b921abbf8d280db80b0840b18de27434dbd4b461605550ba7c5d9663bc51"
+}

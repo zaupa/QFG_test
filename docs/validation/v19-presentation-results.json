@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-08T17:33:19.058Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "fcd21942205950faff4a868bda14e3bf2fcbf718054eafb989e0dd2854458ed8",
+  "passed": 3,
+  "failed": 0,
+  "results": [
+    {
+      "name": "83 enemy prompt defaults and cancellation leave the character unchanged",
+      "status": "PASS",
+      "ms": 1027
+    },
+    {
+      "name": "97 mobile enemy and full-inventory reward dialogs remain usable and text is escaped",
+      "status": "PASS",
+      "ms": 1937
+    },
+    {
+      "name": "105 new dialogs keep keyboard focus inside and Escape never silently discards a reward",
+      "status": "PASS",
+      "ms": 1196
+    }
+  ],
+  "scriptSHA256": "8579b921abbf8d280db80b0840b18de27434dbd4b461605550ba7c5d9663bc51",
+  "additionalLayoutVerification": {
+    "menuWidths": [
+      320,
+      390,
+      520,
+      521,
+      900
+    ],
+    "titleWidths": [
+      320,
+      390,
+      520,
+      900,
+      1280
+    ],
+    "screens": [
+      "menu",
+      "game"
+    ],
+    "passed": true
+  }
+}

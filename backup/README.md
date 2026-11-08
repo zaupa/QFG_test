@@ -1,6 +1,6 @@
-# Quest For Glory V19
+# Quest For Glory V20
 
-`board_game_tracker_v19.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
+`board_game_tracker_v20.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
 
 ## Development checks
 
@@ -24,8 +24,10 @@ TEST_FILTER='^(40|58|62) ' npm test
 
 On Windows PowerShell set `$env:TEST_FILTER='^(40|58|62) '` before `npm test`. Filtered runs write `filtered-results.json`; full runs write `baseline-results.json`. A failed assertion exits with status 1. Test fixtures are generated in the suite; no private saves are bundled.
 
-The production HTML is the test target, not a separate instrumented build. V19 includes 106 browser checks. Read `docs/V19_AUDIT.md` for requirements, migration behavior, audit findings and verification details. Recorded full-suite and final presentation checks are in `docs/validation/v19-results.json` and `docs/validation/v19-presentation-results.json`.
+The production HTML is the test target, not a separate instrumented build. V20 has 131 browser checks. Read `docs/V20_AUDIT.md` for requirements, state migration, animation safety and verification limits; executed results are recorded in `docs/validation/v20-results.json`.
 
-V19 remains a standalone offline HTML app. Enemy setup, victory rewards, full-inventory replacement, five-card initial hands and repeatable Fate adjustments are described in `RELEASE_NOTES.md`. Righteous remains embedded for titles and names. Existing V18 saves and JSON exports are supported. Real iOS Safari and direct-file persistence need separate device verification.
+V20 remains a standalone offline HTML app. It adds minimum-one Challenge Values, a saved Round counter and editor, collapsible sections, revised resource controls, combat reward animation and wound feedback. Righteous remains embedded for titles and names. Existing character saves and JSON exports remain supported. Real iOS Safari and direct-file persistence need separate device verification.
 
-This folder archives the complete V19 release. V18 is available in Git history.
+The older V19 archive is no longer retained.
+
+This is the V20 archive. Run its tests from this directory. The active V21 app is in the repository root.

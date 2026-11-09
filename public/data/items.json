@@ -1,0 +1,36 @@
+{
+  "format": "quest-for-glory-items",
+  "version": 1,
+  "items": [
+    {
+      "name": "A dagger",
+      "description": "A dagger",
+      "keywords": [
+        "weapon"
+      ],
+      "baseValue": 5,
+      "equipment": null
+    },
+    {
+      "name": "Specter of the unholy mice",
+      "description": "A decorated mace with a black jewel carved in the face of a rat in the base.",
+      "keywords": [
+        "melee",
+        "magic",
+        "bludgeon",
+        "metal"
+      ],
+      "baseValue": 50,
+      "equipment": {
+        "type": "weapon",
+        "modifier": 2,
+        "usage": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    }
+  ]
+}

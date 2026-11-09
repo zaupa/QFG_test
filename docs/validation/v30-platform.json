@@ -1,0 +1,143 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 34,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 React shell starts with external assets and no embedded payloads",
+      "status": "PASS"
+    },
+    {
+      "name": "02 character creation writes IndexedDB without localStorage saves",
+      "status": "PASS"
+    },
+    {
+      "name": "03 resources and character survive reload from IndexedDB",
+      "status": "PASS"
+    },
+    {
+      "name": "04 same-origin V28 saves migrate without deleting the original backup",
+      "status": "PASS"
+    },
+    {
+      "name": "05 an existing empty IndexedDB save never resurrects old localStorage characters",
+      "status": "PASS"
+    },
+    {
+      "name": "06 malformed legacy saves are preserved with recovery controls",
+      "status": "PASS"
+    },
+    {
+      "name": "07 manifest icons and service worker install successfully",
+      "status": "PASS"
+    },
+    {
+      "name": "08 full offline reload restores UI libraries and characters",
+      "status": "PASS"
+    },
+    {
+      "name": "09 changing only enemies JSON becomes visible on the next opening",
+      "status": "PASS"
+    },
+    {
+      "name": "10 keywords and dungeon JSON changes refresh without a build",
+      "status": "PASS"
+    },
+    {
+      "name": "11 malformed updated JSON falls back to the entire last valid library set",
+      "status": "PASS"
+    },
+    {
+      "name": "12 broken cross-library references cannot replace validated offline libraries",
+      "status": "PASS"
+    },
+    {
+      "name": "13 active dungeon snapshots survive JSON edits and reload",
+      "status": "PASS"
+    },
+    {
+      "name": "14 exports and imports keep portable V28 character JSON",
+      "status": "PASS"
+    },
+    {
+      "name": "15 multi-tab writes reject stale changes instead of overwriting another tab",
+      "status": "PASS"
+    },
+    {
+      "name": "16 IndexedDB write errors show unsaved status and preserve the in-memory character",
+      "status": "PASS"
+    },
+    {
+      "name": "17 service worker never caches JSON files",
+      "status": "PASS"
+    },
+    {
+      "name": "18 PWA works from a deployment subdirectory",
+      "status": "PASS"
+    },
+    {
+      "name": "19 first opening with invalid JSON gives a retry screen and does not invent libraries",
+      "status": "PASS"
+    },
+    {
+      "name": "20 updates wait for an explicit safe action before activating",
+      "status": "PASS"
+    },
+    {
+      "name": "21 returning to the foreground loads JSON changes without reloading the game",
+      "status": "PASS"
+    },
+    {
+      "name": "22 foreground changes wait for an active action to finish",
+      "status": "PASS"
+    },
+    {
+      "name": "23 external audio and fonts remain available offline",
+      "status": "PASS"
+    },
+    {
+      "name": "24 failed saves can be exported and retried without losing changes",
+      "status": "PASS"
+    },
+    {
+      "name": "25 PWA toolbar and gameplay fit narrow phones",
+      "status": "PASS"
+    },
+    {
+      "name": "26 Refresh libraries with browser offline never navigates or hides the current character",
+      "status": "PASS"
+    },
+    {
+      "name": "27 manual JSON refresh updates libraries in place without losing the open character",
+      "status": "PASS"
+    },
+    {
+      "name": "28 manual library refresh stays disabled during an active challenge",
+      "status": "PASS"
+    },
+    {
+      "name": "29 missing JavaScript shows a recovery screen instead of an empty window",
+      "status": "PASS"
+    },
+    {
+      "name": "30 service worker can serve a previous-version runtime asset after an update",
+      "status": "PASS"
+    },
+    {
+      "name": "31 Windows-style worker paths still load the complete app offline",
+      "status": "PASS"
+    },
+    {
+      "name": "32 missing interface cache recovers from its validated IndexedDB copy",
+      "status": "PASS"
+    },
+    {
+      "name": "33 missing interface and fallback show a precise recovery error without false offline readiness",
+      "status": "PASS"
+    },
+    {
+      "name": "34 reopening with the server repairs missing cached offline files",
+      "status": "PASS"
+    }
+  ]
+}

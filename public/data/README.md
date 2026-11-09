@@ -1,6 +1,6 @@
 # Enemy library and template
 
-`enemies.json`, `keywords.json`, and `dungeons.json` are external runtime data for the React PWA. Edit these files in `public/data/` during development; in a deployed build, edit the served `data/` files (normally `dist/data/`). Reopen the app online or select Refresh libraries when idle. JSON-only edits do not require a rebuild. All three files are validated together and the last valid set remains available offline. Templates are authoring examples, not loaded by the app.
+`enemies.json`, `keywords.json`, `dungeons.json`, and `items.json` are external runtime data for the React PWA. Edit these files in `public/data/` during development; in a deployed build, edit the served `data/` files (normally `dist/data/`). Reopen the app online or select Refresh libraries when idle. JSON-only edits do not require a rebuild. All four files are validated together and the last valid set remains available offline. Templates are authoring examples, not loaded by the app.
 
 Add as many enemy objects as needed inside the `enemies` array. Separate objects with commas, with no comma after the last entry. Remove unused sample entries. JSON does not allow comments.
 
@@ -148,7 +148,7 @@ Manage Keywords edits suggestions, not existing item/gear/enemy text. Its draft 
 }
 ```
 
-Export includes the manager's shown draft, including empty created categories. Import validates the dedicated format and custom origin, then merges case-insensitively into the draft; existing words keep their current spelling/category. Save changes applies it; Cancel discards it. The file contains no character cards/resources and can be imported into another character or game using this format. Full character exports use envelope version 20.
+Export includes the manager's shown draft, including empty created categories. Import validates the dedicated format and custom origin, then merges case-insensitively into the draft; existing words keep their current spelling/category. Save changes applies it; Cancel discards it. The file contains no character cards/resources and can be imported into another character or game using this format. Full character exports use envelope version 21.
 
 ### Enemy entry toggles
 
@@ -167,3 +167,9 @@ Each dungeon has `id`, `name`, `type`, `description`, and `maxLevel`. `challenge
 Coins accumulate pending until exit or completion. Each level and its encounter Coins pay once per character across attempts; monster Fate and item rewards follow existing combat rules. Re-entry starts at level 1. Defeating the boss closes the dungeon for that character. Active delves save snapshots of dungeon and enemy definitions, so later library updates do not change a delve underway.
 
 V28 records `highestLevelReached` per character and dungeon, including the deepest visited level on exited attempts. Older history derives a minimum from rewarded levels and the active delve. Completed dungeons remain listed with **Dungeon Completed** and disabled selection. Boss victory persists a `victory` phase: congratulations lists pending Coins and treasure, then **Exit Dungeon** pays Coins and opens the existing treasure decision. No payout occurs merely by showing or reloading congratulations.
+
+## Shared item library
+
+`items.json` uses `{"format":"quest-for-glory-items","version":1,"items":[...]}`. Copy entries from `items.template.json`. Each item requires `name`, `keywords` (an array, possibly empty), and nonnegative integer `baseValue`; `description` is optional. Equipment optionally adds `{"type":"weapon"|"armor","modifier":positiveInteger,"usage":[true,true,true,true]}` under `equipment`. Names must be unique ignoring case and extra spaces. Loading items makes them available as inventory-name suggestions, not as starting possessions.
+
+Player-created definitions are separate per-character records: `{"origin":"custom","definition":{...}}`. Custom enemy/item exports use `quest-for-glory-custom-enemies` or `quest-for-glory-custom-items`, version 1, and a `definitions` array. Import through the matching manager. It validates the entire file and merges into a cancellable draft; conflicts never overwrite an existing definition. Game item definitions are never written back by a character action.

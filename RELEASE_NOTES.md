@@ -1,3 +1,11 @@
+# V30 — Custom enemy and item catalogs
+
+- Confirmed player-defined enemies persist as Custom records and appear in future enemy selection. Reusable custom item templates are learned at confirmation; item-name typing offers ranked saved/game matches.
+- Renames Manage Keywords to Manage Custom Keywords and adds draft-based custom enemy/item managers with add/edit/remove and JSON export/import.
+- Enforces normalized unique definition names across creation, renaming, shared JSON and imports. Multiple inventory instances remain allowed, while active fights and owned equipment retain their snapshots.
+- Adds external items.json and items.template.json to the atomic online/offline library bundle. Older saves/bundles migrate without invented definitions. Character exports use version 21.
+- Adds spacing below Event Keywords and clickable full enemy details in dungeon encounter tables.
+
 # V29.0.2 — Windows offline startup
 
 - Normalizes filesystem paths into URL paths before filtering and generating the service-worker asset list. This fixes Windows builds skipping their cached game interface and incorrectly including data JSON in precaching.

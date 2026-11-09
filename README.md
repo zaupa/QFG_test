@@ -31,8 +31,9 @@ Edit these source files while using `npm run dev`:
 - `public/data/enemies.json`
 - `public/data/keywords.json`
 - `public/data/dungeons.json`
+- `public/data/items.json`
 
-The app fetches all three files afresh on each opening, validates them together, and keeps the last valid complete set in IndexedDB. When an installed app returns to the foreground, it also checks for changes; new libraries apply once the current action or delve finishes, without reloading the game. **Refresh libraries** checks and applies JSON updates in place when no action or delve is underway. It never reloads the document; if the server is stopped, the current character and libraries stay open and a message explains that updates are unavailable. There is no rebuild needed for JSON-only changes.
+The app fetches all four files afresh on each opening, validates them together, and keeps the last valid complete set in IndexedDB. When an installed app returns to the foreground, it also checks for changes; new libraries apply once the current action or delve finishes, without reloading the game. **Refresh libraries** checks and applies JSON updates in place when no action or delve is underway. It never reloads the document; if the server is stopped, the current character and libraries stay open and a message explains that updates are unavailable. There is no rebuild needed for JSON-only changes.
 
 For a built/deployed app, edit the files actually being served: `dist/data/*.json` (or the hosting server’s corresponding `data/` folder). Editing `public/data` alone does not change an already-built `dist` folder; copy the changed JSON into the served folder. Deploy related enemy/dungeon changes together so their references agree. An invalid or incomplete update shows a notice and preserves the last validated set instead of replacing it.
 
@@ -45,7 +46,7 @@ See [data authoring instructions](public/data/README.md) and the templates besid
 | Location | Purpose |
 | --- | --- |
 | `src/main.tsx` | React startup, save status, library refresh, installation and update controls |
-| `src/game/engine.ts` | Preserved V28 gameplay renderer and action flow, ported into a TypeScript module |
+| `src/game/engine.ts` | Preserved Gameplay renderer and action flow, ported into a TypeScript module |
 | `src/game/rules.ts`, `types.ts` | Runtime data validation, shared rules and library types |
 | `src/game/styles.css` | Extracted application styles |
 | `src/platform/storage.ts` | IndexedDB hydration, serialized atomic saves, conflict/error handling |
@@ -94,3 +95,17 @@ Version 29.0.1 changes manual library refresh to an in-place operation, adds an 
 Earlier Windows builds put backslashes in the service-worker asset list. That could bypass the cached `app/game.html` and show “Failed to fetch” after stopping the server. Asset paths now use URL forward slashes on every operating system. The matching game layout also has a content-verified IndexedDB fallback; character records are untouched.
 
 After installing this repair, keep the server running while opening the app and applying **Update app**. Wait until **Ready offline** appears, then stop the server and retry offline. “Network available” describes the browser network connection, not the status of the local preview server. Do not uninstall or clear site data when recovering.
+
+## V30 custom definitions
+
+Newly confirmed enemies are stored as Custom definitions in the current character and appear in the enemy picker. Newly confirmed item configurations become reusable Custom item templates; typing an inventory item name offers close saved/game-defined matches, prioritizing exact names. Choose a suggestion to fill its fields, then review and confirm. Multiple physical inventory copies remain allowed. Editing an owned game item does not overwrite its shared definition; give a changed variant a new unique name to save it as a separate custom template. Equipment templates represent a new item with four usage points; inventory wear is independent.
+
+Options contains Manage Custom Keywords, Manage Custom Enemies and Manage Custom Items. Enemy/item managers support add, edit, remove and JSON export/import. Changes remain in a temporary draft until Save changes; Cancel discards them. Definition changes never rewrite existing inventory/equipment or an active combat. Confirmed definitions, like custom keyword preferences, remain through gameplay Undo/Cancel.
+
+Names are unique within each definition kind, ignoring case, Unicode compatibility differences and repeated spaces. New definitions cannot reuse names already in the shared library or character catalog. Import conflicts reject the entire import before changing the draft. If a later shared JSON update introduces a name already owned by a character’s custom catalog, that character retains one selectable Custom entry; the new shared record is not shown as a second definition. Dungeon snapshots continue using their own referenced game enemies.
+
+`items.json` has format `quest-for-glory-items`, version 1, and an `items` array using the existing item schema. `items.template.json` is an authoring example. The initial game catalog contains the existing dagger reward and dungeon treasure with their original stats; loading the catalog does not give free inventory items. All four JSON files refresh/validate together and work through the same IndexedDB offline fallback. Older cached bundles without an item catalog remain usable offline with an empty game-item catalog until the next successful online refresh.
+
+Click an enemy’s name in the dungeon encounter table to inspect its full snapshot stats without starting a fight.
+
+V30's custom catalogs, duplicate-name policy, migration notes and test evidence are documented in [docs/V30_AUDIT.md](docs/V30_AUDIT.md).

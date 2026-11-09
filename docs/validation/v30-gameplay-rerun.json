@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-09T21:09:46.092Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "ac71888f0859e70055f9153d226d9faaf9d867dea063dcd71c407aa738760972",
+  "passed": 16,
+  "failed": 0,
+  "results": [
+    {
+      "name": "17 challenge Cancel restores complete pre-action persistent state",
+      "status": "PASS",
+      "ms": 1641
+    },
+    {
+      "name": "18 combat success and exact recovery",
+      "status": "PASS",
+      "ms": 1968
+    },
+    {
+      "name": "32 inventory purchase/sale, custom price, persisted data and Undo",
+      "status": "PASS",
+      "ms": 1428
+    },
+    {
+      "name": "83 enemy prompt defaults and cancellation leave the character unchanged",
+      "status": "PASS",
+      "ms": 1305
+    },
+    {
+      "name": "138 library victory awards array-keyword items and edits never mutate the library definition",
+      "status": "PASS",
+      "ms": 1840
+    },
+    {
+      "name": "140 inventory keyword input produces arrays, italics and a canonical 300-character budget",
+      "status": "PASS",
+      "ms": 1361
+    },
+    {
+      "name": "181 failed combat spends one weapon/armor usage, reduces actual wound allocation and reload never repeats wear",
+      "status": "PASS",
+      "ms": 2818
+    },
+    {
+      "name": "212 Cube example uses resistant +6 CV and strong +2 WV, then applies armor reduction to actual wounds",
+      "status": "PASS",
+      "ms": 1392
+    },
+    {
+      "name": "263 enemy associations selected through toggles feed actual combat values",
+      "status": "PASS",
+      "ms": 2714
+    },
+    {
+      "name": "278 default Enemy clears on pointer focus without erasing later names",
+      "status": "PASS",
+      "ms": 1209
+    },
+    {
+      "name": "286 dungeon challenge success banks first-level Coins until exit",
+      "status": "PASS",
+      "ms": 1457
+    },
+    {
+      "name": "297 boss victory pays Coins and offers treasure only after victory",
+      "status": "PASS",
+      "ms": 1600
+    },
+    {
+      "name": "300 enemy association custom target is temporary until Begin Combat",
+      "status": "PASS",
+      "ms": 1358
+    },
+    {
+      "name": "314 opening Upgrade from the action button flashes unused points",
+      "status": "PASS",
+      "ms": 1646
+    },
+    {
+      "name": "331 boss congratulations lists rewards with only Exit Dungeon and no early Coin payout",
+      "status": "PASS",
+      "ms": 1498
+    },
+    {
+      "name": "332 pending boss congratulations resumes after reload and Escape cannot dismiss it",
+      "status": "PASS",
+      "ms": 2202
+    }
+  ]
+}

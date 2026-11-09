@@ -1,6 +1,6 @@
 {
   "format": "quest-for-glory-enemy-cards",
-  "version": 4,
+  "version": 5,
   "enemies": [
     {
       "id": "Enemy Name 1",
@@ -11,7 +11,8 @@
       "F": 1,
       "C": 0,
       "KW": [],
-      "Item": null
+      "Item": null,
+      "boss": false
     },
     {
       "id": "Enemy Name 2",
@@ -44,7 +45,8 @@
             true
           ]
         }
-      }
+      },
+      "boss": false
     }
   ]
 }

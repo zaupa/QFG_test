@@ -1,0 +1,205 @@
+{
+  "date": "2026-11-09T11:55:43.478Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4",
+  "passed": 35,
+  "failed": 3,
+  "results": [
+    {
+      "name": "276 V27 Start Game is below and to the right of Add Item",
+      "status": "PASS",
+      "ms": 1327
+    },
+    {
+      "name": "277 name fields capitalize each word while descriptions remain unchanged",
+      "status": "PASS",
+      "ms": 2479
+    },
+    {
+      "name": "278 default Enemy clears on pointer focus without erasing later names",
+      "status": "PASS",
+      "ms": 2408
+    },
+    {
+      "name": "279 live managed keyword edits cancel without saving",
+      "status": "PASS",
+      "ms": 2292
+    },
+    {
+      "name": "280 event keywords start collapsed and save module metadata",
+      "status": "PASS",
+      "ms": 2014
+    },
+    {
+      "name": "281 event keyword edits preserve original module and remove supports Undo",
+      "status": "PASS",
+      "ms": 2385
+    },
+    {
+      "name": "282 recent activity retains only thirty entries",
+      "status": "PASS",
+      "ms": 1627
+    },
+    {
+      "name": "283 Attribute Points opens Upgrade using keyboard",
+      "status": "PASS",
+      "ms": 2112
+    },
+    {
+      "name": "284 dungeon selection enters dedicated screen and collapsed character sheet",
+      "status": "PASS",
+      "ms": 2041
+    },
+    {
+      "name": "285 dungeon snapshot survives reload and keeps encounter definitions",
+      "status": "PASS",
+      "ms": 3061
+    },
+    {
+      "name": "286 dungeon challenge success banks first-level Coins until exit",
+      "status": "PASS",
+      "ms": 3047
+    },
+    {
+      "name": "287 repeat attempts start at level one without repeat level Coins",
+      "status": "PASS",
+      "ms": 3136
+    },
+    {
+      "name": "288 failed dungeon challenge permits retry and keeps support locked",
+      "status": "PASS",
+      "ms": 2088
+    },
+    {
+      "name": "289 delving deeper resets the level rest limit and support lock",
+      "status": "PASS",
+      "ms": 2235
+    },
+    {
+      "name": "290 boss level permits only fight or exit before combat",
+      "status": "PASS",
+      "ms": 1800
+    },
+    {
+      "name": "291 leaving a dungeon challenge does not refund committed cards",
+      "status": "PASS",
+      "ms": 2304
+    },
+    {
+      "name": "292 dungeon JSON rejects missing references and malformed formulas",
+      "status": "PASS",
+      "ms": 1040
+    },
+    {
+      "name": "293 invalid saved dungeon reward gaps reject import",
+      "status": "PASS",
+      "ms": 1621
+    },
+    {
+      "name": "294 dungeon cannot start with empty Attribute Deck",
+      "status": "PASS",
+      "ms": 2319
+    },
+    {
+      "name": "295 encounter roll uses enemy library and existing combat flow",
+      "status": "PASS",
+      "ms": 2752
+    },
+    {
+      "name": "296 Rest completes once per cleared level using existing Supply and Round rules",
+      "status": "PASS",
+      "ms": 2457
+    },
+    {
+      "name": "297 boss victory pays Coins and offers treasure only after victory",
+      "status": "PASS",
+      "ms": 2750
+    },
+    {
+      "name": "298 exiting boss level grants no treasure and leaves dungeon retryable",
+      "status": "PASS",
+      "ms": 2139
+    },
+    {
+      "name": "299 dungeon layout fits mobile and uses one copy of every character panel",
+      "status": "PASS",
+      "ms": 3609
+    },
+    {
+      "name": "300 enemy association custom target is temporary until Begin Combat",
+      "status": "PASS",
+      "ms": 1917
+    },
+    {
+      "name": "301 active keyword and contributing gear are bold red during combat",
+      "status": "PASS",
+      "ms": 2865
+    },
+    {
+      "name": "302 boss treasure replaces one full-inventory item without sale income",
+      "status": "PASS",
+      "ms": 3954
+    },
+    {
+      "name": "303 dungeon challenge and hand resume after reload",
+      "status": "PASS",
+      "ms": 2510
+    },
+    {
+      "name": "304 locked dungeon resources ignore manual adjustment while card inspection stays available",
+      "status": "PASS",
+      "ms": 2299
+    },
+    {
+      "name": "305 completed dungeon state exports and imports with its treasure decision",
+      "status": "PASS",
+      "ms": 1690
+    },
+    {
+      "name": "306 cancelled enemy association targets never enter permanent suggestions",
+      "status": "PASS",
+      "ms": 2387
+    },
+    {
+      "name": "307 dungeon snapshot invalid base challenge rejects import without data loss",
+      "status": "PASS",
+      "ms": 1597
+    },
+    {
+      "name": "308 dungeon normal combat victory banks encounter Coins until exit",
+      "status": "PASS",
+      "ms": 2360
+    },
+    {
+      "name": "309 repeated-level monster Coins are not awarded a second time",
+      "status": "PASS",
+      "ms": 2927
+    },
+    {
+      "name": "310 failed dungeon combat Flee uses normal Fate cost and exits dungeon",
+      "status": "PASS",
+      "ms": 3093
+    },
+    {
+      "name": "311 active dungeons run from downloaded file with embedded data",
+      "status": "FAIL",
+      "error": "page.goto: net::ERR_BLOCKED_BY_ADMINISTRATOR at file:///workspace/QuestForGloryApp/board_game_tracker_v27.html\nCall log:\n\u001b[2m  - navigating to \"file:///workspace/QuestForGloryApp/board_game_tracker_v27.html\", waiting until \"domcontentloaded\"\u001b[22m\n",
+      "errors": [],
+      "ms": 2075
+    },
+    {
+      "name": "312 pending dungeon Coin overflow shows action instructions and pays exactly once",
+      "status": "FAIL",
+      "error": "Expected values to be strictly equal:\n\nfalse !== true\n",
+      "errors": [],
+      "ms": 1754
+    },
+    {
+      "name": "313 zero available Upgrade points do not flash on shortcut",
+      "status": "FAIL",
+      "error": "locator.click: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-continue=\"one\"]')\u001b[22m\n",
+      "errors": [],
+      "ms": 11263
+    }
+  ]
+}

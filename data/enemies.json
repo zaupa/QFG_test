@@ -1,6 +1,6 @@
 {
   "format": "quest-for-glory-enemy-cards",
-  "version": 4,
+  "version": 5,
   "enemies": [
     {
       "id": "Giant Rats",
@@ -11,7 +11,8 @@
       "F": 1,
       "C": 0,
       "KW": [],
-      "Item": null
+      "Item": null,
+      "boss": false
     },
     {
       "id": "Skeleton",
@@ -24,7 +25,8 @@
       "KW": [
         "resistant slash"
       ],
-      "Item": null
+      "Item": null,
+      "boss": false
     },
     {
       "id": "Zombie",
@@ -37,7 +39,8 @@
       "KW": [
         "Unprotected fire"
       ],
-      "Item": null
+      "Item": null,
+      "boss": false
     },
     {
       "id": "Giant Spiders",
@@ -48,7 +51,8 @@
       "F": 1,
       "C": 0,
       "KW": [],
-      "Item": null
+      "Item": null,
+      "boss": false
     },
     {
       "id": "Thief",
@@ -67,7 +71,22 @@
         ],
         "baseValue": 5,
         "equipment": null
-      }
+      },
+      "boss": false
+    },
+    {
+      "id": "Giant Zombified Rat",
+      "name": "Giant Zombified Rat",
+      "boss": true,
+      "description": "A mummified gigantic Rat, 2 meters tall, dressed in old bandages with decaying flesh peeking in part. Glyphs and jewels are placed around its body in a macabre to make this abomination look regal",
+      "CV": 18,
+      "WV": 4,
+      "F": 3,
+      "C": 0,
+      "KW": [
+        "Unprotected fire"
+      ],
+      "Item": null
     }
   ]
 }

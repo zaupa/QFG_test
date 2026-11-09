@@ -1,0 +1,109 @@
+[
+  {
+    "date": "2026-11-09T11:56:12.965Z",
+    "browser": "156.0.8078.79",
+    "sourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4",
+    "passed": 6,
+    "failed": 0,
+    "results": [
+      {
+        "name": "155 free-slot victory waits for Keep consent; reload and export preserve a single pending reward",
+        "status": "PASS",
+        "ms": 5016
+      },
+      {
+        "name": "166 required item name and optional description work across add/edit/remove/reward screens",
+        "status": "PASS",
+        "ms": 3929
+      },
+      {
+        "name": "191 creation supports optional equipped weapon/armor plus eight starting items without Coin or card-point costs",
+        "status": "PASS",
+        "ms": 4257
+      },
+      {
+        "name": "192 creation item drafts support edit/remove/cancel and reset on the next character",
+        "status": "PASS",
+        "ms": 2004
+      },
+      {
+        "name": "311 dungeon selection and saved definitions work with networking disabled",
+        "status": "PASS",
+        "ms": 4205
+      },
+      {
+        "name": "313 zero available Upgrade points do not flash on shortcut",
+        "status": "PASS",
+        "ms": 3672
+      }
+    ]
+  },
+  {
+    "date": "2026-11-09T11:56:37.169Z",
+    "browser": "156.0.8078.79",
+    "sourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad",
+    "passed": 8,
+    "failed": 0,
+    "results": [
+      {
+        "name": "246 victory, validation and reward messages are scoped to Actions while inventory messages remain global",
+        "status": "PASS",
+        "ms": 5222
+      },
+      {
+        "name": "283 Attribute Points opens Upgrade using keyboard",
+        "status": "PASS",
+        "ms": 1679
+      },
+      {
+        "name": "286 dungeon challenge success banks first-level Coins until exit",
+        "status": "PASS",
+        "ms": 1729
+      },
+      {
+        "name": "297 boss victory pays Coins and offers treasure only after victory",
+        "status": "PASS",
+        "ms": 3977
+      },
+      {
+        "name": "304 locked dungeon resources ignore manual adjustment while card inspection stays available",
+        "status": "PASS",
+        "ms": 2565
+      },
+      {
+        "name": "311 dungeon selection and saved definitions work with networking disabled",
+        "status": "PASS",
+        "ms": 3622
+      },
+      {
+        "name": "312 pending dungeon Coin overflow shows action instructions and pays exactly once",
+        "status": "PASS",
+        "ms": 1758
+      },
+      {
+        "name": "313 zero available Upgrade points do not flash on shortcut",
+        "status": "PASS",
+        "ms": 1728
+      }
+    ]
+  },
+  {
+    "date": "2026-11-09T11:57:08.212Z",
+    "browser": "156.0.8078.79",
+    "sourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad",
+    "passed": 2,
+    "failed": 0,
+    "results": [
+      {
+        "name": "203 equipment reward replacement at full inventory preserves the reward condition and does not auto-equip it",
+        "status": "PASS",
+        "ms": 3712
+      },
+      {
+        "name": "210 dedicated reward acceptance and replacement remain available while ordinary inventory is locked",
+        "status": "PASS",
+        "ms": 3283
+      }
+    ]
+  }
+]

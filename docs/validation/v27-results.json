@@ -1,0 +1,1894 @@
+{
+  "date": "2026-11-09T11:58:46.390Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad",
+  "verification": "Aggregate latest outcomes from broad regression and focused reruns; raw runs and their source hashes are retained. Final build changes to action-message visibility and Upgrade flashing were verified by targeted reruns.",
+  "passed": 313,
+  "failed": 0,
+  "notes": [
+    "Six broad-run assertions were updated for V27 name capitalization and passed on rerun.",
+    "Focused failures exposed a hidden payout instruction, an invalid zero-points fixture, and a cloud policy blocking file URLs. The visibility bug and fixture were fixed; offline dungeon play was verified with networking disabled.",
+    "Direct file:// navigation returned ERR_BLOCKED_BY_ADMINISTRATOR. No direct-file launch or physical Safari verification is claimed.",
+    "Build, JavaScript syntax, both data templates, deterministic rebuild and git diff --check passed."
+  ],
+  "results": [
+    {
+      "name": "01 creation defaults, random name, double Diamond cost, initial pool",
+      "status": "PASS",
+      "ms": 961,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "02 creation rejects overspend and supports custom starting values",
+      "status": "PASS",
+      "ms": 1126,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "03 autosave and reload preserve resources, cards, inventory",
+      "status": "PASS",
+      "ms": 1324,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "04 independent slots and five-slot creation/import capacity",
+      "status": "PASS",
+      "ms": 1128,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "05 deletion requires in-app confirmation and Cancel preserves character",
+      "status": "PASS",
+      "ms": 1318,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "06 JSON download/import roundtrip preserves character",
+      "status": "PASS",
+      "ms": 1781,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "07 invalid duplicate-card JSON rejected without overwriting save",
+      "status": "PASS",
+      "ms": 1154,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "08 resource edits logged, zero protected and Undo restores state",
+      "status": "PASS",
+      "ms": 1183,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "09 delegated card-zone tiles work after repeated UI refreshes",
+      "status": "PASS",
+      "ms": 1492,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "10 challenge success moves hand to Fatigue and preserves all cards",
+      "status": "PASS",
+      "ms": 1694,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "11 challenge failure is logged and cards move to Fatigue",
+      "status": "PASS",
+      "ms": 1216,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "12 modifier six equal random buckets produce -6,-3,0,0,3,6",
+      "status": "PASS",
+      "ms": 4470,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "13 excluded suits blocked at hand selection and Fate-add stage",
+      "status": "PASS",
+      "ms": 1282,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "14 first Fate adjustment costs one and the next costs two",
+      "status": "PASS",
+      "ms": 2124,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "15 exact-match recovery returns selected cards and conserves deck",
+      "status": "PASS",
+      "ms": 1447,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "16 exact-match permits choosing fewer than two cards (spec: up to two)",
+      "status": "PASS",
+      "ms": 1284,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "17 challenge Cancel restores complete pre-action persistent state",
+      "status": "PASS",
+      "ms": 1391,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "18 combat success and exact recovery",
+      "status": "PASS",
+      "ms": 1829,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "19 combat retries reduce difficulty by two and Cancel restores before all retries",
+      "status": "PASS",
+      "ms": 3724,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "20 combat fleeing costs two Fate; insufficient Fate disables flee",
+      "status": "PASS",
+      "ms": 3251,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "21 empty deck cannot begin challenge",
+      "status": "PASS",
+      "ms": 967,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "22 combat retry uses Fatigue hand for explicit two-Fate cost",
+      "status": "PASS",
+      "ms": 2366,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "23 wounds use Fatigue exclusively when it can cover target",
+      "status": "PASS",
+      "ms": 1227,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "24 insufficient Fatigue is fully allocated before deck cards",
+      "status": "PASS",
+      "ms": 1217,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "25 all owned cards wounded means persistent Game Over and disabled actions",
+      "status": "PASS",
+      "ms": 1732,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "26 successful challenge does not trigger empty-deck failure death",
+      "status": "PASS",
+      "ms": 1307,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "27 failed challenge detects empty deck + Fatigue + Wounds + zero Fate",
+      "status": "PASS",
+      "ms": 1354,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "28 Rest spends one Supply and enforces recovery value",
+      "status": "PASS",
+      "ms": 1389,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "29 Rest without Supply wounds five points before recovery",
+      "status": "PASS",
+      "ms": 2204,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "30 Healing recovers owned Wounds only, within value",
+      "status": "PASS",
+      "ms": 1317,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "31 upgrades use leftover budget, Diamonds double, Fate buys three points",
+      "status": "PASS",
+      "ms": 1317,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "32 inventory purchase/sale, custom price, persisted data and Undo",
+      "status": "PASS",
+      "ms": 1601,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "33 insufficient Coin rejects item purchase with no state mutation",
+      "status": "PASS",
+      "ms": 1339,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "34 inventory eight-item limit and combined 300-character bound",
+      "status": "PASS",
+      "ms": 1165,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "35 dice open does not roll; all types roll on tap with valid ranges",
+      "status": "PASS",
+      "ms": 5091,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "36 2D6 concatenates independent digits and history is newest-first capped at 20",
+      "status": "PASS",
+      "ms": 1701,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "37 legacy v11 slot migration retains cards, inventory and resources",
+      "status": "PASS",
+      "ms": 1018,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "38 save import requires full card-pool partition",
+      "status": "PASS",
+      "ms": 1065,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "39 malformed active-action JSON is rejected before storing",
+      "status": "PASS",
+      "ms": 1082,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "40 corrupt localStorage is preserved for recovery rather than erased",
+      "status": "PASS",
+      "ms": 1051,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "41 paid no-Supply Rest can resume after reload without a second wound",
+      "status": "PASS",
+      "ms": 3274,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "42 dice roll belongs to original character when switching during animation",
+      "status": "PASS",
+      "ms": 1893,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "43 character UI collapse defaults reset on character switch",
+      "status": "PASS",
+      "ms": 2007,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "44 Game Over prevents new dice results",
+      "status": "PASS",
+      "ms": 2483,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "45 challenge mid-action reload retains hand and Cancel rollback",
+      "status": "PASS",
+      "ms": 3445,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "46 selected cards keep ivory, tilt and shadow with a thin dark border",
+      "status": "PASS",
+      "ms": 1928,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "47 release identifies itself as Version 27",
+      "status": "PASS",
+      "ms": 602,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "48 mobile touch: zone tiles, modal and no horizontal page overflow",
+      "status": "PASS",
+      "ms": 4112,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "49 supplied Righteous font is embedded, loads and applies to titles and names",
+      "status": "PASS",
+      "ms": 1271,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "50 old v6 single-character storage migrates into an independent slot",
+      "status": "PASS",
+      "ms": 1144,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "51 no-Supply Rest that wounds every card stops with Game Over",
+      "status": "PASS",
+      "ms": 2122,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "52 eligible-suit filtering also applies to two-Fate Fatigue hand",
+      "status": "PASS",
+      "ms": 1657,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "53 combat Fate adjustment costs one and subsequent use costs two",
+      "status": "PASS",
+      "ms": 2288,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "54 imported point balance cannot authorize purchases above point limit",
+      "status": "PASS",
+      "ms": 2083,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "55 storage write failure remains visible to player",
+      "status": "PASS",
+      "ms": 1986,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "56 imported encounter strings cannot insert executable markup",
+      "status": "PASS",
+      "ms": 1437,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "57 app can create and resolve a challenge with networking disabled",
+      "status": "PASS",
+      "ms": 3979,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "58 corrupt storage backup contains original bytes and loading retry recovers",
+      "status": "PASS",
+      "ms": 1891,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "59 malformed slot data is preserved atomically instead of filtered or overwritten",
+      "status": "PASS",
+      "ms": 903,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "60 nested import fields and forged rollback are rejected without altering existing slot",
+      "status": "PASS",
+      "ms": 1991,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "61 legacy missing pool and budget fields are derived without losing cards",
+      "status": "PASS",
+      "ms": 2489,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "62 storage write failure stays visible across actions and retry saves unsaved state",
+      "status": "PASS",
+      "ms": 3408,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "63 exact-match optional recovery covers zero and one card in both encounter types",
+      "status": "PASS",
+      "ms": 7162,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "64 no-Supply Rest resumes through menu and persisted cancellation starts a fresh Rest",
+      "status": "PASS",
+      "ms": 4488,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "65 active combat and allocated wounds survive reload and retain safe Cancel",
+      "status": "PASS",
+      "ms": 3567,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "66 v9 and v10 slot migrations preserve independent characters",
+      "status": "PASS",
+      "ms": 2077,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "67 numeric overflow is blocked for resource increments and Fate upgrades",
+      "status": "PASS",
+      "ms": 1574,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "68 a dice label starts one 2D6 roll rather than a duplicate synthetic click",
+      "status": "PASS",
+      "ms": 2352,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "69 character collapse defaults include Roll History and Inventory",
+      "status": "PASS",
+      "ms": 1045,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "70 live add previews update failure, exact match and success without spending Fate",
+      "status": "PASS",
+      "ms": 2119,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "71 live remove previews update success, exact match and failure before confirmation",
+      "status": "PASS",
+      "ms": 2101,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "72 preview respects Luck eligibility and face value; Back discards the preview",
+      "status": "PASS",
+      "ms": 1523,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "73 combat retry preview uses reduced difficulty plus the revealed modifier",
+      "status": "PASS",
+      "ms": 2417,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "74 mobile touch selection updates the live preview without horizontal overflow",
+      "status": "PASS",
+      "ms": 2395,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "75 purchase tip is one-time per character and remembered after cancel/reload",
+      "status": "PASS",
+      "ms": 2008,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "76 sale tip is independent and appears only for the first Sold checkbox",
+      "status": "PASS",
+      "ms": 1522,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "77 Undo and encounter cancellation do not repeat already-seen inventory tips",
+      "status": "PASS",
+      "ms": 1617,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "78 inventory tips persist through JSON export/import and malformed preferences are rejected",
+      "status": "PASS",
+      "ms": 1266,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "79 repeated Fate additions/removals share costs 1, 2, 4, 8 in each action",
+      "status": "PASS",
+      "ms": 2691,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "80 initial hand has at most five cards; paid additions can exceed five",
+      "status": "PASS",
+      "ms": 2311,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "81 doubling cost survives reload, Back does not charge, Cancel restores the complete state",
+      "status": "PASS",
+      "ms": 2823,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "82 combat retry resets the next adjustment cost to one and preserves enemy rewards",
+      "status": "PASS",
+      "ms": 2497,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "83 enemy prompt defaults and cancellation leave the character unchanged",
+      "status": "PASS",
+      "ms": 1529,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "84 ordinary victory adds configured Fate, Coin and inventory item exactly once",
+      "status": "PASS",
+      "ms": 4009,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "85 exact-match victory grants rewards only after the recovery choice",
+      "status": "PASS",
+      "ms": 3255,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "86 failed combat and fleeing do not grant configured rewards",
+      "status": "PASS",
+      "ms": 4091,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "87 full inventory decline retains all existing items and resource rewards",
+      "status": "PASS",
+      "ms": 1689,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "88 full inventory replacement lists all items and discards only the selected item without sale proceeds",
+      "status": "PASS",
+      "ms": 1710,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "89 pending reward survives reload and JSON transfer without duplicating resources",
+      "status": "PASS",
+      "ms": 2349,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "90 Undo of victory/replacement restores awards consistently without duplication",
+      "status": "PASS",
+      "ms": 1833,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "91 enemy and reward fields reject invalid values and enforce combined text length",
+      "status": "PASS",
+      "ms": 1347,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "92 malformed enemy rewards and adjustment counters are rejected on import",
+      "status": "PASS",
+      "ms": 1442,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "93 V18 encounters migrate previous Fate usage without retroactive enemy rewards",
+      "status": "PASS",
+      "ms": 990,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "94 rewards that overflow resources remain pending until safely collectible",
+      "status": "PASS",
+      "ms": 1430,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "95 low Fate during adjustment disables confirmation and does not move cards",
+      "status": "PASS",
+      "ms": 1382,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "96 the five-card cap also applies to eligible Fatigue hands during an ongoing action",
+      "status": "PASS",
+      "ms": 1297,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "97 mobile enemy and full-inventory reward dialogs remain usable and text is escaped",
+      "status": "PASS",
+      "ms": 2493,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "98 full inventory without an item reward finishes normally and Game Over grants no reward",
+      "status": "PASS",
+      "ms": 2299,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "99 extreme or blank initial difficulty is rejected before an unsafe modifier calculation",
+      "status": "PASS",
+      "ms": 1337,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "100 restored pending reward asks before using a free inventory slot without re-awarding resources",
+      "status": "PASS",
+      "ms": 933,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "101 cancellation after escalating Fate costs and multiple retries restores the original character",
+      "status": "PASS",
+      "ms": 3989,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "102 an expanded paid hand and the next Fate cost survive reload",
+      "status": "PASS",
+      "ms": 1944,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "103 exponential adjustment costs stop safely at the numeric limit",
+      "status": "PASS",
+      "ms": 1131,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "104 combat retries cannot create an unsafe difficulty from a boundary save",
+      "status": "PASS",
+      "ms": 979,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "105 new dialogs keep keyboard focus inside and Escape never silently discards a reward",
+      "status": "PASS",
+      "ms": 1885,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "106 the V19 enemy, paid adjustment and victory reward flow works fully offline",
+      "status": "PASS",
+      "ms": 5396,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "107 modifier-adjusted Challenge Value floors at one in both action types and previews",
+      "status": "PASS",
+      "ms": 4073,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "108 setup minimum and combat retry base both remain one or higher",
+      "status": "PASS",
+      "ms": 1741,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "109 legacy zero base and unfinished zero-value exact matches migrate without granting a false success",
+      "status": "PASS",
+      "ms": 1299,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "110 initial hand text is removed while the five-card limit and paid additions remain",
+      "status": "PASS",
+      "ms": 2667,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "111 Round begins at zero and sits between the character banner and Resources",
+      "status": "PASS",
+      "ms": 791,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "112 each completed Rest advances Round once and Undo restores cards, Supply and Round",
+      "status": "PASS",
+      "ms": 1673,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "113 no-Supply Rest advances Round only after recovery; cancellation and fatal wounds do not",
+      "status": "PASS",
+      "ms": 6688,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "114 Round editor supports Add/Remove, preview, cancel, reload and nonnegative bounds",
+      "status": "PASS",
+      "ms": 1593,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "115 Round is independent per character and survives export/import; invalid counters are rejected",
+      "status": "PASS",
+      "ms": 1912,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "116 maximum Round blocks Rest before costs or wounds and can be decreased manually",
+      "status": "PASS",
+      "ms": 1185,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "117 all resource totals open Add/Remove dialogs and update values and activity",
+      "status": "PASS",
+      "ms": 1694,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "118 custom resource changes reject empty, fractional, negative, excessive and overflow amounts without mutations",
+      "status": "PASS",
+      "ms": 1315,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "119 all sections collapse with expanded primary defaults and always-visible title, character and Round",
+      "status": "PASS",
+      "ms": 2104,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "120 collapsing active Actions preserves selection and cancellation restores manual counter changes",
+      "status": "PASS",
+      "ms": 2716,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "121 section defaults reset on character entry without leaking collapsed state",
+      "status": "PASS",
+      "ms": 2759,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "122 applied manual wounds shake the screen with a red overlay for half a second without extra state changes",
+      "status": "PASS",
+      "ms": 3479,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "123 combat and no-Supply Rest wounds trigger the same effect, which does not replay on reload",
+      "status": "PASS",
+      "ms": 3981,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "124 victory totals save immediately while Coin and Fate count up and shake visually",
+      "status": "PASS",
+      "ms": 2488,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "125 hidden Resources stays collapsed on victory and reopening shows final totals without replay",
+      "status": "PASS",
+      "ms": 1470,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "126 animation callbacks never change another character and a pending item reward never replays resource animation",
+      "status": "PASS",
+      "ms": 7231,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "127 reduced motion disables shaking/count-up but retains a quiet temporary wound tint",
+      "status": "PASS",
+      "ms": 4858,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "128 Undo cancels transient effects and restores actual resource and wound values",
+      "status": "PASS",
+      "ms": 6065,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "129 new resource layout, large totals and adjustment dialogs fit desktop and narrow screens",
+      "status": "PASS",
+      "ms": 5662,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "130 adjustment dialog keyboard focus is contained and returned to the edited total",
+      "status": "PASS",
+      "ms": 2261,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "131 V20 resource, Round, floored combat and Rest work offline without external requests",
+      "status": "PASS",
+      "ms": 4904,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "132 combat chooser offers creation/library and every cancellation path leaves the character unchanged",
+      "status": "PASS",
+      "ms": 2398,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "133 library lists the JSON enemies, supports one selection and previews without starting combat",
+      "status": "PASS",
+      "ms": 2296,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "134 starting the selected library enemy snapshots the canonical card and raised enemy details",
+      "status": "PASS",
+      "ms": 2221,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "135 custom enemy entry stores description, italic keyword arrays, WV zero and array-based item reward",
+      "status": "PASS",
+      "ms": 2798,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "136 raised enemy details remain through adjustments, wounds, retries and reload",
+      "status": "PASS",
+      "ms": 4584,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "137 WV zero failure skips wound selection and wound animation while retaining retry/flee",
+      "status": "PASS",
+      "ms": 2219,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "138 library victory awards array-keyword items and edits never mutate the library definition",
+      "status": "PASS",
+      "ms": 3766,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "139 old keyword text and old combat reward fields migrate without losing phrases or hyphenated words",
+      "status": "PASS",
+      "ms": 1867,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "140 inventory keyword input produces arrays, italics and a canonical 300-character budget",
+      "status": "PASS",
+      "ms": 2674,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "141 purchases save Coin deductions atomically while the Coin display counts down",
+      "status": "PASS",
+      "ms": 3867,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "142 selling an item counts Coin up without animating Fate or repeating proceeds",
+      "status": "PASS",
+      "ms": 3810,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "143 free/zero-price transactions, unsold removals and failed purchases do not animate or change Coin",
+      "status": "PASS",
+      "ms": 3305,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "144 purchase animation respects Undo, character switching and reduced motion",
+      "status": "PASS",
+      "ms": 4537,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "145 character exports use version 19 and reject malformed item arrays or inconsistent enemy cards",
+      "status": "PASS",
+      "ms": 2729,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "146 library build is deterministic, validates all entries and has no fixed entry count",
+      "status": "PASS",
+      "ms": 3012,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "147 empty embedded libraries show a recoverable message and still permit custom combat",
+      "status": "PASS",
+      "ms": 4410,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "148 malicious library text is escaped in both embedded JSON and rendered enemy details",
+      "status": "PASS",
+      "ms": 5311,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "149 library selection works on mobile and new dialogs retain keyboard focus",
+      "status": "PASS",
+      "ms": 3119,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "150 library combat and array-keyword item rewards work offline with no library fetch",
+      "status": "PASS",
+      "ms": 2443,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "151 zero-WV exhaustion keeps the existing failure-death rule and Cancel restores the encounter",
+      "status": "PASS",
+      "ms": 1321,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "152 build refreshes library data without changing a saved active enemy",
+      "status": "PASS",
+      "ms": 2836,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "153 legacy keyword-only inventory entries and item keyword phrases are preserved during migration",
+      "status": "PASS",
+      "ms": 1025,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "154 expanded enemy labels spell out Challenge/Wound Value while the compact list keeps abbreviations",
+      "status": "PASS",
+      "ms": 1111,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "155 free-slot victory waits for Keep consent; reload and export preserve a single pending reward",
+      "status": "PASS",
+      "ms": 5016,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "156 declining a free-slot item retains Fate/Coin but adds no inventory item",
+      "status": "PASS",
+      "ms": 1544,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "157 Keep at capacity opens single-item replacement; Back and Discard retain existing items",
+      "status": "PASS",
+      "ms": 1596,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "158 keyword entry rejects commas in inventory/enemy/reward fields and treats spaces as one keyword",
+      "status": "PASS",
+      "ms": 1741,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "159 Rest confirmation Cancel/Escape do not alter cards, Supply, Round, log or Undo history",
+      "status": "PASS",
+      "ms": 3014,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "160 no-Supply Rest requires confirmation before wounds and retains default recovery value five",
+      "status": "PASS",
+      "ms": 1898,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "161 Heal defaults to five and Use item sits to the right of Healing value",
+      "status": "PASS",
+      "ms": 2177,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "162 selecting an item changes only Heal presentation; confirmation consumes exactly one item with no Coin change",
+      "status": "PASS",
+      "ms": 2434,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "163 cancelled Heal, picker cancellation, invalid healing and reload never consume the chosen item",
+      "status": "PASS",
+      "ms": 3690,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "164 empty inventory picker is recoverable; Heal without an item remains available",
+      "status": "PASS",
+      "ms": 2789,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "165 changed or removed inventory selection cannot consume a different item during Heal",
+      "status": "PASS",
+      "ms": 2926,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "166 required item name and optional description work across add/edit/remove/reward screens",
+      "status": "PASS",
+      "ms": 3929,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "167 V21 item and active enemy reward migration creates names without losing descriptions or old keyword phrases",
+      "status": "PASS",
+      "ms": 2318,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "168 V22 library data/template require item names, optional descriptions, and comma-free keyword arrays",
+      "status": "PASS",
+      "ms": 509,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "169 Round hover matches resource-total hover and wound buttons use their new labels",
+      "status": "PASS",
+      "ms": 2098,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "170 Combat and Challenge omit adjustment explanations at every cost but retain button costs",
+      "status": "PASS",
+      "ms": 4081,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "171 Heal picker keyboard trap and mobile value/item layout remain usable",
+      "status": "PASS",
+      "ms": 5700,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "172 V22 offline named reward consent and item-powered healing preserve resources and card partition",
+      "status": "PASS",
+      "ms": 5684,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "173 explicit blank item names are rejected on import without discarding or overwriting items",
+      "status": "PASS",
+      "ms": 1990,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "174 Inventory typography and Heal inline label, close button and bold red consumption name match V23",
+      "status": "PASS",
+      "ms": 2440,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "175 equipment tab has one slot per type, collapses, and adds equipped gear through the shared item form",
+      "status": "PASS",
+      "ms": 2502,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "176 item equipment flag requires both type and positive integer modifier without side effects",
+      "status": "PASS",
+      "ms": 3045,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "177 equipping swaps exact items at full capacity and preserves all durability/enabled fields and Undo",
+      "status": "PASS",
+      "ms": 2891,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "178 weapon modifier changes victory/exact-match outcome without spending usage on success",
+      "status": "PASS",
+      "ms": 2694,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "179 combat Fate add/remove live previews include the weapon bonus at every cost",
+      "status": "PASS",
+      "ms": 3465,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "180 equipment has no effect on Challenge totals or wear and manual wounds do not use armor",
+      "status": "PASS",
+      "ms": 3510,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "181 failed combat spends one weapon/armor usage, reduces actual wound allocation and reload never repeats wear",
+      "status": "PASS",
+      "ms": 4894,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "182 last usage still applies its modifier, then broken equipment turns red and stops helping on retries",
+      "status": "PASS",
+      "ms": 3997,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "183 armor can prevent every wound; no allocation or wound animation occurs and zero-WV failure does not wear armor",
+      "status": "PASS",
+      "ms": 3716,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "184 broken equipment supplies no combat bonus or reduction and loses no usage points",
+      "status": "PASS",
+      "ms": 2698,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "185 exact-match/wound/reward stages lock equipped gear so changing equipment cannot invalidate a committed result",
+      "status": "PASS",
+      "ms": 3252,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "186 Fix validates cost and funds; Cancel is inert; payment, four points and enablement commit together and Undo restores them",
+      "status": "PASS",
+      "ms": 1810,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "187 repair supports armor and zero cost, persists through reload/export and never pays twice",
+      "status": "PASS",
+      "ms": 3764,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "188 repair drafts cannot apply to another character after navigation",
+      "status": "PASS",
+      "ms": 2039,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "189 usage indicators are read-only red/gray boxes without checkmarks or an enable control",
+      "status": "PASS",
+      "ms": 975,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "190 equipping into an empty slot moves the item out of inventory and unequipping moves it back",
+      "status": "PASS",
+      "ms": 1054,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "191 creation supports optional equipped weapon/armor plus eight starting items without Coin or card-point costs",
+      "status": "PASS",
+      "ms": 4257,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "192 creation item drafts support edit/remove/cancel and reset on the next character",
+      "status": "PASS",
+      "ms": 2004,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "193 custom enemy reward equipment fields are required and the accepted reward can be equipped with preserved condition",
+      "status": "PASS",
+      "ms": 1534,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "194 library build/schema and template support equipment rewards without inventing stats for existing enemies",
+      "status": "PASS",
+      "ms": 2879,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "195 malformed equipment and mismatched equipped slots are rejected on import without overwriting saves",
+      "status": "PASS",
+      "ms": 2274,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "196 V22 saves migrate to empty equipment slots without guessing item types and new exact combat saves resume with weapon bonus",
+      "status": "PASS",
+      "ms": 3300,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "197 repairs are locked during combat and Cancel restores committed wear, cards and resources",
+      "status": "PASS",
+      "ms": 2816,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "198 equipment panel/forms and Fix dialog remain usable at 320px with keyboard focus trapping",
+      "status": "PASS",
+      "ms": 3537,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "199 equipment combat, breakage and repair work offline with saved effects",
+      "status": "PASS",
+      "ms": 5250,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "200 wearing/reward item copies are independent of library/other item durability arrays",
+      "status": "PASS",
+      "ms": 1324,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "201 editing gear preserves condition and cannot repair it; inventory can explicitly reclassify equipment as an ordinary item",
+      "status": "PASS",
+      "ms": 6321,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "202 equipment is automatic with available points and is locked throughout combat decisions",
+      "status": "PASS",
+      "ms": 2569,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "203 equipment reward replacement at full inventory preserves the reward condition and does not auto-equip it",
+      "status": "PASS",
+      "ms": 3712,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    },
+    {
+      "name": "204 paid gear purchase and sale retain equipment metadata and transaction Undo",
+      "status": "PASS",
+      "ms": 3592,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "205 Undo of failed resolution restores cards, both equipment usage counts and the pre-resolution decision",
+      "status": "PASS",
+      "ms": 3066,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "206 comma rejection and hyphen/space rules apply to generic, weapon, armor and starting-item keyword entry",
+      "status": "PASS",
+      "ms": 5453,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "207 legacy enabled flags are discarded; remaining usage automatically activates equipment and old commas migrate out",
+      "status": "PASS",
+      "ms": 2462,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "208 usage indicators are noninteractive, Edit is small at top right, and Fix sits beside Move to inventory",
+      "status": "PASS",
+      "ms": 1076,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "209 all ordinary inventory/equipment edits and moves remain locked from combat choose through failure/retry",
+      "status": "PASS",
+      "ms": 1733,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "210 dedicated reward acceptance and replacement remain available while ordinary inventory is locked",
+      "status": "PASS",
+      "ms": 3283,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    },
+    {
+      "name": "211 stale inventory editor confirmation cannot modify an item after combat has begun",
+      "status": "PASS",
+      "ms": 1273,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "212 Cube example uses resistant +6 CV and strong +2 WV, then applies armor reduction to actual wounds",
+      "status": "PASS",
+      "ms": 1242,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "213 keyword matching is whole-word, case-insensitive and supports old abbreviated association text",
+      "status": "PASS",
+      "ms": 1714,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "214 duplicate associations apply once while distinct matching effects stack and opposite effects offset",
+      "status": "PASS",
+      "ms": 1217,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "215 vulnerability/weakness floors CV at one and WV at zero before normal modifier and armor resolution",
+      "status": "PASS",
+      "ms": 1219,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "216 broken gear loses keyword associations next retry while the already-resolved increased wound survives reload",
+      "status": "PASS",
+      "ms": 2629,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "217 armor loses one usage when weakness prevents wounds even if its flat modifier is no longer needed",
+      "status": "PASS",
+      "ms": 1600,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "218 custom prose and unrelated enemy keywords are displayed without inventing automatic modifiers",
+      "status": "PASS",
+      "ms": 1313,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "219 enemy validation reserves safe numeric room for keyword CV/WV increases",
+      "status": "PASS",
+      "ms": 625,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "220 Heal picker accepts only exact heal keyword, case-insensitively, and consumes the correct original inventory index",
+      "status": "PASS",
+      "ms": 1279,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "221 a nonempty inventory with no heal keyword gives a recoverable picker message without allowing an item",
+      "status": "PASS",
+      "ms": 2327,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "222 removing the heal keyword from a selected item invalidates consumption without losing the item",
+      "status": "PASS",
+      "ms": 1730,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "223 keyword catalog contains the exact supplied groups and uses without dice metadata",
+      "status": "PASS",
+      "ms": 1000,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "224 suggestions append with hyphens, avoid duplicates and preserve arbitrary custom keyword phrases",
+      "status": "PASS",
+      "ms": 1931,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "225 suggestions work in starting/equipped/reward forms and cannot silently truncate content beyond the text budget",
+      "status": "PASS",
+      "ms": 1718,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "226 invalid keyword catalogs fail the build before writing outputs",
+      "status": "PASS",
+      "ms": 671,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "227 Card Zones colors are derived from nonempty Wounds/Fatigue and update after healing/rest/Undo",
+      "status": "PASS",
+      "ms": 1404,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "228 keyword effects, tips and durability work offline without fetching data files",
+      "status": "PASS",
+      "ms": 2411,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "229 keyword suggestions and read-only gear layout remain usable on 320px screens",
+      "status": "PASS",
+      "ms": 2132,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "230 unavailable embedded suggestions fall back to custom text without blocking the item editor",
+      "status": "PASS",
+      "ms": 2109,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "231 suggestion chips toggle add/remove case-insensitively without changing unrelated keywords",
+      "status": "PASS",
+      "ms": 1242,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "232 manually confirmed keywords become character Custom toggles and remain after removal and Undo",
+      "status": "PASS",
+      "ms": 1481,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "233 cancelled/invalid drafts do not learn words and custom suggestions never leak between characters",
+      "status": "PASS",
+      "ms": 1344,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "234 custom keywords persist through reload and version-19 export/import and appear for other equipment types",
+      "status": "PASS",
+      "ms": 1436,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "235 starting items and custom enemy reward entry learn confirmed words while cancellation preserves learned preferences",
+      "status": "PASS",
+      "ms": 1210,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "236 enemy card keeps original stats first and lists keyword-adjusted combat base separately",
+      "status": "PASS",
+      "ms": 1166,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "237 Deadly Effort costs two Fate per selected card and caps selection by available Fate",
+      "status": "PASS",
+      "ms": 1563,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "238 successful Deadly Effort sends cards directly to Wounds in Combat and Challenge, independent of armor",
+      "status": "PASS",
+      "ms": 1584,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "239 exact-match recovery cannot return Deadly Effort cards and still sends them to Wounds",
+      "status": "PASS",
+      "ms": 1832,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "240 failed combat applies normal wounds separately from direct Deadly Effort wounds",
+      "status": "PASS",
+      "ms": 2047,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "241 Deadly Effort tracking survives reload, Cancel and Undo without repeat payment or lost cards",
+      "status": "PASS",
+      "ms": 2575,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "242 paid removal returns a Deadly Effort card to Fatigue, not the Attribute Deck, without refund",
+      "status": "PASS",
+      "ms": 1162,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "243 all cards entering Wounds via Deadly Effort causes Game Over even after success",
+      "status": "PASS",
+      "ms": 978,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "244 failed-action exhaustion requires zero Fate; one Fate survives in both action types",
+      "status": "PASS",
+      "ms": 2941,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "245 empty Attribute Deck buttons look unavailable but explain inside Actions without starting an encounter",
+      "status": "PASS",
+      "ms": 1062,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "246 victory, validation and reward messages are scoped to Actions while inventory messages remain global",
+      "status": "PASS",
+      "ms": 5222,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    },
+    {
+      "name": "247 malformed custom keyword metadata and Deadly Effort card tracking reject import without overwriting saves",
+      "status": "PASS",
+      "ms": 1420,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "248 new custom suggestions and Deadly Effort remain usable offline",
+      "status": "PASS",
+      "ms": 3089,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "249 custom toggles and original/adjusted enemy stats fit mobile screens",
+      "status": "PASS",
+      "ms": 2307,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "250 exact recovery can return ordinary cards while tracked Deadly Effort cards always enter Wounds",
+      "status": "PASS",
+      "ms": 1062,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "251 equipment checkbox is beside and vertically aligned with its label in item and reward editors",
+      "status": "PASS",
+      "ms": 1301,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "252 blur creates selected temporary toggles and a single Cancel click discards them permanently",
+      "status": "PASS",
+      "ms": 1125,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "253 starting another keyword adds only completed phrases, with permanent learning on successful confirmation",
+      "status": "PASS",
+      "ms": 1370,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "254 temporary suggestions also work for starting equipment and enemy reward entry without leaking cancelled words",
+      "status": "PASS",
+      "ms": 1338,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "255 Manage Keywords adds/edits words, assigns predefined/new categories and retains custom origin",
+      "status": "PASS",
+      "ms": 1566,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "256 removing custom suggestions never rewrites items or reappears from unrelated item edits/Undo",
+      "status": "PASS",
+      "ms": 1314,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "257 manager Cancel discards category/keyword drafts and rejects comma names or duplicate case variants",
+      "status": "PASS",
+      "ms": 1434,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "258 custom keyword JSON shares all categories/origins between characters and merges duplicates without replacing assignments",
+      "status": "PASS",
+      "ms": 1416,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "259 malformed custom imports and cancelled valid imports do not modify the character",
+      "status": "PASS",
+      "ms": 1147,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "260 V25 keyword metadata migrates to custom origin and version-19 character export retains categories",
+      "status": "PASS",
+      "ms": 1316,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "261 enemy comma input disables Begin combat and clearing it restores the button without starting combat",
+      "status": "PASS",
+      "ms": 1233,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "262 enemy association toggles use the relevant equipment lists and toggle canonical/typed aliases",
+      "status": "PASS",
+      "ms": 1125,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "263 enemy associations selected through toggles feed actual combat values",
+      "status": "PASS",
+      "ms": 1432,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "264 victory sound source is preserved and embedded WAV decodes as three seconds",
+      "status": "PASS",
+      "ms": 708,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "265 normal combat victory plays once and challenge success/failure never plays it",
+      "status": "PASS",
+      "ms": 2028,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "266 exact combat sounds only after recovery is confirmed",
+      "status": "PASS",
+      "ms": 1404,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "267 pending victory rewards save sound state and do not replay on reload or item decisions",
+      "status": "PASS",
+      "ms": 1921,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "268 resource-overflow victory retries do not replay the fanfare or duplicate rewards",
+      "status": "PASS",
+      "ms": 1437,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "269 blocked audio playback is harmless and victory resources still save",
+      "status": "PASS",
+      "ms": 1366,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "270 Undo and menu navigation stop sound; a newly reconfirmed victory may play again",
+      "status": "PASS",
+      "ms": 1500,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "271 malformed WAV input fails the build without replacing output",
+      "status": "PASS",
+      "ms": 614,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "272 manager and enemy association controls fit mobile and preserve keyboard cancellation",
+      "status": "PASS",
+      "ms": 1927,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "273 category manager preferences can change during combat without rewriting items or being reverted by cancellation",
+      "status": "PASS",
+      "ms": 1393,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "274 custom manager and victory sound work offline without external assets",
+      "status": "PASS",
+      "ms": 2337,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "275 custom keyword labels/imports are escaped and cannot execute markup",
+      "status": "PASS",
+      "ms": 1232,
+      "runSourceSHA256": "a75f1db8c6f7f2bec82ef2738a8d969b1cfd37d8f9243d215061f02b44686387"
+    },
+    {
+      "name": "276 V27 Start Game is below and to the right of Add Item",
+      "status": "PASS",
+      "ms": 1327,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "277 name fields capitalize each word while descriptions remain unchanged",
+      "status": "PASS",
+      "ms": 2479,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "278 default Enemy clears on pointer focus without erasing later names",
+      "status": "PASS",
+      "ms": 2408,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "279 live managed keyword edits cancel without saving",
+      "status": "PASS",
+      "ms": 2292,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "280 event keywords start collapsed and save module metadata",
+      "status": "PASS",
+      "ms": 2014,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "281 event keyword edits preserve original module and remove supports Undo",
+      "status": "PASS",
+      "ms": 2385,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "282 recent activity retains only thirty entries",
+      "status": "PASS",
+      "ms": 1627,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "283 Attribute Points opens Upgrade using keyboard",
+      "status": "PASS",
+      "ms": 1679,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    },
+    {
+      "name": "284 dungeon selection enters dedicated screen and collapsed character sheet",
+      "status": "PASS",
+      "ms": 2041,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "285 dungeon snapshot survives reload and keeps encounter definitions",
+      "status": "PASS",
+      "ms": 3061,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "286 dungeon challenge success banks first-level Coins until exit",
+      "status": "PASS",
+      "ms": 1729,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    },
+    {
+      "name": "287 repeat attempts start at level one without repeat level Coins",
+      "status": "PASS",
+      "ms": 3136,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "288 failed dungeon challenge permits retry and keeps support locked",
+      "status": "PASS",
+      "ms": 2088,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "289 delving deeper resets the level rest limit and support lock",
+      "status": "PASS",
+      "ms": 2235,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "290 boss level permits only fight or exit before combat",
+      "status": "PASS",
+      "ms": 1800,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "291 leaving a dungeon challenge does not refund committed cards",
+      "status": "PASS",
+      "ms": 2304,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "292 dungeon JSON rejects missing references and malformed formulas",
+      "status": "PASS",
+      "ms": 1040,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "293 invalid saved dungeon reward gaps reject import",
+      "status": "PASS",
+      "ms": 1621,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "294 dungeon cannot start with empty Attribute Deck",
+      "status": "PASS",
+      "ms": 2319,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "295 encounter roll uses enemy library and existing combat flow",
+      "status": "PASS",
+      "ms": 2752,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "296 Rest completes once per cleared level using existing Supply and Round rules",
+      "status": "PASS",
+      "ms": 2457,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "297 boss victory pays Coins and offers treasure only after victory",
+      "status": "PASS",
+      "ms": 3977,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    },
+    {
+      "name": "298 exiting boss level grants no treasure and leaves dungeon retryable",
+      "status": "PASS",
+      "ms": 2139,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "299 dungeon layout fits mobile and uses one copy of every character panel",
+      "status": "PASS",
+      "ms": 3609,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "300 enemy association custom target is temporary until Begin Combat",
+      "status": "PASS",
+      "ms": 1917,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "301 active keyword and contributing gear are bold red during combat",
+      "status": "PASS",
+      "ms": 2865,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "302 boss treasure replaces one full-inventory item without sale income",
+      "status": "PASS",
+      "ms": 3954,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "303 dungeon challenge and hand resume after reload",
+      "status": "PASS",
+      "ms": 2510,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "304 locked dungeon resources ignore manual adjustment while card inspection stays available",
+      "status": "PASS",
+      "ms": 2565,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    },
+    {
+      "name": "305 completed dungeon state exports and imports with its treasure decision",
+      "status": "PASS",
+      "ms": 1690,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "306 cancelled enemy association targets never enter permanent suggestions",
+      "status": "PASS",
+      "ms": 2387,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "307 dungeon snapshot invalid base challenge rejects import without data loss",
+      "status": "PASS",
+      "ms": 1597,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "308 dungeon normal combat victory banks encounter Coins until exit",
+      "status": "PASS",
+      "ms": 2360,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "309 repeated-level monster Coins are not awarded a second time",
+      "status": "PASS",
+      "ms": 2927,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "310 failed dungeon combat Flee uses normal Fate cost and exits dungeon",
+      "status": "PASS",
+      "ms": 3093,
+      "runSourceSHA256": "3f8fcac38c70d39a52344ac2341c6c965ef9618f2a75d3dbabac0cc0d09cc3e4"
+    },
+    {
+      "name": "311 dungeon selection and saved definitions work with networking disabled",
+      "status": "PASS",
+      "ms": 3622,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    },
+    {
+      "name": "312 pending dungeon Coin overflow shows action instructions and pays exactly once",
+      "status": "PASS",
+      "ms": 1758,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    },
+    {
+      "name": "313 zero available Upgrade points do not flash on shortcut",
+      "status": "PASS",
+      "ms": 1728,
+      "runSourceSHA256": "f083c6a33661265ce4a1d9b7f64644fa3aaa15934052191a5665122ca13dbcad"
+    }
+  ]
+}

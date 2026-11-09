@@ -1,0 +1,825 @@
+import {keywordText,parseKeywordInput,normalizeKeywords,normalizeItem,validateEnemyCard,validateEnemyLibrary,migrateCombatEnemy,copyItem,normalizeEquipment,usableEquipment,weaponBonusFor,armorReductionFor,keywordKey,hasKeyword,enemyAssociations,combatValuesFor,validateKeywordCatalog,normalizeCustomPreferences,validateCustomKeywordBundle,validateDungeonDefinition,validateDungeonLibrary} from './rules';
+import type {LibraryBundle} from '../platform/libraries';
+import type {CharacterStorage} from '../platform/storage';
+export function startGame(storage:CharacterStorage,libraries:LibraryBundle,onActivity:(busy:boolean)=>void){
+const document:any=window.document;
+'use strict';
+
+// V22 transient dialogs: item consumption commits with Heal, never with selection.
+let healItemSelection=null,restConfirmOwner=null;
+function validHealItemSelection(){return healItemSelection&&healItemSelection.owner===activeId&&JSON.stringify(state.inventory[healItemSelection.index])===healItemSelection.itemJSON&&healEligible(state.inventory[healItemSelection.index])}
+function healItemControl(){
+ if(healItemSelection&&!validHealItemSelection())healItemSelection=null;
+ return healItemSelection?`<p id="healItemNotice" tabindex="-1">Heal will consume item: <strong class="heal-consumed-name">${escapeHTML(state.inventory[healItemSelection.index].name)}</strong></p>`:'<button id="useHealItem" type="button" class="secondary">Use item</button>';
+}
+function syncV22Dialogs(){
+ if(screen!=='game'||mode!=='heal'||state.dead){healItemSelection=null;$('healItemModal').classList.add('hidden')}
+ if(screen!=='game'||state.dead||restConfirmOwner!==activeId){$('restConfirmModal').classList.add('hidden');restConfirmOwner=null}
+}
+function openRestConfirmation(){restConfirmOwner=activeId;$('restConfirmModal').classList.remove('hidden');$('restConfirmCancel').focus()}
+function closeRestConfirmation(){restConfirmOwner=null;$('restConfirmModal').classList.add('hidden');document.querySelector('[data-mode="rest"]')?.focus()}
+function closeHealItemPicker(){ $('healItemModal').classList.add('hidden');$('useHealItem')?.focus() }
+function openHealItemPicker(){
+ if(screen!=='game'||mode!=='heal'||state.dead)return;
+ $('healItemSelect').disabled=true;
+ const eligible=state.inventory.map((item,i)=>({item,i})).filter(({item})=>healEligible(item));
+ $('healItemChoices').innerHTML=eligible.length?eligible.map(({item,i})=>`<label class="reward-choice"><input type="radio" name="healItem" value="${i}"><span><strong>${escapeHTML(item.name)}</strong>${item.description?'<br>'+escapeHTML(item.description):''}${item.keywords.length?'<br><em>'+escapeHTML(keywordText(item.keywords))+'</em>':''}<br>Base Value: ${item.baseValue} Coin${equipmentSummary(item)}</span></label>`).join(''):'<p class="help">No items with the heal keyword are available.</p>';
+ $('healItemChoices').querySelectorAll('input').forEach(input=>input.onchange=()=>{$('healItemSelect').disabled=false});
+ $('healItemModal').classList.remove('hidden');($('healItemChoices').querySelector('input')||$('healItemCancel')).focus();
+}
+
+// Equipment is character state; modal drafts and starting loadout are transient.
+let setupLoadout={inventory:[],customKeywords:[],customCategories:[],eventKeywords:[],dungeonProgress:[],delve:null,equipment:{weapon:null,armor:null}},inventoryContext='inventory',repairTarget=null;
+function equipmentLocked(){return state.dead||!!state.combat||dungeonActionLocked()}
+function equipmentFieldsHTML(prefix){return `<label class="reward-check"><input id="${prefix}IsEquipment" type="checkbox"> Weapon or armor</label><div id="${prefix}EquipmentFields" class="hidden equipment-form"><label>Type (required)<select id="${prefix}EquipmentType"><option value="">Choose type</option><option value="weapon">Weapon</option><option value="armor">Armor</option></select></label><label>Modifier (required)<input id="${prefix}EquipmentModifier" type="number" min="1" step="1" placeholder="Positive whole number"></label></div>`}
+function setEquipmentFields(prefix,equipment=null,forcedType=null){
+ $(prefix+'IsEquipment').checked=!!(equipment||forcedType);$(prefix+'IsEquipment').disabled=!!forcedType;
+ $(prefix+'EquipmentType').value=forcedType||equipment?.type||'';$(prefix+'EquipmentType').disabled=!!forcedType;
+ $(prefix+'EquipmentModifier').value=equipment?.modifier??'';
+ $(prefix+'EquipmentFields').classList.toggle('hidden',!$(prefix+'IsEquipment').checked);
+ $(prefix+'IsEquipment').onchange=()=>{$(prefix+'EquipmentFields').classList.toggle('hidden',!$(prefix+'IsEquipment').checked);renderKeywordSuggestions(prefix)};$(prefix+'EquipmentType').onchange=()=>renderKeywordSuggestions(prefix);renderKeywordSuggestions(prefix);
+}
+function readEquipmentFields(prefix,previous?:any){
+ if(!$(prefix+'IsEquipment').checked)return null;
+ const raw=$(prefix+'EquipmentModifier').value;
+ if(!validCoinNumber(raw)||Number(raw)<1)throw Error('Modifier must be a positive supported whole number');
+ return normalizeEquipment({type:$(prefix+'EquipmentType').value,modifier:Number(raw),usage:previous?.usage??[true,true,true,true]});
+}
+function equipmentSummary(item){const e=item.equipment;return e?`<div class="equipment-summary">${e.type==='weapon'?'Weapon':'Armor'} · Modifier +${e.modifier} · Usage ${e.usage.filter(Boolean).length}/4 · ${!e.usage.some(Boolean)?'Broken':'Active'}</div>`:''}
+function itemDetailsHTML(item){return `<strong class="inventory-item-name ${['weapon','armor'].some(type=>state.equipment[type]===item&&equipmentAffected(type))?'active-keyword':''}">${escapeHTML(item.name)}</strong>${item.description?'<div class="inventory-item-description">'+escapeHTML(item.description)+'</div>':''}${item.keywords.length?'<div><em>'+gearKeywordHTML(item)+'</em></div>':''}<div>Base Value: ${item.baseValue} Coin</div>${equipmentSummary(item)}`}
+function renderEquipment(){
+ const locked=equipmentLocked(),root=$('equipmentSlots');
+ root.innerHTML=(state.combat?'<p class="help equipment-lock-message">Inventory and equipment are locked during combat.</p>':'')+['weapon','armor'].map(type=>{
+  const item=state.equipment[type],label=type==='weapon'?'Weapon':'Armor',broken=item&&!usableEquipment(item);
+  return `<article class="equipment-slot ${broken?'equipment-broken':''}" data-equipment-slot="${type}"><div class="equipment-card-header"><h3 class="${equipmentAffected(type)?'active-keyword':''}">${label}</h3>${item?`<button type="button" class="equipment-edit" aria-label="Edit ${type}" data-edit-equipment="${type}" ${locked?'disabled':''}>Edit</button>`:''}</div>${item?`${itemDetailsHTML(item)}<div class="equipment-usage" role="img" aria-label="${label} usage: ${item.equipment.usage.filter(Boolean).length} of 4 available">${item.equipment.usage.map(available=>`<span class="usage-point ${available?'available':'spent'}" aria-hidden="true"></span>`).join('')}</div>${broken?`<p class="equipment-warning">${label} broken, can't be used.</p>`:''}<div class="row equipment-card-actions"><button type="button" data-unequip="${type}" ${locked||state.inventory.length>=8?'disabled':''}>Move to inventory</button>${broken?`<button type="button" data-fix-equipment="${type}" ${locked?'disabled':''}>Fix</button>`:''}</div>`:`<p>No ${type} equipped.</p><button type="button" data-add-equipment="${type}" ${locked?'disabled':''}>Add ${type}</button>`}</article>`;
+ }).join('');
+ root.querySelectorAll('[data-add-equipment],[data-edit-equipment]').forEach(b=>b.onclick=()=>openInventoryDialog(b.dataset.addEquipment?'add':'edit',-1,'equipped-'+(b.dataset.addEquipment||b.dataset.editEquipment)));
+ root.querySelectorAll('[data-unequip]').forEach(b=>b.onclick=()=>{if(equipmentLocked()||state.inventory.length>=8)return;const type=b.dataset.unequip,item=state.equipment[type];if(!item)return;snapshot();state.inventory.push(item);state.equipment[type]=null;record('Moved '+item.name+' to inventory');update()});
+ root.querySelectorAll('[data-fix-equipment]').forEach(b=>b.onclick=()=>openRepair(b.dataset.fixEquipment));
+}
+function equipInventoryItem(index){
+ if(equipmentLocked())return;const item=state.inventory[index];if(!item?.equipment)return;
+ const type=item.equipment.type,previous=state.equipment[type];snapshot();state.equipment[type]=item;
+ if(previous)state.inventory.splice(index,1,previous);else state.inventory.splice(index,1);
+ record('Equipped '+item.name+(previous?'; '+previous.name+' moved to inventory':''));update();
+}
+function openRepair(type){
+ const item=state.equipment[type];if(equipmentLocked()||!item||item.equipment.usage.some(Boolean))return;
+ repairTarget={owner:activeId,type,itemJSON:JSON.stringify(item)};$('repairItemName').textContent=item.name;$('repairCost').value='0';$('repairError').textContent='';$('repairModal').classList.remove('hidden');validateRepairCost();$('repairCost').focus();
+}
+function validRepairTarget(){return repairTarget&&repairTarget.owner===activeId&&!equipmentLocked()&&JSON.stringify(state.equipment[repairTarget.type])===repairTarget.itemJSON}
+function validateRepairCost(){const raw=$('repairCost').value,valid=validCoinNumber(raw)&&Number(raw)<=state.res.Coin&&validRepairTarget();$('repairConfirm').disabled=!valid;$('repairError').textContent=!validCoinNumber(raw)?'Enter a nonnegative whole-number cost.':Number(raw)>state.res.Coin?'Not enough Coins.':''}
+function closeRepair(){const type=repairTarget?.type;repairTarget=null;$('repairModal').classList.add('hidden');document.querySelector(`[data-fix-equipment="${type}"]`)?.focus()}
+function wearEquipment(item){if(!usableEquipment(item))return;const e=item.equipment,index=e.usage.lastIndexOf(true);e.usage[index]=false;record(`${item.name}: lost 1 usage point (${e.usage.filter(Boolean).length}/4)${e.usage.some(Boolean)?'':'; broken'}`)}
+function combatEquipmentHTML(){const context=resolvedCombatContext(state),bonus=weaponBonusFor(context),wv=state.combat?combatValuesFor(context).wv:0,reduction=armorReductionFor(context,wv);return `<div class="combat-equipment">Weapon bonus: <strong>+${bonus}</strong> · Armor reduction: <strong>${reduction}</strong>${state.combat?` · Wound on failure: <strong>${wv-reduction}</strong>`:''}</div>`}
+function applyCombatEquipmentFailure(c){
+ c.lastEquipment={weapon:usableEquipment(state.equipment.weapon),armor:usableEquipment(state.equipment.armor)};const values=combatValuesFor(state),reduction=armorReductionFor(state,values.wv);c.lastWound=values.wv-reduction;
+ if(usableEquipment(state.equipment.weapon))wearEquipment(state.equipment.weapon);
+ if(reduction>0||values.wv<c.wound){record(`Armor applied: keyword-adjusted WV ${values.wv}, final wound ${c.lastWound}`);wearEquipment(state.equipment.armor)}
+ return c.lastWound;
+}
+function renderStartingItems(){
+ const root=$('startingItems');root.innerHTML=`<h3>Starting equipment (optional)</h3><div class="equipment-grid">${['weapon','armor'].map(type=>{const item=setupLoadout.equipment[type];return `<div class="equipment-slot"><strong>${type==='weapon'?'Weapon':'Armor'}</strong>${item?itemDetailsHTML(item):'<p>None</p>'}<button type="button" data-start-equipment="${type}">${item?'Edit':'Add'} ${type}</button>${item?`<button type="button" data-remove-start-equipment="${type}">Remove</button>`:''}</div>`}).join('')}</div><h3>Starting inventory (optional)</h3><p>Up to 8 starting items. These items have no purchase cost.</p><button id="addStartingItem" type="button" ${setupLoadout.inventory.length>=8?'disabled':''}>+ Add Item</button>${setupLoadout.inventory.map((item,i)=>`<div class="starting-item">${itemDetailsHTML(item)}<button type="button" data-edit-start-item="${i}">Edit</button><button type="button" data-remove-start-item="${i}">Remove</button></div>`).join('')}`;
+ root.querySelectorAll('[data-start-equipment]').forEach(b=>b.onclick=()=>openInventoryDialog(setupLoadout.equipment[b.dataset.startEquipment]?'edit':'add',-1,'starting-'+b.dataset.startEquipment));
+ root.querySelectorAll('[data-remove-start-equipment]').forEach(b=>b.onclick=()=>{setupLoadout.equipment[b.dataset.removeStartEquipment]=null;renderStartingItems()});
+ $('addStartingItem').onclick=()=>openInventoryDialog('add',-1,'starting-inventory');
+ root.querySelectorAll('[data-edit-start-item]').forEach(b=>b.onclick=()=>openInventoryDialog('edit',Number(b.dataset.editStartItem),'starting-inventory'));
+ root.querySelectorAll('[data-remove-start-item]').forEach(b=>b.onclick=()=>{setupLoadout.inventory.splice(Number(b.dataset.removeStartItem),1);renderStartingItems()});
+}
+function dialogItem(){if(inventoryContext==='inventory')return state.inventory[inventoryDialogIndex];if(inventoryContext==='starting-inventory')return setupLoadout.inventory[inventoryDialogIndex];return (inventoryContext.startsWith('starting-')?setupLoadout.equipment:state.equipment)[inventoryContext.split('-')[1]]}
+function syncV23Dialogs(){if(state.combat)$('inventoryModal').classList.add('hidden');if(repairTarget&&(screen!=='game'||!validRepairTarget()))closeRepair();if(screen==='menu'){$('inventoryModal').classList.add('hidden')};if(screen==='game'&&inventoryContext.startsWith('starting-'))$('inventoryModal').classList.add('hidden')}
+
+// Suggestions are optional; the keyword field remains freely editable.
+let keywordCatalog=[],keywordCatalogError='';
+function suggestionUse(prefix){return $(prefix+'IsEquipment').checked?$(prefix+'EquipmentType').value:'generic'}
+function keywordInputTip(prefix){
+ const input=$(prefix+'Keywords'),comma=input.value.includes(',');input.setCustomValidity(comma?'Commas are not allowed. Use - between keywords.':'');
+ $(prefix+'KeywordTip').textContent=comma?'Commas are not allowed. Use - between keywords.':'Use - between keywords. Spaces stay within one keyword.';
+ $(prefix+'KeywordTip').classList.toggle('inventory-error',comma);
+}
+function renderKeywordSuggestions(prefix){
+ const root=$(prefix+'Suggestions');if(!root)return;keywordInputTip(prefix);
+ const use=suggestionUse(prefix),base=keywordCatalog.filter(entry=>entry.uses.includes(use)),custom=[...currentCustomKeywords(),...(keywordDrafts[prefix]?.pending||[]).filter(entry=>!currentCustomKeywords().some(e=>keywordKey(e.keyword)===keywordKey(entry.keyword)))],list=[...base.filter(entry=>!custom.some(e=>keywordKey(e.keyword)===keywordKey(entry.keyword))),...custom.map(entry=>({...entry,category:displayKeywordCategory(entry.category)}))],selected=new Set<any>($(prefix+'Keywords').value.split('-').map(keywordKey));
+ if(!list.length){root.innerHTML=keywordCatalogError?'<p class="help">Keyword suggestions are unavailable. You can still type custom keywords.</p>':'';return}
+ const categories=[...new Set<any>(list.map(e=>e.category))];
+ root.innerHTML=`<h4>Suggested ${use==='generic'?'item':use} keywords</h4><p class="help">Tap a keyword to add it. Custom keywords are welcome.</p>${categories.map(category=>`<div class="keyword-group"><strong>${escapeHTML(category)}</strong><div>${list.filter(e=>e.category===category).map(entry=>`<button class="keyword-chip ${selected.has(keywordKey(entry.keyword))?'selected':''}" aria-pressed="${selected.has(keywordKey(entry.keyword))}" type="button" data-suggest-keyword="${escapeHTML(entry.keyword)}">${escapeHTML(entry.keyword)}</button>`).join('')}</div></div>`).join('')}`;
+ root.querySelectorAll('[data-suggest-keyword]').forEach(button=>button.onclick=()=>{
+  const input=$(prefix+'Keywords'),description=$(prefix+'Description');let words;
+  try{words=parseKeywordInput(input.value)}catch{keywordInputTip(prefix);input.focus();return}
+  if(words.some(word=>keywordKey(word)===keywordKey(button.dataset.suggestKeyword)))words=words.filter(word=>keywordKey(word)!==keywordKey(button.dataset.suggestKeyword));else words.push(button.dataset.suggestKeyword);const text=keywordText(words);
+  if(text.length+description.value.length>300){$(prefix+'KeywordTip').textContent='This keyword would exceed the 300-character Description/Keywords limit.';return}
+  captureDraftKeywords(prefix,true);input.value=text;input.dispatchEvent(new Event('input',{bubbles:true}));input.focus();
+ });
+}
+function healEligible(item){return hasKeyword(item,'heal')}
+function resolvedCombatContext(character){
+ const c=character.combat;if(!c?.lastEquipment||!['wounding','afterFail'].includes(c.stage))return character;
+ const equipment={};for(const type of ['weapon','armor']){const item=character.equipment[type];equipment[type]=item?{...item,equipment:{...item.equipment,usage:c.lastEquipment[type]?[true,true,true,true]:[false,false,false,false]}}:null}
+ return {...character,equipment};
+}
+function combatDisplayValues(character){return combatValuesFor(resolvedCombatContext(character))}
+function keywordEffectsHTML(values){return values.matches.length?`<div class="keyword-effects"><strong>Keyword effects:</strong> ${values.matches.map(effect=>`${escapeHTML(effect.kind)} against <em>${`<strong class="active-keyword">${escapeHTML(effect.target)}</strong>`}</em>: ${effect.stat} ${effect.delta>0?'+':''}${effect.delta}`).join(' · ')}</div>`:'<div class="keyword-effects help">No matching keyword effects.</div>'}
+
+let setupCustomKeywords=[],actionNotice='';
+function currentCustomKeywords(){return screen==='create'?setupCustomKeywords:(state.customKeywords||[])}
+function notifyAction(message){actionNotice=String(message||'');$('actionStatus').textContent=actionNotice;if(actionNotice&&screen==='game'){$('actionsPanel').classList.remove('hidden');sectionVisibility('actionsBody','actionsToggle','actionsChevron',true)}}
+function updateAction(message?:string){update();notifyAction(message??state.log[0]?.message??'')}
+function settleDeadlyEffort(encounter){
+ const ids=(encounter.deadlyCards||[]).filter(id=>state.zones.hand.includes(id));if(ids.length){move(ids,'hand','wound');record('Deadly Effort: '+ids.map(name).join(', ')+' → Wounds (ignores wound modifiers)');playWoundVisual()}encounter.deadlyCards=[];
+ if(allCardsWounded()){state.dead=true;record('GAME OVER');state.combat=null;state.challenge=null;mode='';selected.clear();return false}return true;
+}
+function deadlyRecoveryHelp(){const ids=(state.combat||state.challenge)?.deadlyCards||[];return ids.length?'<div class="notice">Deadly Effort cards cannot be recovered. They go directly to Wounds.</div>'+cards(ids,new Set<any>(),false):''}
+function recoverableHand(){const encounter=state.combat||state.challenge;return state.zones.hand.filter(id=>!(encounter?.deadlyCards||[]).includes(id))}
+function handCommitLabel(){return handSource()==='fatigue'?`Deadly Effort · ${2*selected.size} Fate`:'Commit cards & reveal modifier'}
+
+// Temporary suggestions are item drafts, never character preferences until confirmation.
+const keywordDrafts={inventory:null,enemyItem:null};let keywordManager=null;
+function beginKeywordDraft(prefix,initial=[]){keywordDrafts[prefix]={initial:new Set<any>(initial.map(keywordKey)),pending:[]}}
+function displayKeywordCategory(category){if(keywordKey(category)==='custom')return 'Custom';return keywordCatalog.find(e=>keywordKey(e.category)===keywordKey(category))?.category||category}
+function captureDraftKeywords(prefix,all=false){
+ const draft=keywordDrafts[prefix];if(!draft)return;
+ const raw=$(prefix+'Keywords').value;if(raw.includes(','))return;
+ const segments=raw.split('-'),words=(all?segments:segments.slice(0,-1)).map(w=>w.trim()).filter(Boolean),use=suggestionUse(prefix);
+ for(const word of words){const key=keywordKey(word);if(draft.initial.has(key)||currentCustomKeywords().some(e=>keywordKey(e.keyword)===key)||keywordCatalog.some(e=>e.uses.includes(use)&&keywordKey(e.keyword)===key)||draft.pending.some(e=>keywordKey(e.keyword)===key))continue;draft.pending.push({keyword:word,category:'custom',origin:'custom'})}
+}
+let keywordPointerDown=false,enemySuggestionsPending=false;
+function flushKeywordDrafts(){for(const prefix of ['inventory','enemyItem']){const draft=keywordDrafts[prefix];if(!draft?.needsRender)continue;draft.needsRender=false;const root=$(prefix+'Suggestions'),focused=root.contains(document.activeElement)?document.activeElement.dataset.suggestKeyword:null;renderKeywordSuggestions(prefix);if(focused) [...root.querySelectorAll('[data-suggest-keyword]')].find(button=>button.dataset.suggestKeyword===focused)?.focus()}}
+function keywordBlur(prefix,event){captureDraftKeywords(prefix,true);if(keywordDrafts[prefix])keywordDrafts[prefix].needsRender=true;if(!keywordPointerDown)setTimeout(flushKeywordDrafts,0)}
+function rememberItemKeywords(item,prefix='inventory'){
+ captureDraftKeywords(prefix,true);const store=currentCustomKeywords(),draft=keywordDrafts[prefix];
+ for(const word of item.keywords){const key=keywordKey(word);if(!draft?.pending.some(e=>keywordKey(e.keyword)===key)||store.some(e=>keywordKey(e.keyword)===key))continue;store.push({keyword:word,category:'custom',origin:'custom'})}
+}
+function customCategoryOptions(){const result=['custom'],seen=new Set<any>(['custom']);for(const category of [...keywordCatalog.map(e=>e.category),...(keywordManager?.categories||[])])if(!seen.has(keywordKey(category))){seen.add(keywordKey(category));result.push(category)}return result}
+function renderKeywordManager(){
+ if(!keywordManager)return;const selected=$('manageKeywordCategory').value||'custom',options=customCategoryOptions();
+ $('manageKeywordCategory').innerHTML=options.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(displayKeywordCategory(c))}</option>`).join('');$('manageKeywordCategory').value=options.find(c=>keywordKey(c)===keywordKey(selected))||'custom';
+ $('managedKeywordList').innerHTML=keywordManager.keywords.length?keywordManager.keywords.map((entry,i)=>`<div class="managed-keyword"><span><strong>${escapeHTML(entry.keyword)}</strong><br>${escapeHTML(displayKeywordCategory(entry.category))} · <em>Custom origin</em></span><span class="row"><button type="button" data-manage-edit="${i}">Edit</button><button type="button" data-manage-remove="${i}" class="danger">Remove</button></span></div>`).join(''):'<p class="help">No custom keywords yet.</p>';
+ $('managedKeywordList').querySelectorAll('[data-manage-edit]').forEach(button=>button.onclick=()=>{const i=Number(button.dataset.manageEdit),entry=keywordManager.keywords[i];keywordManager.editing=i;$('manageKeywordText').value=entry.keyword;$('manageKeywordCategory').value=customCategoryOptions().find(c=>keywordKey(c)===keywordKey(entry.category))||'custom';$('manageKeywordAdd').classList.add('hidden');$('keywordManagerSave').disabled=false;$('manageKeywordText').focus()});
+ $('managedKeywordList').querySelectorAll('[data-manage-remove]').forEach(button=>button.onclick=()=>{keywordManager.keywords.splice(Number(button.dataset.manageRemove),1);resetKeywordManagerEntry();renderKeywordManager()});
+}
+function resetKeywordManagerEntry(){if(keywordManager)keywordManager.editing=null;$('manageKeywordText').value='';$('manageKeywordAdd').textContent='Add keyword';$('manageKeywordAdd').classList.remove('hidden');$('keywordManagerSave').disabled=false;$('manageKeywordCategory').value='custom'}
+function openKeywordManager(){if(screen!=='game'||!state.started)return;const prefs=normalizeCustomPreferences(state.customKeywords,state.customCategories);keywordManager={...prefs,owner:activeId,editing:null};$('keywordManagerError').textContent='';$('newKeywordCategory').value='';resetKeywordManagerEntry();renderKeywordManager();$('keywordManagerModal').classList.remove('hidden');$('manageKeywordText').focus()}
+function closeKeywordManager(focus=true){keywordManager=null;$('keywordManagerModal').classList.add('hidden');$('importCustomKeywordFile').value='';if(focus&&screen==='game')$('manageKeywords').focus()}
+function syncV26Dialogs(){if(keywordManager&&(screen!=='game'||keywordManager.owner!==activeId))closeKeywordManager(false)}
+function updateEnemyAssociationSuggestions(){
+ const field=$('enemyKeywords'),comma=field.value.includes(','),itemComma=$('enemyHasItem').checked&&$('enemyItemKeywords').value.includes(',');field.setCustomValidity(comma?'Commas are not allowed. Use - between keywords.':'');$('startCombat').disabled=comma||itemComma;$('enemyKeywordTip').textContent=comma?'Commas are not allowed. Use - between keywords.':'Use - between keywords. Spaces stay within one keyword.';
+ const root=$('enemyAssociationSuggestions'),open=new Set<any>([...root.querySelectorAll('details[open]')].map(e=>e.dataset.associationKind));let selected=[];try{selected=enemyAssociations(parseKeywordInput(field.value))}catch{}
+ const definitions=[['unprotected','Unprotected','weapon'],['resistant','Resistant','weapon'],['weak','Weak','armor'],['strong','Strong','armor']];
+ root.innerHTML=definitions.map(([kind,label,use])=>{const words=[...keywordCatalog.filter(e=>e.uses.includes(use)),...[...currentCustomKeywords(),...enemyKeywordDraft].map(e=>({...e,uses:[use]}))].filter((entry,i,all)=>all.findIndex(e=>keywordKey(e.keyword)===keywordKey(entry.keyword))===i);return `<details data-association-kind="${kind}" ${open.has(kind)?'open':''}><summary>${label} against [keyword]</summary><div class="association-chips">${words.map(entry=>{const active=selected.some(e=>e.kind===kind&&e.target===keywordKey(entry.keyword));return `<button type="button" class="keyword-chip ${active?'selected':''}" data-enemy-association="${escapeHTML(label+' against '+entry.keyword)}" data-association-kind="${kind}" data-association-target="${escapeHTML(entry.keyword)}" aria-pressed="${active}">${escapeHTML(entry.keyword)}</button>`}).join('')}</div></details>`}).join('');
+ root.querySelectorAll('[data-enemy-association]').forEach(button=>button.onclick=()=>{if(field.value.includes(','))return;let words=parseKeywordInput(field.value);const kind=button.dataset.associationKind,target=keywordKey(button.dataset.associationTarget);const active=words.some(word=>enemyAssociations([word]).some(e=>e.kind===kind&&e.target===target));if(active)words=words.filter(word=>!enemyAssociations([word]).some(e=>e.kind===kind&&e.target===target));else words.push(button.dataset.enemyAssociation);field.value=keywordText(words);updateEnemyAssociationSuggestions();field.focus()});
+}
+
+let victorySoundOwner=null;
+function stopVictorySound(){const sound=$('combatVictorySound');sound.pause();try{sound.currentTime=0}catch{}victorySoundOwner=null}
+function playCombatVictorySound(){const sound=$('combatVictorySound');victorySoundOwner=activeId;try{sound.currentTime=0;const playing=sound.play();if(playing&&typeof playing.catch==='function')playing.catch(()=>{})}catch{}}
+
+let enemyDefaultName=true,enemyKeywordDraft=[],eventEditor=null,upgradeFlashTimer=null;
+function titleCaseName(text){return text.replace(/(^|[\s\-’'])(\p{L})/gu,(_,separator,letter)=>separator+letter.toLocaleUpperCase())}
+function applyNameCase(input){const start=input.selectionStart,end=input.selectionEnd,value=input.value,next=titleCaseName(value);if(next!==value){input.value=next;try{input.setSelectionRange(titleCaseName(value.slice(0,start)).length,titleCaseName(value.slice(0,end)).length)}catch{}}}
+function closeOptions(){ $('optionsMenu').classList.add('hidden');$('optionsButton').setAttribute('aria-expanded','false') }
+function activeKeywordMatches(){return state.combat?combatDisplayValues(state).matches:[]}
+function equipmentAffected(type){return activeKeywordMatches().some(e=>(e.stat==='CV'?'weapon':'armor')===type)}
+function gearKeywordHTML(item){const type=['weapon','armor'].find(type=>state.equipment[type]===item),keys=new Set<any>(activeKeywordMatches().filter(e=>(e.stat==='CV'?'weapon':'armor')===type).map(e=>e.target));return item.keywords.map(word=>keys.has(keywordKey(word))?`<strong class="active-keyword">${escapeHTML(word)}</strong>`:escapeHTML(word)).join(' - ')}
+function enemyKeywordHTML(words,active){return words.map(word=>{const association=enemyAssociations([word])[0],match=active&&association&&activeKeywordMatches().some(e=>e.kind===association.kind&&e.target===association.target);if(!match)return escapeHTML(word);const parsed=/^(unprotected|resistant|weak|strong)\s+(?:against\s+)?(.+)$/i.exec(word.trim());return escapeHTML(word.trim().slice(0,-parsed[2].length))+`<strong class="active-keyword">${escapeHTML(parsed[2])}</strong>`}).join(' - ')}
+function captureEnemyKeywordDraft(all=false){const raw=$('enemyKeywords').value;if(raw.includes(','))return;const pieces=raw.split('-'),words=(all?pieces:pieces.slice(0,-1)).map(w=>w.trim()).filter(Boolean);for(const word of words){const effect=enemyAssociations([word])[0],target=effect?effect.target:word;if(!target||keywordCatalog.some(e=>keywordKey(e.keyword)===keywordKey(target))||currentCustomKeywords().some(e=>keywordKey(e.keyword)===keywordKey(target))||enemyKeywordDraft.some(e=>keywordKey(e.keyword)===keywordKey(target)))continue;enemyKeywordDraft.push({keyword:target,category:'custom',origin:'custom'})}}
+function commitEnemyKeywords(){captureEnemyKeywordDraft(true);const words=parseKeywordInput($('enemyKeywords').value),targets=words.map(word=>enemyAssociations([word])[0]?.target||word);for(const entry of enemyKeywordDraft)if(targets.some(word=>keywordKey(word)===keywordKey(entry.keyword))&&!state.customKeywords.some(e=>keywordKey(e.keyword)===keywordKey(entry.keyword)))state.customKeywords.push({...entry})}
+function flashUpgradePoints(){const pill=$('availableUpgradePoints');if(!pill||(state.upgradePoints??Math.max(0,state.pointLimit-creationTotal(Object.values(state.zones).flat())))<=0)return;pill.classList.remove('points-flash');void pill.offsetWidth;pill.classList.add('points-flash');clearTimeout(upgradeFlashTimer);upgradeFlashTimer=setTimeout(()=>pill.classList.remove('points-flash'),500)}
+function openUpgradeFromPoints(){if(state.dead)return;if(actionInProgress()&&mode!=='upgrade'){notifyAction('Finish the current operation first.');return}if(state.delve){notifyAction('Upgrade is unavailable during a dungeon delve.');return}if(mode!=='upgrade')setMode('upgrade');if(mode==='upgrade'){sectionVisibility('actionsBody','actionsToggle','actionsChevron',true);$('availableUpgradePoints')?.scrollIntoView({block:'nearest'})}}
+function renderEventKeywords(){const root=$('eventKeywordList');root.innerHTML=state.eventKeywords.length?state.eventKeywords.map((entry,i)=>`<div class="event-keyword-entry"><em>${escapeHTML(entry.keyword)}</em><span class="row"><button type="button" data-event-edit="${i}" ${equipmentLocked()?'disabled':''}>Edit</button><button type="button" data-event-remove="${i}" class="danger" ${equipmentLocked()?'disabled':''}>Remove</button></span></div>`).join(''):'<p class="help">No event keywords.</p>';$('eventKeywordAdd').disabled=equipmentLocked();root.querySelectorAll('[data-event-edit]').forEach(button=>button.onclick=()=>openEventEditor(Number(button.dataset.eventEdit)));root.querySelectorAll('[data-event-remove]').forEach(button=>button.onclick=()=>{if(equipmentLocked())return;snapshot();const entry=state.eventKeywords.splice(Number(button.dataset.eventRemove),1)[0];record('Removed event keyword: '+entry.keyword);update('Event keyword removed.')})}
+function openEventEditor(index=null){if(equipmentLocked())return;eventEditor={owner:activeId,index,snapshot:index===null?null:JSON.stringify(state.eventKeywords[index])};$('eventKeywordText').value=index===null?'':state.eventKeywords[index].keyword;$('eventKeywordError').textContent='';$('eventKeywordModal').classList.remove('hidden');$('eventKeywordText').focus()}
+function closeEventEditor(){eventEditor=null;$('eventKeywordModal').classList.add('hidden');$('eventKeywordAdd').focus()}
+function applyLiveManagedEdit(){if(!keywordManager||keywordManager.editing===null)return true;try{const entry=normalizeCustomPreferences([{keyword:$('manageKeywordText').value,category:$('manageKeywordCategory').value,origin:'custom'}]).keywords[0];if(!entry||keywordManager.keywords.some((e,i)=>i!==keywordManager.editing&&keywordKey(e.keyword)===keywordKey(entry.keyword)))throw Error('Enter a unique valid keyword');keywordManager.keywords[keywordManager.editing]=entry;$('keywordManagerError').textContent='';$('keywordManagerSave').disabled=false;renderKeywordManager();return true}catch(error){$('keywordManagerError').textContent=error.message;$('keywordManagerSave').disabled=true;return false}}
+
+function dungeonEncounterThreshold(d){return Math.min(d.definition.monsterChance.die,(d.definition.monsterChance.base??0)+d.level*d.definition.monsterChance.thresholdPerLevel)}
+function dungeonProgressHTML(d){const max=d.definition.maxLevel,current=d.level,levels=max<=12?Array.from({length:max},(_,i)=>i+1):[1,...Array.from({length:5},(_,i)=>current-2+i).filter(n=>n>1&&n<max),max],unique=[...new Set<any>(levels)].sort((a,b)=>a-b);let previous=0;return `<section class="dungeon-progress" aria-label="Dungeon progress: level ${current} of ${max}"><h3>Dungeon progress</h3><div class="dungeon-levels">${unique.map(level=>{const gap=level>previous+1?' <span aria-hidden="true">…</span> ':'';previous=level;return gap+`<span class="dungeon-level ${level<current||level===current&&['cleared','victory','payout','treasure'].includes(d.phase)?'reached':''} ${level===current?'current':''}" ${level===current?'aria-current="step"':''}><span>${level}</span>${level===max?'<small>Boss</small>':''}</span>`}).join('')}</div></section>`}
+function dungeonEncounterHTML(d){const chance=d.definition.monsterChance,threshold=dungeonEncounterThreshold(d);return `<section class="encounter-rules"><h3>Monster encounter</h3><p>After winning the level challenge, roll 1d${chance.die}. Encounter on ${threshold===0?'no result':threshold===1?'1':'1–'+threshold}${threshold===chance.die?' (guaranteed encounter)':''}.</p><p class="help">Formula: ${chance.base??0} + ${chance.thresholdPerLevel} × level. Current chance: ${threshold} / ${chance.die}.</p><p>On an encounter, roll 1d${chance.die} on this enemy table:</p><table class="encounter-table"><thead><tr><th scope="col">Roll</th><th scope="col">Enemy</th></tr></thead><tbody>${d.definition.encounters.map(row=>`<tr class="${d.lastRoll?.enemy!=null&&row.rolls.includes(d.lastRoll.enemy)?'rolled':''}"><td>${row.rolls.join(', ')}</td><td>${escapeHTML(dungeonEnemy(row.enemyId).name)}</td></tr>`).join('')}</tbody></table>${d.lastRoll?`<p><strong>Encounter roll: ${d.lastRoll.chance}</strong> → ${d.lastRoll.enemy===null?'No encounter':`Enemy roll: ${d.lastRoll.enemy} → ${escapeHTML(d.enemyId)}`}</p>`:''}</section>`}
+function renderDungeonVictory(){const d=state.delve,visible=screen==='game'&&d?.phase==='victory',modal=$('dungeonVictoryModal'),opening=modal.classList.contains('hidden');modal.classList.toggle('hidden',!visible);if(!visible)return;$('dungeonVictoryMessage').textContent='You defeated '+dungeonEnemy(d.definition.boss.enemyId).name+' and completed '+d.definition.name+'!';$('dungeonVictoryRewards').innerHTML=`<li><strong>Coin reward:</strong> ${d.pendingCoins} Coin earned during this delve</li><li><strong>Treasure:</strong> ${d.definition.treasure?itemDetailsHTML(d.definition.treasure):'None'}</li>`;if(opening)$('dungeonVictoryExit').focus()}
+
+let dungeonLibrary=[],dungeonLibraryError='',dungeonLayoutKey=null;
+function dungeonProgress(id,create=true){let entry=state.dungeonProgress.find(e=>e.id===id);if(!entry&&create){entry={id,rewardedLevels:[],completed:false,highestLevelReached:0};state.dungeonProgress.push(entry)}return entry}
+function dungeonActionLocked(){const d=state.delve;if(!d)return false;if(state.combat?.stage==='reward')return false;return ['treasure','victory','encounter'].includes(d.phase)||(!d.challengeWon&&['challenge','boss'].includes(d.phase))}
+function activeDungeonOperation(){return !!(state.challenge||state.combat||state.woundTask||mode)}
+function dungeonEnemy(id){return state.delve.enemies.find(e=>e.id===id)}
+function dungeonLevelCoin(d){return d.definition.coinReward.base+d.definition.coinReward.perLevel*d.level}
+function clearDungeonLevel(){const d=state.delve;if(!d)return;const progress=dungeonProgress(d.definition.id);if(!progress.rewardedLevels.includes(d.level)){d.pendingCoins+=dungeonLevelCoin(d);progress.rewardedLevels.push(d.level);record('Dungeon level '+d.level+' cleared: banked '+dungeonLevelCoin(d)+' Coin')}else record('Dungeon level '+d.level+' cleared again: no new Coin reward');d.phase='cleared';d.challengeWon=true;if(d.level===d.definition.maxLevel){d.bossWon=true;progress.completed=true;d.phase='victory';record('Dungeon completed! Boss defeated; rewards await exit.')}}
+function dungeonChallengeFinished(success){const d=state.delve;if(!d||state.dead)return;if(!success){d.phase='challenge';record('Dungeon level challenge failed; retry or exit.');return}d.challengeWon=true;if(!d.encounterRolled){d.encounterRolled=true;const die=d.definition.monsterChance.die,roll=1+Math.floor(Math.random()*die);d.lastRoll={chance:roll,enemy:null};if(roll<=dungeonEncounterThreshold(d)){const monsterRoll=1+Math.floor(Math.random()*die),row=d.definition.encounters.find(row=>row.rolls.includes(monsterRoll));d.lastRoll.enemy=monsterRoll;d.enemyId=row.enemyId;d.phase='encounter';record('Dungeon encounter: '+row.enemyId+' (roll '+monsterRoll+')');return}}clearDungeonLevel()}
+function dungeonCombatFinished(won){const d=state.delve;if(!d)return;if(won){clearDungeonLevel()}else{record('Fled combat: exited dungeon, terrain unchanged.');requestDungeonExit()}}
+function startDungeonChallenge(){const d=state.delve;if(!d||d.phase!=='challenge'||state.dead||state.challenge||state.combat||state.woundTask||mode)return;const canEffort=d.challengeAttempts>0&&state.zones.fatigue.length&&state.res.Fate>=2;if(!state.zones.deck.length&&!canEffort){notifyAction('No Attribute cards or enough Fate for Deadly Effort. Exit the dungeon to recover.');return}snapshot();const rollback=JSON.stringify(state);d.challengeAttempts++;state.challenge={base:d.definition.challenge.base+d.definition.challenge.perLevel*d.level,modifier:null,stage:'choose',adjusted:false,adjustmentsUsed:0,allowed:['H','S','C','D'],dungeon:true,rollback};mode='challenge';selected.clear();updateAction('Dungeon level '+d.level+' challenge started.')}
+function startDungeonCombat(){const d=state.delve;if(!d||!['encounter','boss'].includes(d.phase)||state.dead||activeDungeonOperation())return;const id=d.phase==='boss'?d.definition.boss.enemyId:d.enemyId;if(!beginCombatWithCard(dungeonEnemy(id),{dungeon:true})){notifyAction('No Attribute cards or enough Fate for Deadly Effort. Exit the dungeon to recover.');return}}
+function requestDungeonExit(){const d=state.delve;if(!d||state.dead)return;if(state.combat||state.woundTask){notifyAction('Finish combat or use its Flee action before exiting.');return}if(state.challenge){const c=state.challenge;snapshot();if(!settleDeadlyEffort(c)){updateAction('GAME OVER');return}move([...state.zones.hand],'hand','fatigue');state.challenge=null;mode='';selected.clear();if(checkFailureDeath()){updateAction('GAME OVER');return}record('Fled dungeon challenge.')}d.phase='payout';mode='';selected.clear();collectDungeonPayout()}
+function collectDungeonPayout(){const d=state.delve;if(!d||d.phase!=='payout'||state.dead)return;if(!Number.isSafeInteger(state.res.Coin+d.pendingCoins)){updateAction('Dungeon Coin reward pending. Reduce Coin total, then collect.');return}snapshot();const before={Coin:state.res.Coin,Fate:state.res.Fate},paid=d.pendingCoins;state.res.Coin+=paid;d.pendingCoins=0;queueRewardVisual(before,{Coin:state.res.Coin,Fate:state.res.Fate});record('Exited '+d.definition.name+': collected '+paid+' Coin');if(d.bossWon&&d.definition.treasure){d.phase='treasure';d.treasureChoosing=false;updateAction('Boss defeated. Choose whether to keep the dungeon treasure.')}else{state.delve=null;updateAction(d.bossWon?'Dungeon completed.':'Exited dungeon. Terrain unchanged.')}}
+function finishDungeonTreasure(keep,index=null){const d=state.delve;if(!d||d.phase!=='treasure'||state.dead)return;const item=copyItem(d.definition.treasure);if(keep&&state.inventory.length>=8&&index===null){d.treasureChoosing=true;save();render();$('dungeonTreasureList').querySelector('input')?.focus();return}if(keep&&index!==null&&(!Number.isInteger(index)||!state.inventory[index]))return;snapshot();if(keep){if(index===null)state.inventory.push(item);else state.inventory.splice(index,1,item);record('Dungeon treasure kept: '+item.name)}else record('Dungeon treasure declined: '+item.name);state.delve=null;$('dungeonTreasureModal').classList.add('hidden');updateAction('Dungeon completed.')}
+function openDungeonSelector(){if(state.dead||state.delve||activeDungeonOperation())return;const root=$('dungeonChoiceList');root.innerHTML=dungeonLibrary.map(d=>{const progress=dungeonProgress(d.id,false),completed=!!progress?.completed;return `<label class="reward-choice dungeon-choice ${completed?'dungeon-completed':''}"><input type="radio" name="dungeonChoice" value="${escapeHTML(d.id)}" ${completed?'disabled':''}><span><strong>${escapeHTML(d.name)}</strong><br>${d.maxLevel} levels · ${escapeHTML(d.type)}${completed?'<br><strong>Dungeon Completed</strong>':progress?.highestLevelReached?`<br>Deepest level reached: ${progress.highestLevelReached}`:''}</span></label>`}).join('');$('dungeonChoiceError').textContent=dungeonLibraryError||(!root.children.length?'No available dungeons.':'');$('dungeonStart').disabled=true;root.querySelectorAll('input:not(:disabled)').forEach(input=>input.onchange=()=>{$('dungeonStart').disabled=false});$('dungeonChoiceModal').classList.remove('hidden');(root.querySelector('input:not(:disabled)')||$('dungeonChoiceCancel')).focus()}
+function enterSelectedDungeon(){const input=document.querySelector('input[name="dungeonChoice"]:checked'),definition=dungeonLibrary.find(d=>d.id===input?.value);if(!definition||state.dead||state.delve||activeDungeonOperation()||dungeonProgress(definition.id,false)?.completed)return;if(!state.zones.deck.length){$('dungeonChoiceError').textContent='Restore Attribute Deck cards before starting a dungeon.';return}snapshot();const refs=new Set<any>([...definition.encounters.map(e=>e.enemyId),definition.boss.enemyId]);state.delve={definition:JSON.parse(JSON.stringify(definition)),enemies:enemyLibrary.filter(e=>refs.has(e.id)).map(e=>JSON.parse(JSON.stringify(e))),level:1,phase:definition.maxLevel===1?'boss':'challenge',pendingCoins:0,restUsed:false,challengeWon:false,challengeAttempts:0,encounterRolled:false,enemyId:null,lastRoll:null,bossWon:false};dungeonProgress(definition.id).highestLevelReached=Math.max(1,dungeonProgress(definition.id).highestLevelReached);$('dungeonChoiceModal').classList.add('hidden');mode='';selected.clear();updateAction('Entered '+definition.name+'.')}
+function delveDeeper(){const d=state.delve;if(!d||d.phase!=='cleared'||activeDungeonOperation()||state.dead||d.level>=d.definition.maxLevel)return;snapshot();d.level++;dungeonProgress(d.definition.id).highestLevelReached=Math.max(d.level,dungeonProgress(d.definition.id).highestLevelReached);d.phase=d.level===d.definition.maxLevel?'boss':'challenge';d.restUsed=false;d.challengeWon=false;d.challengeAttempts=0;d.encounterRolled=false;d.enemyId=null;d.lastRoll=null;updateAction('Delved to level '+d.level+'.')}
+function renderDungeon(){renderDungeonVictory();
+ const d=state.delve,active=screen==='game'&&!!d;$('dungeonScreen').classList.toggle('hidden',!active);$('startDungeonDelve').classList.toggle('hidden',screen!=='game'||!!d);$('startDungeonDelve').disabled=state.dead||activeDungeonOperation();
+ const panels=['resourcesPanel','cardZonesPanel','equipmentPanel','inventoryPanel','eventKeywordsPanel','dicePanel'];
+ if(active){for(const id of panels)if($(id).parentElement!==$('dungeonSheetBody'))$('dungeonSheetBody').append($(id));if($('activity').parentElement!==$('dungeonSheetBody'))$('dungeonSheetBody').append($('activity'));if($('actionsPanel').parentElement!==$('dungeonActionHost'))$('dungeonActionHost').append($('actionsPanel'));
+  const key=activeId+':'+d.definition.id;if(dungeonLayoutKey!==key){dungeonLayoutKey=key;$('dungeonSheetBody').classList.add('hidden');$('dungeonSheetToggle').setAttribute('aria-expanded','false')}
+  $('game').classList.add('in-dungeon');const pending=state.challenge||state.combat||state.woundTask||mode,phase=d.phase,canSupport=d.challengeWon&&phase==='cleared'&&!pending&&!state.dead;
+  $('actionsPanel').classList.toggle('hidden',!pending&&!state.dead&&!actionNotice);$('dungeonInfo').innerHTML=dungeonProgressHTML(d)+`<h2>${escapeHTML(d.definition.name)}</h2><p>${escapeHTML(d.definition.description)}</p><p><strong>Level ${d.level} of ${d.definition.maxLevel}</strong> · ${phase==='boss'?'Boss level':phase==='cleared'?'Level cleared':escapeHTML(phase)}</p><p>Pending Coins: <strong>${d.pendingCoins}</strong> · ${d.level<d.definition.maxLevel?'Level Challenge Value: '+(d.definition.challenge.base+d.definition.challenge.perLevel*d.level):'Boss: '+escapeHTML(dungeonEnemy(d.definition.boss.enemyId).name)}</p><p class="help">Each level grants Coins once per level. Treasure requires boss victory.</p>${d.level<d.definition.maxLevel?dungeonEncounterHTML(d):'<p class="help">Boss level: no level challenge or random encounter.</p>'}`;
+  $('dungeonControls').innerHTML=`${state.dead?'<p class="gameover">GAME OVER</p>':''}${phase==='challenge'?`<button class="primary" id="dungeonChallenge" ${pending||state.dead?'disabled':''}>${d.challengeAttempts?'Retry':'Attempt'} Level Challenge</button>`:''}${['encounter','boss'].includes(phase)?`<button id="dungeonFight" ${pending||state.dead?'disabled':''}>${phase==='boss'?'Fight Boss':'Fight '+escapeHTML(d.enemyId)}</button>`:''}<button id="dungeonHeal" ${canSupport||mode==='heal'&&!actionInProgress()?'':'disabled'}>Heal</button><button id="dungeonRest" ${canSupport&&!d.restUsed||mode==='rest'&&!actionInProgress()?'':'disabled'}>${d.restUsed?'Rest used this level':'Rest'}</button><button id="dungeonNext" ${phase==='cleared'&&!pending&&!state.dead?'':'disabled'}>Delve Deeper</button><button id="dungeonExit" ${state.combat||state.woundTask||['payout','treasure','victory'].includes(phase)||state.dead?'disabled':''}>Exit Dungeon</button>${phase==='payout'?'<button id="dungeonCollect">Collect pending Coins</button>':''}`;
+  $('dungeonChallenge')?.addEventListener('click',startDungeonChallenge);$('dungeonFight')?.addEventListener('click',startDungeonCombat);$('dungeonNext').onclick=delveDeeper;$('dungeonExit').onclick=requestDungeonExit;for(const name of ['Heal','Rest'])$('dungeon'+name).onclick=()=>{sectionVisibility('actionsBody','actionsToggle','actionsChevron',true);chooseAction(name.toLowerCase())};$('dungeonCollect')?.addEventListener('click',collectDungeonPayout);
+  const treasure=phase==='treasure',treasureOpening=$('dungeonTreasureModal').classList.contains('hidden');$('dungeonTreasureModal').classList.toggle('hidden',!treasure);if(treasure){if(treasureOpening)$('dungeonTreasureKeep').focus();$('dungeonTreasureName').textContent=d.definition.treasure.name;$('dungeonTreasureReplace').classList.toggle('hidden',!d.treasureChoosing);$('dungeonTreasureQuestion').classList.toggle('hidden',!!d.treasureChoosing);$('dungeonTreasureList').innerHTML=state.inventory.map((item,i)=>`<label class="reward-choice"><input type="radio" name="dungeonTreasureDiscard" value="${i}"><span>${itemDetailsHTML(item)}</span></label>`).join('');$('dungeonTreasureConfirm').disabled=true;$('dungeonTreasureList').querySelectorAll('input').forEach(input=>input.onchange=()=>{$('dungeonTreasureConfirm').disabled=false})}
+ }else{dungeonLayoutKey=null;$('game').classList.remove('in-dungeon');$('actionsPanel').classList.remove('hidden');for(const id of ['resourcesPanel','cardZonesPanel','actionsPanel','equipmentPanel','inventoryPanel','eventKeywordsPanel','dicePanel'])if($(id).parentElement!==$('normalCharacterArea'))$('normalCharacterArea').append($(id));if($('activity').parentElement!==document.querySelector('main'))$('game').after($('activity'));$('dungeonTreasureModal').classList.add('hidden')}
+}
+function validateDungeonState(data){
+ const safe=v=>Number.isSafeInteger(v)&&v>=0;
+ if(data.dungeonProgress==null)data.dungeonProgress=[];if(!Array.isArray(data.dungeonProgress))throw Error('Invalid dungeon history');const seen=new Set<any>();for(const h of data.dungeonProgress){if(!h||typeof h.id!=='string'||!h.id||seen.has(h.id)||!Array.isArray(h.rewardedLevels)||h.rewardedLevels.some(n=>!Number.isSafeInteger(n)||n<1)||new Set<any>(h.rewardedLevels).size!==h.rewardedLevels.length||typeof h.completed!=='boolean')throw Error('Invalid dungeon history');if(h.highestLevelReached==null)h.highestLevelReached=h.rewardedLevels.reduce((n,level)=>Math.max(n,level),0);if(!safe(h.highestLevelReached)||h.rewardedLevels.some(n=>n>h.highestLevelReached))throw Error('Invalid deepest dungeon level');seen.add(h.id)}
+ if(data.delve==null){data.delve=null;if(data.challenge?.dungeon||data.combat?.dungeon)throw Error('Dungeon encounter has no delve');return}
+ const d=data.delve;if(!d||typeof d!=='object'||!Array.isArray(d.enemies))throw Error('Invalid active dungeon');d.enemies=d.enemies.map(e=>validateEnemyCard(e,true));if(new Set<any>(d.enemies.map(e=>e.id)).size!==d.enemies.length)throw Error('Duplicate dungeon enemy');d.definition=validateDungeonDefinition(d.definition,d.enemies);
+ if(!Number.isSafeInteger(d.level)||d.level<1||d.level>d.definition.maxLevel||!['challenge','encounter','cleared','boss','victory','payout','treasure'].includes(d.phase)||!safe(d.pendingCoins)||typeof d.restUsed!=='boolean'||typeof d.challengeWon!=='boolean'||!safe(d.challengeAttempts)||typeof d.encounterRolled!=='boolean'||typeof d.bossWon!=='boolean')throw Error('Invalid dungeon progress');
+ if(['boss','victory','treasure'].includes(d.phase)&&d.level!==d.definition.maxLevel)throw Error('Invalid dungeon boss level');if(['cleared','encounter'].includes(d.phase)&&!d.challengeWon)throw Error('Level challenge has not been won');if(d.phase==='encounter'&&!d.enemies.some(e=>e.id===d.enemyId))throw Error('Missing dungeon encounter enemy');
+ const history=data.dungeonProgress.find(e=>e.id===d.definition.id);if(history)history.highestLevelReached=Math.max(history.highestLevelReached,d.level);if(!history||history.rewardedLevels.some(n=>n>d.definition.maxLevel)||(['cleared','victory','treasure'].includes(d.phase)&&!history.rewardedLevels.includes(d.level))||(d.bossWon&&!history.completed)||(d.phase==='victory'&&!d.bossWon)||(d.phase==='treasure'&&(!d.bossWon||!d.definition.treasure||d.pendingCoins!==0)))throw Error('Dungeon reward history mismatch');
+ const levels=[...history.rewardedLevels].sort((a,b)=>a-b);if(levels.some((n,i)=>n!==i+1)||levels.filter(n=>n<d.level).length!==d.level-1||history.completed!==d.bossWon)throw Error('Inconsistent dungeon history');
+ if(d.phase==='challenge'&&(d.level===d.definition.maxLevel||d.challengeWon))throw Error('Invalid level challenge');
+ if(data.challenge&&data.challenge.base!==d.definition.challenge.base+d.definition.challenge.perLevel*d.level)throw Error('Dungeon challenge value mismatch');
+ if(d.lastRoll!==null){const r=d.lastRoll,die=d.definition.monsterChance.die;if(!r||!Number.isInteger(r.chance)||r.chance<1||r.chance>die||(r.enemy!==null&&(!Number.isInteger(r.enemy)||r.enemy<1||r.enemy>die)))throw Error('Invalid dungeon encounter roll');if(d.phase==='encounter'&&(r.chance>dungeonEncounterThreshold(d)||d.definition.encounters.find(e=>e.rolls.includes(r.enemy))?.enemyId!==d.enemyId))throw Error('Dungeon encounter roll mismatch')}
+ if(data.challenge&&(!data.challenge.dungeon||d.phase!=='challenge'))throw Error('Dungeon challenge mismatch');if(data.combat&&(!data.combat.dungeon||!['encounter','boss'].includes(d.phase)||data.combat.enemy.id!==(d.phase==='boss'?d.definition.boss.enemyId:d.enemyId)))throw Error('Dungeon combat mismatch');
+}
+
+const SUITS=[['H','♥','Body'],['S','♠','Mind'],['C','♣','Cunning'],['D','♦','Luck']],RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];const ALL=SUITS.flatMap(([s])=>Array.from({length:13},(_,i)=>s+(i+1)));const $=(id):any=>document.getElementById(id);const value=id=>Number(id.slice(1));const name=id=>RANKS[value(id)-1]+SUITS.find(s=>s[0]===id[0])[1];const sum=ids=>ids.reduce((n,id)=>n+value(id),0);const escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fresh=():any=>({started:false,round:0,characterName:"",adventureModule:"",inventory:[],customKeywords:[],customCategories:[],eventKeywords:[],dungeonProgress:[],delve:null,equipment:{weapon:null,armor:null},dead:false,res:{Coin:0,Fate:0,Supply:0},zones:{deck:[],hand:[],fatigue:[],wound:[]},log:[],challenge:null,combat:null,woundTask:null,pointLimit:50,upgradePoints:0,pool:null});const FIRST_NAMES=["Aldric", "Alaric", "Armand", "Berengar", "Cedric", "Corvin", "Dorian", "Edric", "Emeric", "Edrin", "Falken", "Garrick", "Godfrey", "Hadrian", "Isolde", "Leofric", "Lucan", "Magnus", "Merek", "Mordren", "Osric", "Roderic", "Roland", "Sigmund", "Theodric", "Ulric", "Valdrik", "Wulfric", "Ysmera", "Elowen", "Morwen", "Rowena", "Aveline", "Beatrice", "Briana", "Catrin", "Elspeth", "Freya", "Gwendolen", "Hilda", "Lenora", "Maelis", "Matilda", "Rosamund", "Sabine", "Seraphine", "Thalia", "Veyra", "Ysolda", "Zorina"];const SURNAMES=["Ashford", "Blackthorn", "Ravenscroft", "Ironwood", "Grimwald", "Thornfield", "Wolfhart", "Darkwater", "Stonehelm", "Redwyck", "Coldmere", "Blackwell", "Duskmont", "Greymark", "Winterborne", "Crowhurst", "Ashbourne", "Thornwick", "Ravenshade", "Ironcrest", "Hollowmere", "Nightford", "Blackbriar", "Stormholt", "Greyhaven", "Bloodworth", "Frostmere", "Darkmoor", "Silverthorn", "Whitlock", "Duskwood", "Grimstone", "Thornhelm", "Ashenford", "Wolfmere", "Crowmont", "Ironvale", "Blackfen", "Ravenholt", "Stormwick", "Coldbrook", "Greywatch", "Wintercrest", "Hollowbrook", "Redmarsh", "Stonecroft", "Nightwell", "Frostwick", "Duskhaven", "Wolfstone"];const generateRandomName=()=>FIRST_NAMES[Math.floor(Math.random()*FIRST_NAMES.length)]+' '+SURNAMES[Math.floor(Math.random()*SURNAMES.length)];const STORE='quest-for-glory-v12-slots';let slots=[],activeId=null,screen='menu',pendingDelete=null;let storageError='',storageLocked=false,storageOriginal=null;let state=fresh();let history=[],mode='',selected=new Set<any>(),target=0,viewZone=null,setupSelected=new Set<any>(),setupResources={Coin:8,Fate:4,Supply:2},setupName="",setupModule="",pointLimit=50,challengeSuits=new Set<any>(['H','S','C']);// Storage failures are sticky until a successful write/load. Never erase unreadable bytes.
+function renderStorageNotice(){
+ const panel=$('storageNotice');
+ panel.classList.toggle('hidden',!storageError);
+ $('storageMessage').textContent=storageError;
+ $('storageBackup').disabled=storageLocked&&storageOriginal===null;
+ $('storageBackup').textContent=storageLocked?'Download saved data':'Export current characters';
+ $('storageRetry').textContent=storageLocked?'Retry loading':'Retry saving';
+}
+function persistSlots(){
+ if(storageLocked){renderStorageNotice();return false}
+ try{storage.setItem(STORE,JSON.stringify({slots}));storageError='';renderStorageNotice();return true}
+ catch{storageError='Save failed: browser storage unavailable or full. Export current characters to keep your progress.';renderStorageNotice();return false}
+}
+function loadSavedCharacters(){
+ let candidate=[],source=null,raw=null;
+ try{
+  for(const key of [STORE,'quest-for-glory-v11-slots','quest-for-glory-v10-slots','quest-for-glory-v9-slots','adventure-tracker-v6']){
+   source=key;raw=storage.getItem(key);if(raw===null)continue;
+   const parsed=JSON.parse(raw);
+   if(key==='adventure-tracker-v6')candidate=[{id:'legacy-'+Date.now(),state:parsed,updated:Date.now()}];
+   else{
+    if(!parsed||!Array.isArray(parsed.slots)||parsed.slots.length>5)throw Error('Invalid character slots');
+    candidate=parsed.slots;
+   }
+   const ids=new Set<any>();
+   for(const entry of candidate){
+    if(!entry||typeof entry.id!=='string'||!entry.id||ids.has(entry.id))throw Error('Invalid character slot');
+    ids.add(entry.id);entry.state=normalizeCharacter(entry.state);
+   }
+   break;
+  }
+  slots=candidate;storageLocked=false;storageOriginal=null;storageError='';
+  if(raw!==null&&source!==STORE)persistSlots();
+ }catch{
+  storageLocked=true;storageOriginal=raw;
+  storageError='Saved data could not be loaded. The original data has been preserved. Download it for recovery, then retry after repairing the saved data.';
+ }
+ renderStorageNotice();
+}
+const save=()=>{
+ if(activeId){const entry=slots.find(x=>x.id===activeId);if(entry){entry.state=JSON.parse(JSON.stringify(state));entry.updated=Date.now()}}
+ return persistSlots();
+};
+$('storageBackup').onclick=()=>downloadText(storageLocked?storageOriginal:JSON.stringify({slots},null,2),'quest-for-glory-recovery.json');
+$('storageRetry').onclick=()=>{if(storageLocked){loadSavedCharacters();render()}else if(save())notify('Progress saved.');else notify(storageError)};
+function snapshot(){history.push(JSON.stringify(state));if(history.length>40)history.shift()}function record(message){state.log.unshift({t:new Date().toLocaleString(),message});state.log=state.log.slice(0,30)}function update(message?:string){const saved=save();render();$('status').textContent=saved?(message||''):storageError}function notify(s){$('status').textContent=s}function move(ids,from,to){for(const id of ids){const i=state.zones[from].indexOf(id);if(i<0)throw Error('Card not in '+from);state.zones[from].splice(i,1);state.zones[to].push(id)}}function cardFace(id){const v=value(id),suit=SUITS.find(s=>s[0]===id[0])[1],rank=RANKS[v-1];return `<span class="corner">${rank}<span>${suit}</span></span><span class="corner bottom">${rank}<span>${suit}</span></span><span class="single-suit" aria-hidden="true">${suit}</span>`}function cards(ids,sel,clickable=true){return '<div class="cardgrid">'+ids.slice().sort((a,b)=>SUITS.findIndex(s=>s[0]===a[0])-SUITS.findIndex(s=>s[0]===b[0])||value(a)-value(b)).map(id=>`<button class="card ${'HD'.includes(id[0])?'red':''} ${sel.has(id)?'selected':''}" aria-label="${name(id)}" data-card="${id}" ${clickable?'':'disabled'}>${cardFace(id)}</button>`).join('')+'</div>'}function wireCards(root,handler){root.querySelectorAll('[data-card]').forEach(b=>b.onclick=()=>handler(b.dataset.card))}function toggle(id){selected.has(id)?selected.delete(id):selected.add(id);renderOperation()}// Presentation is transient; saved values are updated atomically before animation.
+let rewardVisual=null,woundVisual=null,adjustTarget=null,adjustDirection=1;
+function reducedMotion(){return window.matchMedia('(prefers-reduced-motion: reduce)').matches}
+function resourceValueNode(key){return document.querySelector(`[data-resource-value="${key}"]`)}
+function setDisplayedResource(key,value){const node=resourceValueNode(key);if(node){node.textContent=String(value);node.closest('button').style.setProperty('--resource-digits',String(value).length)}}
+function stopRewardVisual(){
+ if(rewardVisual?.frame)cancelAnimationFrame(rewardVisual.frame);rewardVisual=null;
+ document.querySelectorAll('.resource-reward,.reward-number').forEach(el=>{el.classList.remove('resource-reward','reward-number');el.style.animationDelay=''});
+ for(const key of ['Coin','Fate','Supply'])setDisplayedResource(key,state.res[key]);
+}
+function queueRewardVisual(before,after){
+ stopRewardVisual();
+ if(reducedMotion()||!['Coin','Fate'].some(k=>after[k]!==before[k]))return;
+ rewardVisual={owner:activeId,from:before,to:after,start:null,frame:null};
+}
+function rewardVisualValid(effect){return effect.owner===activeId&&screen==='game'&&state.started&&!state.dead&&!$('resourcesBody').classList.contains('hidden')&&['Coin','Fate'].every(k=>state.res[k]===effect.to[k])}
+function paintRewardVisual(effect,now){
+ if(rewardVisual!==effect)return;
+ if(!rewardVisualValid(effect)||reducedMotion()){stopRewardVisual();return}
+ if(effect.start===null)effect.start=now;
+ const elapsed=Math.max(0,now-effect.start),progress=Math.min(1,elapsed/800),eased=1-(1-progress)**3;
+ if(progress>=1){stopRewardVisual();return}
+ for(const key of ['Coin','Fate']){
+  if(effect.to[key]===effect.from[key])continue;
+  const box=document.querySelector(`[data-resource-box="${key}"]`),number=resourceValueNode(key);
+  if(!box||!number)continue;
+  if(!box.classList.contains('resource-reward')){box.classList.add('resource-reward');box.style.animationDelay=`-${elapsed}ms`;number.classList.add('reward-number');number.style.animationDelay=`-${elapsed}ms`}
+  const value=Math.min(Math.max(effect.from[key],effect.to[key]),Math.max(Math.min(effect.from[key],effect.to[key]),effect.from[key]+Math.trunc((effect.to[key]-effect.from[key])*eased)));
+  setDisplayedResource(key,value);
+ }
+}
+function syncRewardVisual(){
+ const effect=rewardVisual;if(!effect)return;
+ paintRewardVisual(effect,performance.now());
+ if(rewardVisual===effect&&!effect.frame){
+  const tick=now=>{if(rewardVisual!==effect)return;effect.frame=null;paintRewardVisual(effect,now);if(rewardVisual===effect)effect.frame=requestAnimationFrame(tick)};
+  effect.frame=requestAnimationFrame(tick);
+ }
+}
+function stopWoundVisual(){if(woundVisual?.timer)clearTimeout(woundVisual.timer);woundVisual=null;document.querySelector('main').classList.remove('wound-shake');document.body.classList.remove('wound-active');$('woundOverlay').classList.remove('active')}
+function stopPresentation(){stopRewardVisual();stopWoundVisual();stopVictorySound()}
+function playWoundVisual(){
+ stopWoundVisual();const effect={owner:activeId,timer:null};woundVisual=effect;
+ const main=document.querySelector('main');document.body.classList.add('wound-active');void main.offsetWidth;
+ if(!reducedMotion())main.classList.add('wound-shake');
+ $('woundOverlay').classList.add('active');
+ effect.timer=setTimeout(()=>{if(woundVisual===effect)stopWoundVisual()},500);
+}
+function preparePresentationRender(){if(screen!=='game'||(victorySoundOwner!==null&&victorySoundOwner!==activeId))stopVictorySound();
+ if(rewardVisual&&(screen!=='game'||!state.started||rewardVisual.owner!==activeId))stopRewardVisual();
+ if(woundVisual&&(screen!=='game'||woundVisual.owner!==activeId))stopWoundVisual();
+ if(adjustTarget&&(screen!=='game'||!state.started||state.dead))closeAdjustDialog();
+}
+function sectionVisibility(body,toggle,chevron,open){$(body).classList.toggle('hidden',!open);$(toggle).setAttribute('aria-expanded',String(open));$(chevron).textContent=open?'▴':'▾'}
+for(const [body,toggle,chevron]of [['resourcesBody','resourcesToggle','resourcesChevron'],['cardZonesBody','cardZonesToggle','cardZonesChevron'],['actionsBody','actionsToggle','actionsChevron']]){
+ $(toggle).onclick=()=>{const open=$(body).classList.contains('hidden');sectionVisibility(body,toggle,chevron,open);if(body==='resourcesBody'&&!open)stopRewardVisual()};
+}
+function currentAdjustValue(){return adjustTarget==='Round'?state.round:state.res[adjustTarget]}
+function adjustCalculation(){
+ const raw=$('adjustAmount').value,amount=Number(raw),current=currentAdjustValue();
+ if(!/^\d+$/.test(raw.trim())||!Number.isSafeInteger(amount)||amount<1)return {valid:false,message:'Enter a positive whole-number amount.'};
+ const total=current+adjustDirection*amount;
+ if(!Number.isSafeInteger(total)||total<0)return {valid:false,message:total<0?'The total cannot be below 0.':'The total exceeds the supported limit.'};
+ return {valid:true,amount,total};
+}
+function renderAdjustPreview(){
+ if(!adjustTarget)return;
+ $('adjustCurrent').textContent=String(currentAdjustValue());
+ const result=adjustCalculation();$('adjustPreview').textContent=result.valid?'New total: '+result.total:result.message;
+ $('adjustConfirm').disabled=!result.valid;
+ for(const [id,direction]of [['adjustAdd',1],['adjustRemove',-1]]){$(id).classList.toggle('primary',adjustDirection===direction);$(id).classList.toggle('secondary',adjustDirection!==direction);$(id).setAttribute('aria-pressed',String(adjustDirection===direction))}
+}
+function openAdjustDialog(key){if(dungeonActionLocked())return;
+ if(!state.started||state.dead||!['Round','Coin','Fate','Supply'].includes(key))return;
+ stopRewardVisual();adjustTarget=key;adjustDirection=1;
+ $('adjustTitle').textContent='Adjust '+key;$('adjustAmount').value='1';
+ $('adjustModal').classList.remove('hidden');renderAdjustPreview();$('adjustAmount').focus();$('adjustAmount').select();
+}
+function closeAdjustDialog(){const key=adjustTarget;adjustTarget=null;$('adjustModal').classList.add('hidden');if(screen==='game'){if(key==='Round')$('roundDisplay').focus();else if(key)document.querySelector(`[data-adjust-resource="${key}"]`)?.focus()}}
+$('adjustAdd').onclick=()=>{adjustDirection=1;renderAdjustPreview()};$('adjustRemove').onclick=()=>{adjustDirection=-1;renderAdjustPreview()};$('adjustAmount').oninput=renderAdjustPreview;
+$('adjustCancel').onclick=closeAdjustDialog;
+$('adjustModal').onclick=e=>{if(e.target===$('adjustModal'))closeAdjustDialog()};
+$('adjustModal').onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();closeAdjustDialog()}else trapModalTab(e,$('adjustModal'))};
+$('adjustForm').onsubmit=e=>{
+ e.preventDefault();if(!adjustTarget||state.dead)return;
+ const result=adjustCalculation();if(!result.valid){renderAdjustPreview();return}
+ const key=adjustTarget;snapshot();
+ if(key==='Round')state.round=result.total;else state.res[key]=result.total;
+ record(`${key} ${adjustDirection>0?'+':'-'}${result.amount} → ${result.total}`);
+ closeAdjustDialog();update(key+' updated.');if(key==='Round')$('roundDisplay').focus();else document.querySelector(`[data-adjust-resource="${key}"]`)?.focus();
+};
+$('roundDisplay').onclick=()=>openAdjustDialog('Round');
+function resourceUI(key){return `<div class="stat" data-resource-box="${key}"><div class="resource-label">${key}</div><div class="resource-controls"><button class="resource-step" data-resource="${key}" data-delta="-1" aria-label="Decrease ${key} by 1" ${state.res[key]===0?'disabled':''}>−</button><button class="resource-total" data-adjust-resource="${key}" style="--resource-digits:${String(state.res[key]).length}" aria-haspopup="dialog" aria-label="Adjust ${key} total: ${state.res[key]}"><strong class="resource-number" data-resource-value="${key}">${state.res[key]}</strong></button><button class="resource-step" data-resource="${key}" data-delta="1" aria-label="Increase ${key} by 1">+</button></div></div>`}
+const creationCost=id=>value(id)*(id[0]==="D"?2:1);const creationTotal=ids=>ids.reduce((n,id)=>n+creationCost(id),0);function renderSetup(){renderStartingItems();const start=$('starting');start.innerHTML=['Coin','Fate','Supply'].map(k=>`<label>${k} <input type="number" min="0" step="1" data-start="${k}" value="${setupResources[k]}"></label>`).join('');start.querySelectorAll('input').forEach(e=>e.onchange=()=>{const n=Number(e.value);setupResources[e.dataset.start]=Number.isSafeInteger(n)&&n>=0?n:0;renderSetup()});$('setupCards').innerHTML=cards(ALL,setupSelected);wireCards($('setupCards'),id=>{setupSelected.has(id)?setupSelected.delete(id):setupSelected.add(id);renderSetup()});$('characterName').value=setupName;$('setupModule').value=setupModule;$('setupModule').oninput=e=>{setupModule=e.target.value};$('characterName').oninput=e=>{setupName=e.target.value;$('startGame').disabled=!setupName.trim()||!setupSelected.size||creationTotal([...setupSelected])>pointLimit};$('pointLimit').value=pointLimit;$('pointLimit').onchange=e=>{const n=Number(e.target.value);pointLimit=Number.isSafeInteger(n)&&n>0?n:50;renderSetup()};$('setupTotal').innerHTML=`Selected ${setupSelected.size} cards · <span class="creation-cost">${creationTotal([...setupSelected])} / ${pointLimit} points</span> (Luck costs ×2)`;$('startGame').disabled=!setupName.trim()||setupSelected.size===0||creationTotal([...setupSelected])>pointLimit}function allCardsWounded(){const z=state.zones;return z.wound.length>0&&z.deck.length===0&&z.fatigue.length===0&&z.hand.length===0}function meetsDeathConditions(){const z=state.zones;return allCardsWounded()||(z.deck.length===0&&z.fatigue.length>0&&z.wound.length>0&&state.res.Fate===0)}function isGameOver(){return !!state.dead}function checkFailureDeath(){if(meetsDeathConditions()){state.dead=true;record('GAME OVER');return true}return false}
+function attachCancel(root){if(state.delve)return;if((!state.challenge&&!state.combat)||state.combat?.stage==='reward')return;const obj=state.combat||state.challenge;const bar=document.createElement('div');bar.className='cancelbar';bar.innerHTML='<button type="button" id="cancelEncounter">Cancel '+(state.combat?'combat':'challenge')+'</button>';root.appendChild(bar);bar.querySelector('button').onclick=()=>{if(!obj.rollback){notifyAction('Unable to restore pre-action state.');return}let restored;try{restored=normalizeCharacter(JSON.parse(obj.rollback))}catch{notifyAction('Unable to restore pre-action state: invalid saved snapshot.');return}stopPresentation();finishPendingDiceRoll();state=preserveInventoryTips(restored);mode='';selected.clear();history=[];updateAction('Action cancelled. Previous state restored.')}}function render(){onActivity(!!(state.challenge||state.combat||state.woundTask||mode||state.delve));if(screen!=='game'){closeOptions();eventEditor=null;$('eventKeywordModal').classList.add('hidden');$('dungeonChoiceModal').classList.add('hidden');$('dungeonTreasureModal').classList.add('hidden');$('dungeonVictoryModal').classList.add('hidden')}syncV26Dialogs();syncV23Dialogs();syncV22Dialogs();preparePresentationRender();$('actionStatus').textContent=actionNotice;const inMenu=screen==='menu';if(inMenu||state.combat?.stage!=='reward')closeRewardDialog();if(inMenu||mode!=='combat'||state.combat)closeCombatEntry();$('mainMenu').classList.toggle('hidden',!inMenu);$('setup').classList.toggle('hidden',inMenu||state.started);$('game').classList.toggle('hidden',inMenu||!state.started);$('undo').classList.toggle('hidden',inMenu||!state.started);$('newGameTop').classList.toggle('hidden',inMenu);$('activity').classList.toggle('hidden',inMenu||!state.started);$('renameCharacter').classList.toggle('hidden',inMenu||!state.started);$('editModule').classList.toggle('hidden',inMenu||!state.started);$('manageKeywords').classList.toggle('hidden',inMenu||!state.started);$('optionsButton').classList.toggle('hidden',inMenu||!state.started);renderStorageNotice();if(inMenu){renderMenu();return}const started=state.started;$('characterHeading').textContent=state.characterName||'Character';$('roundNumber').textContent=String(state.round);$('roundDisplay').disabled=!!state.dead||dungeonActionLocked();$('moduleHeading').textContent=state.adventureModule||'';$('moduleHeading').classList.toggle('hidden',!state.adventureModule);if(state.started){renderInventory();renderEquipment();renderEventKeywords()}$('renameCharacter').classList.toggle('hidden',inMenu||!state.started);$('editModule').classList.toggle('hidden',inMenu||!state.started);$('manageKeywords').classList.toggle('hidden',inMenu||!state.started);$('optionsButton').classList.toggle('hidden',inMenu||!state.started);$('setup').classList.toggle('hidden',started);$('game').classList.toggle('hidden',!started);$('undo').disabled=!history.length;if(!started)renderSetup();else{$('resources').innerHTML=['Coin','Fate','Supply'].map(resourceUI).join('');
+$('resources').querySelectorAll('[data-resource]').forEach(b=>b.onclick=()=>{if(state.dead||dungeonActionLocked())return;const k=b.dataset.resource,n=Number(b.dataset.delta);if(!Number.isSafeInteger(state.res[k]+n)||state.res[k]+n<0){notify('Resource total must be a supported nonnegative whole number.');return}stopRewardVisual();snapshot();state.res[k]+=n;record(`${k} ${n>0?'+':''}${n} → ${state.res[k]}`);update()});
+$('resources').querySelectorAll('[data-adjust-resource]').forEach(b=>b.onclick=()=>openAdjustDialog(b.dataset.adjustResource));
+const ownedCards=Object.values(state.zones).flat() as string[];const pointsUsed=ownedCards.reduce((n,id)=>n+value(id)*(id[0]==='D'?2:1),0);const limit=state.pointLimit||50;$('attributePoints').innerHTML=`<strong>Attribute Points:</strong> ${pointsUsed} used / ${limit} limit <meter min="0" max="${Math.max(limit,pointsUsed,1)}" value="${pointsUsed}"></meter>`;$('zoneCounts').innerHTML=[['deck','Attribute Deck'],['fatigue','Fatigue'],['wound','Wounds']].map(([k,n])=>`<button type="button" class="zone-tile${k==='wound'&&state.zones[k].length?' zone-wounded':k==='fatigue'&&state.zones[k].length?' zone-fatigued':''}${viewZone===k?' active':''}" data-viewzone="${k}" aria-expanded="${viewZone===k}"><span class="zone-title">${n}</span><span class="zone-total">${state.zones[k].length} cards · ${sum(state.zones[k])} points</span></button>`).join('');$('zoneView').classList.toggle('hidden',!viewZone);$('zoneView').innerHTML=viewZone?'<hr><strong>'+({deck:'Attribute Deck',fatigue:'Fatigue',wound:'Wounds'}[viewZone])+'</strong>'+cards(state.zones[viewZone],new Set<any>(),false):'';document.querySelectorAll('[data-viewzone]').forEach(b=>b.classList.toggle('active',b.dataset.viewzone===viewZone));$('actions').querySelectorAll('button').forEach(b=>{b.classList.toggle('active',b.dataset.mode===mode);const unavailable=['combat','challenge'].includes(b.dataset.mode)&&!state.zones.deck.length&&!state.combat&&!state.challenge;b.classList.toggle('action-unavailable',unavailable);b.setAttribute('aria-disabled',String(isGameOver()));b.title=unavailable?'Attribute Deck is empty. Activate for details.':'';b.disabled=isGameOver()});$('gameOver').classList.toggle('hidden',!isGameOver());$('resources').querySelectorAll('button').forEach(b=>{if(isGameOver()||dungeonActionLocked())b.disabled=true});$('operation').classList.toggle('hidden',isGameOver());if(isGameOver()){mode=''}else renderOperation()}$('log').innerHTML=state.log.length?state.log.map(e=>`<li><time>${escapeHTML(e.t)}</time>${escapeHTML(e.message)}</li>`).join(''):'<li class="muted">No activity yet.</li>';syncRewardVisual();renderDungeon()}function actionInProgress(){return !!(state.challenge||state.combat||state.woundTask||state.restWoundResolved||selected.size||healItemSelection)}
+function chooseAction(m){if(actionInProgress())return;if(mode===m){closeCombatEntry();setMode('');return}setMode(m)}
+function setMode(m,restConfirmed=false){if(m===mode&&actionInProgress()&&!restConfirmed)return;const delve=state.delve;if(delve&&m&&(!['heal','rest'].includes(m)||!delve.challengeWon||delve.phase!=='cleared')){notifyAction('Win the level challenge or exit the dungeon before another action.');return}if(delve&&m==='rest'&&delve.restUsed){notifyAction('Rest already used this level.');return}if((m==='challenge'||m==='combat')&&!state.zones.deck.length&&!state.challenge&&!state.combat){notifyAction(m==='challenge'?'Unable to start a challenge without attribute cards':'Unable to start combat without attribute cards');return}if(isGameOver()){notifyAction('GAME OVER');return}if((state.challenge||state.combat||state.woundTask)&&m!==(state.combat?'combat':state.challenge?'challenge':'wound')){notifyAction('Finish the current operation first.');return}if(m==='rest'&&!Number.isSafeInteger(state.round+1)){notifyAction('Round limit reached. Decrease Round before Resting.');return}if(m==='rest'&&!restConfirmed){openRestConfirmation();return}healItemSelection=null;if(m!=='rest'&&state.restWoundResolved){state.restWoundResolved=false;save()}actionNotice='';$('actionStatus').textContent='';mode=m;selected.clear();target=(m==='rest'||m==='heal')?5:0;render();if(m==='upgrade')flashUpgradePoints()}function renderOperation(){const root=$('operation');if(!state.started){root.innerHTML='';return}if(state.dead){root.innerHTML='';return}if(!mode){root.innerHTML='<p class="help">Choose an action above.</p>';return}if(state.woundTask){renderWoundTask(root);if(state.combat){root.insertAdjacentHTML('afterbegin',enemyInfoHTML(state.combat.enemy,true));attachCancel(root);}return}if(mode==='combat'){renderCombat(root);attachCancel(root);return}if(mode==='challenge'){renderChallenge(root);attachCancel(root);return}if(mode==='rest'&&state.res.Supply===0&&!state.restWoundResolved){root.innerHTML='<hr><h2>Rest without Supply</h2><div class="warning">Resting without Supply causes 5 Wound points first. If you survive, you may then recover Fatigue cards.</div><button class="danger" id="restWoundStart">Take 5 Wound points & Rest</button> <button class="secondary" id="restWoundCancel">Cancel</button>';$('restWoundStart').onclick=()=>{snapshot();state.woundTask={value:5,source:'rest',stage:'fatigue',fatigue:[],deck:[]};selected.clear();updateAction()};$('restWoundCancel').onclick=()=>setMode('');return}if(mode==='upgrade'){const pool=state.pool||ALL.filter(id=>!Object.values(state.zones).flat().includes(id));state.pool=pool;const points=state.pointLimit-creationTotal(Object.values(state.zones).flat());const cost=creationTotal([...selected]);root.innerHTML=`<hr><h2>Upgrade Attributes</h2><p class="help">Spend Fate to gain 3 Attribute Points per Fate. Purchase any available cards from the Attribute Pool. Luck (♦) costs double. Unspent points are retained.</p><div class="row"><span class="pill">Fate: ${state.res.Fate}</span><span class="pill">Point limit: ${state.pointLimit||50}</span><span class="pill" id="availableUpgradePoints">Available points: ${points}</span><span class="pill">Pool: ${pool.length} cards</span></div><div class="row" style="margin:12px 0"><label>Fate to spend <input id="upgradeFate" type="number" min="1" max="${state.res.Fate}" step="1" value="1"></label><button class="primary" id="buyUpgrade" ${state.res.Fate>0?'':'disabled'}>Buy Attribute Points</button></div><p>Selected cards: ${selected.size} · Cost ${cost} / ${points} points</p>${cards(pool,selected)}<div class="row"><button class="primary" id="purchaseCards" ${selected.size&&cost<=points?'':'disabled'}>Purchase selected cards</button><button class="secondary" id="upgradeClose">Close</button></div>`;wireCards(root,id=>{selected.has(id)?selected.delete(id):selected.add(id);renderOperation()});$('buyUpgrade').onclick=()=>{const n=Number($('upgradeFate').value);if(!Number.isSafeInteger(n)||n<1||n>state.res.Fate||(!Number.isSafeInteger(points+n*3)||!Number.isSafeInteger(state.pointLimit+n*3))){notifyAction('Enter a valid Fate amount.');return}snapshot();state.res.Fate-=n;state.pointLimit=(state.pointLimit||50)+n*3;state.upgradePoints=points+n*3;record(`Upgrade: spent ${n} Fate for ${n*3} Attribute Points`);updateAction()};$('purchaseCards').onclick=()=>{const ids=[...selected],cost=creationTotal(ids);const available=state.pointLimit-creationTotal(Object.values(state.zones).flat());if(!ids.length||cost>available||ids.some(id=>!state.pool.includes(id)))return;snapshot();state.upgradePoints=available-cost;state.pool=state.pool.filter(id=>!selected.has(id));state.zones.deck.push(...ids);record(`Upgrade: purchased ${ids.map(name).join(', ')} for ${cost} points`);selected.clear();updateAction()};$('upgradeClose').onclick=()=>setMode('');return}if(mode==='wound'){root.innerHTML='<hr><h2>Take wound</h2><p class="help">Use Fatigue cards first. If their combined value is insufficient, use cards from your Attribute Deck.</p><label>Wound value <input type="number" id="woundValue" min="1" step="1" value="1"></label> <button class="primary" id="beginWound">Select Cards</button>'; $('beginWound').onclick=()=>{const n=Number($('woundValue').value);if(!Number.isSafeInteger(n)||n<1){notifyAction('Enter a positive whole number.');return}snapshot();state.woundTask={value:n,source:'manual',stage:'fatigue',fatigue:[],deck:[]};selected.clear();updateAction()};return}if((mode==='rest'||mode==='heal')&&target===0&&!$('target'))target=5;const config={action:{title:'Regular action',zone:'deck',help:'Select any cards from the Attribute Deck. All selected cards move to the Action Hand, then to Fatigue.'},wound:{title:'Take wound',zone:'fatigue',help:'Select Fatigue cards with combined value at least the wound value. They move to Wounds.'},heal:{title:'Heal',zone:'wound',help:'Select Wound cards with combined value at most the healing value. They return to the Attribute Deck.'},rest:{title:'Rest',zone:'fatigue',help:'Select Fatigue cards with combined value at most the Rest value. They return to the Attribute Deck.'}}[mode];const ids=state.zones[config.zone];const total=sum([...selected]);const valid=mode==='action'?selected.size>0:target>0&&selected.size>0&&(mode==='wound'?total>=target:total<=target);root.innerHTML=`<hr><h2>${config.title}</h2><p class="help">${config.help}</p>${mode==='action'?'':`<div class="heal-value-row ${mode==='heal'?'heal-inline':''}"><label>${mode==='wound'?'Wound':mode==='heal'?'Healing':'Rest'} value <input type="number" id="target" min="1" step="1" value="${target||''}"></label>${mode==='heal'?healItemControl():''}</div>`}<p>Selected: ${selected.size} card(s) · Total ${total}${mode==='wound'?` · Need at least ${target}`:mode==='heal'||mode==='rest'?` · Maximum ${target}`:''}</p>${cards(ids,selected)}<div class="row"><button class="primary" id="commit" ${valid?'':'disabled'}>Confirm ${config.title.toLowerCase()}</button><button class="secondary" id="cancel">Cancel</button></div>`;wireCards(root,toggle);if(mode==='heal'&&$('useHealItem'))$('useHealItem').onclick=openHealItemPicker;if(mode!=='action')$('target').oninput=e=>{const v=Number(e.target.value);target=Number.isSafeInteger(v)&&v>0?v:0;const b=$('commit');b.disabled=!(target>0&&selected.size>0&&(mode==='wound'?sum([...selected])>=target:sum([...selected])<=target));};$('cancel').onclick=()=>{if(mode==='rest'){state.restWoundResolved=false;save()}setMode('')};$('commit').onclick=()=>{const ids=[...selected],total=sum(ids);if(!ids.length)return;if(mode!=='action'&&(!target||(mode==='wound'?total<target:total>target))){notifyAction('Selected total does not satisfy the required value.');return}if(mode==='rest'&&!Number.isSafeInteger(state.round+1)){notifyAction('Round limit reached. Decrease Round before Resting.');return}if(mode==='heal'&&healItemSelection&&!validHealItemSelection()){healItemSelection=null;renderOperation();notifyAction('The selected item changed. Choose an item again.');return}snapshot();if(mode==='heal'&&healItemSelection){const used=state.inventory.splice(healItemSelection.index,1)[0];record('Heal consumed item: '+used.name);healItemSelection=null}if(mode==='rest'){if(state.res.Supply>0){state.res.Supply--;record('Rest: spent 1 Supply')}else if(!state.restWoundResolved){notifyAction('Resolve the 5-point Wound before Resting.');return}state.restWoundResolved=false}if(mode==='action'){move(ids,'deck','hand');move(ids,'hand','fatigue');record(`Regular action: ${ids.map(name).join(', ')} (${total}) → Fatigue`)}else{const dest=mode==='wound'?'wound':'deck';move(ids,config.zone,dest);record(`${config.title} ${target}: ${ids.map(name).join(', ')} (${total}) → ${dest==='deck'?'Attribute Deck':'Wounds'}`)}if(mode==='rest'){if(state.delve)state.delve.restUsed=true;state.round++;record('Round advanced to '+state.round)}mode='';selected.clear();target=0;updateAction()}}// Encounter rules shared by Challenges and Combat.
+const INITIAL_HAND_LIMIT=5;
+function adjustmentCost(encounter){const used=encounter.adjustmentsUsed??(encounter.adjusted?1:0);return used>=53?Infinity:2**used}
+function adjustmentCostText(encounter){const cost=adjustmentCost(encounter);return Number.isSafeInteger(cost)?String(cost):'Unavailable'}
+function wireInitialHand(root){
+ wireCards(root,id=>{if(selected.has(id))selected.delete(id);else if(selected.size<Math.min(INITIAL_HAND_LIMIT,handSource()==='fatigue'?Math.floor(state.res.Fate/2):INITIAL_HAND_LIMIT))selected.add(id);else{notifyAction('Initial Action Hands are limited to 5 cards. Fate additions after the modifier may exceed this limit.');return}renderOperation()});
+ root.querySelectorAll('[data-card]').forEach(b=>{if(!selected.has(b.dataset.card)&&selected.size>=Math.min(INITIAL_HAND_LIMIT,handSource()==='fatigue'?Math.floor(state.res.Fate/2):INITIAL_HAND_LIMIT))b.disabled=true});
+}
+function applyFateAdjustment(encounter,adding){
+ const cost=adjustmentCost(encounter);
+ if(selected.size!==1||!Number.isSafeInteger(cost)||state.res.Fate<cost)return;
+ const id=[...selected][0],source=adding?'deck':'hand';
+ if(!state.zones[source].includes(id)||(!state.combat&&adding&&!(encounter.allowed||['H','S','C','D']).includes(id[0])))return;
+ snapshot();const deadly=!adding&&(encounter.deadlyCards||[]).includes(id);move([id],source,adding?'hand':deadly?'fatigue':'deck');if(deadly)encounter.deadlyCards=encounter.deadlyCards.filter(card=>card!==id);state.res.Fate-=cost;
+ encounter.adjustmentsUsed=(encounter.adjustmentsUsed??(encounter.adjusted?1:0))+1;
+ encounter.adjusted=true;encounter.stage='decide';selected.clear();
+ record(`Spent ${cost} Fate to ${adding?'add':'remove'} ${name(id)} ${adding?'to':'from'} Action Hand`);updateAction();
+}
+function trapModalTab(event,modal){
+ if(event.key!=='Tab')return;
+ const controls=[...modal.querySelectorAll('button,input,textarea,select')].filter(e=>!e.disabled&&e.getClientRects().length);
+ if(!controls.length)return;
+ const first=controls[0],last=controls[controls.length-1];
+ if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
+ else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+}
+function closeEnemySetup(){ $('enemySetupModal').classList.add('hidden') }
+let selectedLibraryEnemyId=null,enemyLibrary=[],enemyLibraryError='';
+try{enemyLibrary=validateEnemyLibrary(libraries.enemies).enemies}catch(error){enemyLibraryError='Enemy library unavailable: '+error.message}
+function enemyInfoHTML(card,active=false){
+ const item=card.Item,values=active&&state.combat?combatDisplayValues(state):null;
+ return `<aside ${active?'id="activeEnemyInfo"':''} class="enemy-info-card" aria-label="Enemy details"><h3 class="enemy-name">${escapeHTML(card.name)}</h3>${card.description?`<p class="enemy-description">${escapeHTML(card.description)}</p>`:''}<div class="enemy-info-stats"><span title="Current base before the random modifier">Challenge Value <strong>${card.CV}</strong></span><span>Wound Value <strong>${card.WV}</strong></span><span>Fate <strong>${card.F}</strong></span><span>Coin <strong>${card.C}</strong></span></div><p class="enemy-keywords">${card.KW.length?'<em>'+enemyKeywordHTML(card.KW,active)+'</em>':'<span class="help">No keywords</span>'}</p>${values?`<div class="combat-adjusted-stats"><strong>Combat base Challenge Value ${values.baseCV} · Combat Wound Value ${values.wv}</strong><p class="help">After keyword effects, before retry reduction and the random modifier.</p></div>${keywordEffectsHTML(values)}`:''}<div class="enemy-info-item"><strong>Item reward:</strong> ${item?escapeHTML(item.name):'None'}${item?.description?'<p>'+escapeHTML(item.description)+'</p>':''}${item?equipmentSummary(item):''}${item?`<div>${item.keywords.length?'<em>'+escapeHTML(keywordText(item.keywords))+'</em> · ':''}Base Value: ${item.baseValue} Coin</div>`:''}</div></aside>`;
+}
+function closeCombatEntry(){for(const id of ['combatChoiceModal','enemySetupModal','enemyLibraryModal'])$(id).classList.add('hidden')}
+function cancelCombatEntry(){keywordDrafts.enemyItem=null;closeCombatEntry();selectedLibraryEnemyId=null;mode='';selected.clear();render();document.querySelector('[data-mode="combat"]').focus()}
+function openCombatChoice(){
+ if(state.combat||state.dead||screen!=='game')return;
+ if(['combatChoiceModal','enemySetupModal','enemyLibraryModal'].some(id=>!$(id).classList.contains('hidden')))return;
+ $('combatChoiceModal').classList.remove('hidden');$('chooseCreateEnemy').focus();
+}
+function beginCombatWithCard(raw,options:{dungeon?:boolean}={}){
+ if(state.combat||state.challenge||state.woundTask||state.dead||(!state.zones.deck.length&&(!options.dungeon||!state.zones.fatigue.length||state.res.Fate<2)))return false;
+ const card=validateEnemyCard(raw);snapshot();
+ state.combat={base:card.CV,wound:card.WV,enemy:card,attempt:0,stage:'choose',modifier:null,adjusted:false,adjustmentsUsed:0,rewardsGranted:false,rollback:JSON.stringify(state)};
+ if(options.dungeon){state.combat.dungeon=true;mode='combat'}closeCombatEntry();selectedLibraryEnemyId=null;selected.clear();record(`Combat started: ${card.name} (CV ${card.CV}, WV ${card.WV})`);updateAction();
+ $('operation').querySelector('.card:not(:disabled)')?.focus();return true;
+}
+function openEnemyLibrary(){
+ closeCombatEntry();selectedLibraryEnemyId=null;$('enemyLibraryModal').classList.remove('hidden');$('libraryStartCombat').disabled=true;
+ $('libraryError').textContent=enemyLibraryError||(!enemyLibrary.length?'The enemy library is empty. You can go back and create an enemy.':'');
+ $('libraryEnemyPreview').innerHTML='<p class="help">Select an enemy to review its details.</p>';
+ $('enemyLibraryList').innerHTML=enemyLibrary.map(card=>`<label class="enemy-library-row"><input type="radio" name="enemyLibraryChoice" value="${escapeHTML(card.id)}"><span><strong>${escapeHTML(card.name)}</strong><span class="enemy-list-stats">CV ${card.CV} · WV ${card.WV} · Fate ${card.F} · Coin ${card.C}</span><em class="enemy-list-keywords">${card.KW.length?enemyKeywordHTML(card.KW,false):'&nbsp;'}</em></span></label>`).join('');
+ $('enemyLibraryList').querySelectorAll('input').forEach(input=>input.onchange=()=>{
+  selectedLibraryEnemyId=input.value;const card=enemyLibrary.find(e=>e.id===input.value);
+  $('libraryStartCombat').disabled=!card;$('libraryEnemyPreview').innerHTML=card?enemyInfoHTML(card):'';
+  $('enemyLibraryList').querySelectorAll('label').forEach(row=>row.classList.toggle('selected',row.querySelector('input').checked));
+ });
+ ($('enemyLibraryList').querySelector('input')||$('libraryBack')).focus();
+}
+$('chooseCreateEnemy').onclick=()=>{closeCombatEntry();openEnemySetup()};$('chooseLibraryEnemy').onclick=openEnemyLibrary;$('combatChoiceCancel').onclick=cancelCombatEntry;
+$('libraryBack').onclick=()=>{closeCombatEntry();openCombatChoice();$('chooseLibraryEnemy').focus()};
+$('libraryStartCombat').onclick=()=>{const card=enemyLibrary.find(e=>e.id===selectedLibraryEnemyId);if(!card)return;try{beginCombatWithCard(card)}catch(error){$('libraryError').textContent=error.message}};
+for(const id of ['combatChoiceModal','enemyLibraryModal']){
+ $(id).onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();if(id==='enemyLibraryModal')$('libraryBack').click();else cancelCombatEntry()}else trapModalTab(e,$(id))};
+ $(id).onclick=e=>{if(e.target===$(id)){if(id==='enemyLibraryModal')$('libraryBack').click();else cancelCombatEntry()}};
+}
+function limitItemInput(event,description,keywords,counter){
+ const length=()=>description.value.length+keywords.value.split('-').map(s=>s.trim()).filter(Boolean).join(' - ').length;
+ while(length()>300&&event.target.value.length)event.target.value=event.target.value.slice(0,-1);
+ description.maxLength=300;keywords.maxLength=300;keywords.setCustomValidity(keywords.value.includes(',')?'Commas are not allowed. Use - between keywords.':'');
+ counter.textContent=Math.max(0,300-length())+' characters remaining';
+}
+function openEnemySetup(){enemyKeywordDraft=[];enemyDefaultName=true;
+ if(!$('enemySetupModal').classList.contains('hidden'))return;
+ $('enemySetupForm').reset();beginKeywordDraft('enemyItem',[]);$('enemyKeywords').setCustomValidity('');$('enemyKeywordTip').textContent='Use - between keywords. Spaces stay within one keyword.';setEquipmentFields('enemyItem');$('enemyName').value='Enemy';$('combatDifficulty').value=5;$('combatWound').value=1;
+ $('enemyFateReward').value=1;$('enemyCoinReward').value=0;$('enemyItemValue').value=1;
+ $('enemyItemFields').classList.add('hidden');$('enemySetupError').textContent='';$('enemyItemCount').textContent='300 characters remaining';
+ $('enemySetupModal').classList.remove('hidden');updateEnemyAssociationSuggestions();$('enemyName').focus();
+}
+function enemyItemChanged(e){limitItemInput(e,$('enemyItemDescription'),$('enemyItemKeywords'),$('enemyItemCount'));captureDraftKeywords('enemyItem',false);renderKeywordSuggestions('enemyItem');updateEnemyAssociationSuggestions()}
+$('enemyHasItem').onchange=()=>{$('enemyItemFields').classList.toggle('hidden',!$('enemyHasItem').checked);updateEnemyAssociationSuggestions()};
+$('enemyItemDescription').oninput=enemyItemChanged;$('enemyItemKeywords').oninput=enemyItemChanged;
+$('enemySetupCancel').onclick=cancelCombatEntry;
+$('enemySetupModal').onclick=e=>{if(e.target===$('enemySetupModal'))$('enemySetupCancel').click()};
+$('enemySetupModal').onkeydown=e=>{if(e.key==='Escape'){$('enemySetupCancel').click();e.preventDefault()}else trapModalTab(e,$('enemySetupModal'))};
+$('enemySetupForm').onsubmit=e=>{
+ e.preventDefault();if(state.combat||state.challenge||state.woundTask||state.dead)return;
+ const name=$('enemyName').value.trim()||'Enemy',base=Number($('combatDifficulty').value),wound=Number($('combatWound').value);
+ if(!validCoinNumber($('combatDifficulty').value)||base<1||base>Number.MAX_SAFE_INTEGER-6||!validCoinNumber($('combatWound').value)||!validCoinNumber($('enemyFateReward').value)||!validCoinNumber($('enemyCoinReward').value)){$('enemySetupError').textContent='Enter supported whole-number values. CV must be at least 1; WV and rewards cannot be negative.';return}
+ try{
+  const Item=$('enemyHasItem').checked?normalizeItem({name:$('enemyItemName').value.trim(),description:$('enemyItemDescription').value.trim(),keywords:parseKeywordInput($('enemyItemKeywords').value),equipment:readEquipmentFields('enemyItem'),baseValue:validCoinNumber($('enemyItemValue').value)?Number($('enemyItemValue').value):-1}):null;
+  const card={id:name,name,boss:false,description:$('enemyDescription').value.trim(),CV:base,WV:wound,F:Number($('enemyFateReward').value),C:Number($('enemyCoinReward').value),KW:parseKeywordInput($('enemyKeywords').value),Item};
+  if(!beginCombatWithCard(card))$('enemySetupError').textContent='Unable to begin combat in the current state.';else{commitEnemyKeywords();if(Item)rememberItemKeywords(Item,'enemyItem');save()}
+ }catch(error){$('enemySetupError').textContent=error.message}
+};
+function closeRewardDialog(){ $('combatRewardModal').classList.add('hidden') }
+function endCombatRewards(message){const dungeon=!!state.combat?.dungeon;state.combat=null;mode='';selected.clear();closeRewardDialog();if(dungeon)dungeonCombatFinished(true);updateAction(dungeon?state.log[0]?.message:message)}
+function collectCombatVictory(){
+ const c=state.combat;if(!c)return;c.stage='reward';if(!c.victorySoundPlayed){c.victorySoundPlayed=true;playCombatVictorySound()}
+ const enemy=c.enemy;
+ if(!c.rewardsGranted){
+  const dungeon=!!c.dungeon&&state.delve,coin=dungeon&&!dungeonProgress(dungeon.definition.id).rewardedLevels.includes(dungeon.level)?enemy.C:dungeon?0:enemy.C;
+  if(!Number.isSafeInteger(state.res.Fate+enemy.F)||!Number.isSafeInteger((dungeon?dungeon.pendingCoins:state.res.Coin)+coin)){updateAction('Victory! Reduce the overflowing resource total, then collect pending rewards.');return}
+  const before={Coin:state.res.Coin,Fate:state.res.Fate};state.res.Fate+=enemy.F;if(dungeon)dungeon.pendingCoins+=coin;else state.res.Coin+=coin;c.rewardsGranted=true;queueRewardVisual(before,{Coin:state.res.Coin,Fate:state.res.Fate});record(`Defeated ${enemy.name}: gained ${enemy.F} Fate and ${coin} Coin${dungeon?' banked until dungeon exit':''}`);
+ }
+
+ if(enemy.Item){updateAction('Victory! Choose whether to keep the item reward.');return}
+ endCombatRewards('Victory! Combat rewards collected.');
+}
+function renderCombatRewards(root){
+ const c=state.combat,enemy=c.enemy;
+ root.innerHTML=`<hr><h2>Victory against ${escapeHTML(enemy.name)}</h2><p>Rewards: ${enemy.F} Fate · ${enemy.C} Coin${enemy.Item?' · '+escapeHTML(enemy.Item.name):''}</p>`;
+ if(!c.rewardsGranted){
+  closeRewardDialog();root.innerHTML+='<p class="warning">The resource total exceeds the supported limit. Adjust your resources above, then collect the rewards.</p><button id="collectCombatRewards" class="primary">Collect rewards</button>';
+  $('collectCombatRewards').onclick=()=>{snapshot();collectCombatVictory()};return;
+ }
+ if(!enemy.Item){endCombatRewards('Combat rewards collected.');return}
+ if(c.rewardChoosing&&state.inventory.length<8){c.rewardChoosing=false;save()}
+ // Resource rewards have already been granted and saved. This decision never grants them again.
+ const modal=$('combatRewardModal'),focusNeeded=modal.classList.contains('hidden')||modal.dataset.choosing!==String(!!c.rewardChoosing);
+ modal.dataset.choosing=String(!!c.rewardChoosing);modal.classList.remove('hidden');$('rewardItemName').textContent=enemy.Item.name;
+ const full=state.inventory.length>=8;$('rewardQuestionText').textContent=full?'Keep this item reward? Your Inventory is full.':'Keep this item reward?';$('rewardKeep').classList.remove('hidden');$('rewardDiscard').classList.remove('hidden');$('rewardQuestion').classList.toggle('hidden',!!c.rewardChoosing);$('rewardReplacement').classList.toggle('hidden',!c.rewardChoosing);
+ $('rewardChoiceList').innerHTML=state.inventory.map((item,i)=>`<label class="reward-choice"><input type="radio" name="rewardDiscard" value="${i}"><span><strong>${['I','II','III','IV','V','VI','VII','VIII'][i]} · ${escapeHTML(item.name)}</strong>${item.description?'<br>'+escapeHTML(item.description):''}<br>${item.keywords.length?'<em>'+escapeHTML(keywordText(item.keywords))+'</em>':''}<br>Base Value: ${item.baseValue} Coin${equipmentSummary(item)}</span></label>`).join('');
+ $('rewardReplaceConfirm').disabled=true;
+ $('rewardChoiceList').querySelectorAll('input').forEach(input=>input.onchange=()=>{$('rewardReplaceConfirm').disabled=false});
+ if(focusNeeded)(c.rewardChoosing?$('rewardChoiceList').querySelector('input'):$('rewardKeep')).focus();
+}
+$('combatRewardModal').onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();if(state.combat?.rewardChoosing)$('rewardReplacementBack').click()}else trapModalTab(e,$('combatRewardModal'))};
+$('rewardReplacementBack').onclick=()=>{if(!state.combat)return;state.combat.rewardChoosing=false;save();renderOperation()};
+$('rewardKeep').onclick=()=>{const c=state.combat;if(!c||c.stage!=='reward'||!c.rewardsGranted||!c.enemy.Item)return;if(state.inventory.length>=8){c.rewardChoosing=true;save();renderOperation();return}snapshot();state.inventory.push(copyItem(c.enemy.Item));record('Combat reward: acquired '+c.enemy.Item.name);endCombatRewards('Item reward kept.')};
+$('rewardDiscard').onclick=()=>{const c=state.combat;if(!c||c.stage!=='reward'||!c.rewardsGranted)return;snapshot();record(`Declined combat item reward: ${c.enemy.Item.name}`);endCombatRewards('Item reward declined. Fate and Coin rewards retained.')};
+$('rewardReplaceConfirm').onclick=()=>{
+ const c=state.combat,input=document.querySelector('input[name="rewardDiscard"]:checked');
+ if(!c||c.stage!=='reward'||!c.rewardsGranted||!c.enemy.Item||!input)return;
+ const index=Number(input.value);if(!Number.isInteger(index)||!state.inventory[index])return;
+ snapshot();const removed=state.inventory[index];state.inventory.splice(index,1,copyItem(c.enemy.Item));
+ record(`Discarded ${removed.name}; received combat reward ${c.enemy.Item.name}`);
+ endCombatRewards('Inventory item replaced with the combat reward.');
+};
+function handSource(){return state.zones.deck.length?'deck':'fatigue'}
+function handReady(){return handSource()==='deck'||state.res.Fate>=2*Math.max(1,selected.size)}
+function handHelp(){return handSource()==='fatigue'?'<p class="help deadly-effort-tip">Deadly Effort is available only with an empty Attribute Deck. Spend 2 Fate per Fatigue card added. These cards go directly to Wounds when resolved, ignoring wound modifiers.</p>':''}
+function commitHand(){const source=handSource(),encounter=state.combat||state.challenge;if(!handReady()||!selected.size||selected.size>INITIAL_HAND_LIMIT)return false;if(source==='fatigue'){state.res.Fate-=2*selected.size;encounter.deadlyCards=[...selected];record('Deadly Effort: spent '+2*selected.size+' Fate for '+selected.size+' Fatigue card(s)')}move([...selected],source,'hand');return true}
+function handAdjustmentPreview(total,difficulty,adding){
+ if(selected.size!==1)return '<div id="handAdjustmentPreview" class="notice" role="status" aria-live="polite" aria-atomic="true">Select a card to preview the Action Hand total and result.</div>';
+ const id=[...selected][0],delta=value(id)*(adding?1:-1),projected=total+delta;
+ const outcome=projected>=difficulty?'Success':'Failure';
+ return `<div id="handAdjustmentPreview" class="notice" role="status" aria-live="polite" aria-atomic="true"><strong>Preview after ${adding?'adding':'removing'} ${name(id)}</strong><p>Action Hand: <strong>${total} → ${projected}</strong> (${delta>=0?'+':''}${delta}) · Total Challenge Value: <strong>${difficulty}</strong></p><strong>${outcome}${projected===difficulty?' · Exact match':''}</strong></div>`;
+}
+function renderChallenge(root){const ch=state.challenge;if(!ch){root.innerHTML=`<hr><h2>Start challenge</h2><p class="help">Choose an initial difficulty, then commit cards from your Attribute Deck. A random modifier is revealed after commitment.</p><label>Challenge value <input type="number" id="difficulty" min="1" step="1" value="5"></label><p class="help">Applicable attribute suits (tap to exclude or include). Luck ♦ is always available:</p><div class="suits" id="challengeSuitButtons"></div><div id="luckOnlyWarning" class="warning hidden" role="status">Only Luck cards can be used in this Challenge.</div><p><button class="primary" id="begin">Begin challenge</button></p>`;const suitRoot=$('challengeSuitButtons');const drawSuitButtons=()=>{suitRoot.innerHTML=SUITS.filter(([key])=>key!=='D').map(([key,symbol,label])=>`<button type="button" class="suit-toggle ${challengeSuits.has(key)?'':'excluded'}" data-suit="${key}" aria-pressed="${challengeSuits.has(key)}"><span>${symbol}</span> ${label}</button>`).join('');$('luckOnlyWarning').classList.toggle('hidden',challengeSuits.size!==0);suitRoot.querySelectorAll('button').forEach(b=>b.onclick=()=>{const k=b.dataset.suit;challengeSuits.has(k)?challengeSuits.delete(k):challengeSuits.add(k);drawSuitButtons()})};drawSuitButtons();$('begin').onclick=()=>{if(!state.zones.deck.length){notifyAction('Unable to start a challenge without attribute cards');return}const n=Number($('difficulty').value);if(!Number.isSafeInteger(n)||n<1||n>Number.MAX_SAFE_INTEGER-6){notifyAction('Enter a supported whole number of at least 1.');return}snapshot();state.challenge={base:n,modifier:null,stage:'choose',adjusted:false,adjustmentsUsed:0,allowed:[...challengeSuits,'D'],rollback:JSON.stringify(state)};selected.clear();updateAction()};return}if(ch.stage==='choose'){root.innerHTML=`<hr><h2>Challenge · Difficulty ${ch.base}</h2><p class="help">Select cards to commit. The modifier is hidden until you commit.</p><p>Action Hand: ${sum([...selected])} · ${selected.size} / 5 cards.</p>${cards(state.zones[handSource()].filter(id=>(id[0]==='D'||(ch.allowed||['H','S','C']).includes(id[0]))),selected)}<div class="row"><button class="primary" id="commitChallenge" ${handReady()&&selected.size?'':'disabled'}>${handCommitLabel()}</button></div>${handHelp()}`;wireInitialHand(root);$('commitChallenge').onclick=()=>{if(!selected.size||!handReady())return;snapshot();if(!commitHand())return;selected.clear();ch.modifier=[-6,-3,0,0,3,6][Math.floor(Math.random()*6)];ch.stage='decide';record(`Challenge ${ch.base}: committed ${state.zones.hand.map(name).join(', ')}; modifier ${ch.modifier>=0?'+':''}${ch.modifier}`);updateAction()};return}const final=Math.max(1,ch.base+ch.modifier);const total=sum(state.zones.hand),cost=adjustmentCost(ch),costText=adjustmentCostText(ch);if(ch.stage==='adjust'){const isAdd=ch.adjustMode==='add';const ids=state.zones[isAdd?'deck':'hand'].filter(id=>!isAdd||(id[0]==='D'||(ch.allowed||['H','S','C']).includes(id[0])));root.innerHTML=`<hr><h2>${isAdd?'Add':'Remove'} one card · Spend ${costText} Fate</h2><div class="notice">Initial challenge ${ch.base} · Modifier ${ch.modifier>=0?'+':''}${ch.modifier} · <strong>Current challenge ${final}</strong><p>Action Hand: <strong>${total}</strong> · ${state.zones.hand.length} card(s)</p>${cards(state.zones.hand,new Set<any>(),false)}</div><p class="help">Select exactly one card. ${isAdd?'It moves from Attribute Deck to Action Hand.':'It returns from Action Hand to Attribute Deck.'}</p>${cards(ids,selected)}${handAdjustmentPreview(total,final,isAdd)}<div class="row"><button class="primary" id="apply" ${selected.size===1&&state.res.Fate>=cost?'':'disabled'}>Spend ${costText} Fate & confirm</button><button class="secondary" id="back">Back</button></div>`;wireCards(root,id=>{selected.clear();selected.add(id);renderOperation()});$('back').onclick=()=>{ch.stage='decide';selected.clear();renderOperation()};$('apply').onclick=()=>applyFateAdjustment(ch,isAdd);return}if(ch.stage==='exact'){const required=Math.min(2,recoverableHand().length);root.innerHTML=`<hr><h2>Exact match!</h2><div class="notice">Your Action Hand total exactly equals the modified challenge (${final}). Choose up to ${required} card(s) to return to Attribute Deck. All remaining cards go to Fatigue.</div><p>Selected ${selected.size} of up to ${required}</p>${deadlyRecoveryHelp()}${cards(recoverableHand(),selected)}<button class="primary" id="finishExact" ${selected.size<=required?'':'disabled'}>Return selected cards & finish</button>`;wireCards(root,id=>{if(selected.has(id))selected.delete(id);else if(selected.size<required)selected.add(id);renderOperation()});$('finishExact').onclick=()=>{if(selected.size>required)return;snapshot();if(!settleDeadlyEffort(ch)){updateAction('GAME OVER');return}const recovered=[...selected],remaining=state.zones.hand.filter(id=>!selected.has(id));move(recovered,'hand','deck');move(remaining,'hand','fatigue');record(`Exact success (${final}): returned ${recovered.map(name).join(', ')}; ${remaining.length} card(s) to Fatigue`);state.challenge=null;selected.clear();mode='';if(ch.dungeon)dungeonChallengeFinished(true);updateAction()};return}root.innerHTML=`<hr><h2>Challenge result</h2><div class="notice">Initial ${ch.base} · Modifier ${ch.modifier>=0?'+':''}${ch.modifier} · <strong>Final challenge ${final}</strong><br>Action Hand total <strong>${total}</strong> · ${total>=final?'Currently successful':'Currently unsuccessful'}</div>${cards(state.zones.hand,new Set<any>(),false)}<div class="row"><button id="add" ${state.res.Fate<cost||!state.zones.deck.some(id=>(id[0]==='D'||(ch.allowed||['H','S','C']).includes(id[0])))?'disabled':''}>${costText} Fate: add card</button><button id="remove" ${state.res.Fate<cost||!state.zones.hand.length?'disabled':''}>${costText} Fate: remove card</button><button class="primary" id="resolve">Resolve challenge</button></div>`;['add','remove'].forEach(m=>{$(m).onclick=()=>{ch.stage='adjust';ch.adjustMode=m;selected.clear();renderOperation()}});$('resolve').onclick=()=>{snapshot();if(total===final){ch.stage='exact';selected.clear();updateAction();return}if(!settleDeadlyEffort(ch)){updateAction('GAME OVER');return}move([...state.zones.hand],'hand','fatigue');record(`Challenge ${total>=final?'SUCCESS':'FAILURE'}: ${total} vs ${final}; all Action Hand cards → Fatigue`);state.challenge=null;selected.clear();mode='';if(total<final)checkFailureDeath();if(ch.dungeon)dungeonChallengeFinished(total>=final);updateAction()}}function finishWound(){const w=state.woundTask;if(!w)return;const used=w.fatigue.concat(w.deck),total=sum(used);snapshot();move(w.fatigue,'fatigue','wound');move(w.deck,'deck','wound');record(`Wound ${w.value}: ${used.map(name).join(', ')||'no cards available'} (${total}) → Wounds`);state.woundTask=null;selected.clear();if(w.source==='combat'){if(checkFailureDeath()){state.combat=null;mode=''}else{state.combat.stage='afterFail';mode='combat'}}else if(w.source==='rest'){if(allCardsWounded()){state.dead=true;record('GAME OVER');mode=''}else{mode='rest';state.restWoundResolved=true;record('Rest without Supply: wound resolved; proceed with Rest')}}else{if(allCardsWounded()){state.dead=true;record('GAME OVER')}mode=''}updateAction(total<w.value?'All available cards were wounded; the full wound value could not be covered.':undefined);playWoundVisual()}
+function renderWoundTask(root){const w=state.woundTask;if(!w)return;const fatigue=state.zones.fatigue,deck=state.zones.deck;const fatTotal=sum(fatigue);const availableTotal=fatTotal+sum(deck);if(w.stage==='fatigue'){const remaining=Math.max(0,w.value-sum([...selected]));const mustAll=fatTotal<w.value;const valid=mustAll?selected.size===fatigue.length:sum([...selected])>=w.value;root.innerHTML=`<hr><h2>Take wound · ${w.value}</h2><p class="help">Step 1: choose cards from Fatigue. ${mustAll?'Fatigue cannot cover the wound, so every Fatigue card must be selected before using the Attribute Deck.':'Select cards totaling at least the wound value. Attribute Deck cards cannot be used while Fatigue can cover the wound.'}</p><p>Fatigue selected ${sum([...selected])} / ${w.value} · ${selected.size} cards</p>${cards(fatigue,selected)}<div class="row"><button class="primary" id="woundNext" ${valid?'':'disabled'}>${mustAll?'Continue to Attribute Deck':'Apply wound'}</button>${w.source==='manual'?'<button class="secondary" id="woundCancel">Cancel</button>':''}</div>`;wireCards(root,id=>{if(mustAll)return;toggle(id)});if(mustAll){selected=new Set<any>(fatigue);root.querySelectorAll('[data-card]').forEach(b=>b.disabled=true);root.querySelector('#woundNext').disabled=false;root.querySelector('p:nth-of-type(2)').textContent=`Fatigue selected ${fatTotal} / ${w.value} · ${fatigue.length} cards`;}const cancel=$('woundCancel');if(cancel)cancel.onclick=()=>{snapshot();state.woundTask=null;mode='';selected.clear();updateAction()};$('woundNext').onclick=()=>{w.fatigue=[...selected];selected.clear();if(sum(w.fatigue)>=w.value){finishWound()}else{w.stage='deck';updateAction()}};return}const remaining=w.value-sum(w.fatigue),deckTotal=sum(deck);const valid=sum([...selected])>=remaining||(deckTotal<remaining&&selected.size===deck.length);root.innerHTML=`<hr><h2>Take wound · Attribute Deck</h2><p class="help">All ${w.fatigue.length} Fatigue cards have been allocated. Choose Attribute Deck cards totaling at least ${remaining}. ${deckTotal<remaining?'The deck cannot fully cover the wound; all remaining cards must be allocated.':''}</p><p>Deck selected ${sum([...selected])} / ${remaining} · ${selected.size} cards</p>${cards(deck,selected)}<button class="primary" id="finishWound" ${valid?'':'disabled'}>Apply wound</button>`;wireCards(root,id=>{if(deckTotal<remaining)return;toggle(id)});if(deckTotal<remaining){selected=new Set<any>(deck);root.querySelectorAll('[data-card]').forEach(b=>b.disabled=true);$('finishWound').disabled=false} $('finishWound').onclick=()=>{w.deck=[...selected];finishWound()}}
+function renderCombat(root){const c=state.combat;if(!c){root.innerHTML='<hr><h2>Combat</h2><p class="help">Create an enemy or choose one from the library.</p><button id="openCombatChoice" class="primary">Start Combat</button>';$('openCombatChoice').onclick=openCombatChoice;openCombatChoice();return}if(c.stage==='reward'){renderCombatRewards(root);if(state.combat===c)root.insertAdjacentHTML('afterbegin',enemyInfoHTML(c.enemy,true));return}const values=combatDisplayValues(state),diff=values.cv;const header=enemyInfoHTML(c.enemy,true)+`<hr><h2>Combat · Attempt ${c.attempt+1}</h2><p class="help">Base challenge ${diff} · Wound value ${values.wv}</p>`+combatEquipmentHTML();if(c.stage==='choose'){root.innerHTML=header+`<p>Select an Action Hand, then reveal the random modifier.</p><p>Selected ${selected.size} / 5 cards · Total ${sum([...selected])+weaponBonusFor(state)} (cards ${sum([...selected])} + weapon ${weaponBonusFor(state)}).</p>${cards(state.zones[handSource()],selected)}<div class="row"><button class="primary" id="combatCommit" ${handReady()&&selected.size?'':'disabled'}>${handCommitLabel()}</button></div>${handHelp()}`;wireInitialHand(root);$('combatCommit').onclick=()=>{if(!selected.size||!handReady())return;snapshot();if(!commitHand())return;selected.clear();c.modifier=[-6,-3,0,0,3,6][Math.floor(Math.random()*6)];c.stage='decide';record(`Combat attempt ${c.attempt+1}: modifier ${c.modifier>=0?'+':''}${c.modifier}`);updateAction()};return}const final=Math.max(1,diff+c.modifier),total=sum(state.zones.hand)+weaponBonusFor(state),cost=adjustmentCost(c),costText=adjustmentCostText(c);if(c.stage==='adjust'){const add=c.adjustMode==='add',ids=state.zones[add?'deck':'hand'];root.innerHTML=header+`<h2>${add?'Add':'Remove'} one card · ${costText} Fate</h2><div class="notice">Base challenge ${diff} · Modifier ${c.modifier>=0?'+':''}${c.modifier} · <strong>Current challenge ${final}</strong><p>Action Hand: <strong>${total}</strong> · ${state.zones.hand.length} card(s)</p>${cards(state.zones.hand,new Set<any>(),false)}</div><p class="help">Choose one card to ${add?'add':'remove'}:</p>${cards(ids,selected)}${handAdjustmentPreview(total,final,add)}<div class="row"><button class="primary" id="combatApply" ${selected.size===1&&state.res.Fate>=cost?'':'disabled'}>Spend ${costText} Fate & confirm</button><button class="secondary" id="combatBack">Back</button></div>`;wireCards(root,id=>{selected.clear();selected.add(id);renderOperation()});$('combatBack').onclick=()=>{c.stage='decide';selected.clear();renderOperation()};$('combatApply').onclick=()=>applyFateAdjustment(c,add);return}if(c.stage==='exact'){const required=Math.min(2,recoverableHand().length);root.innerHTML=header+`<div class="notice">Exact match! Return up to ${required} Action Hand cards to Attribute Deck. Remaining cards go to Fatigue.</div><p>Selected ${selected.size} of up to ${required}</p>${deadlyRecoveryHelp()}${cards(recoverableHand(),selected)}<button class="primary" id="combatExact" ${selected.size<=required?'':'disabled'}>Finish victorious combat</button>`;wireCards(root,id=>{if(selected.has(id))selected.delete(id);else if(selected.size<required)selected.add(id);renderOperation()});$('combatExact').onclick=()=>{if(selected.size>required)return;snapshot();if(!settleDeadlyEffort(c)){updateAction('GAME OVER');return}const recovered=[...selected],rest=state.zones.hand.filter(id=>!selected.has(id));move(recovered,'hand','deck');move(rest,'hand','fatigue');record(`Combat VICTORY (exact match ${final}): returned ${recovered.map(name).join(', ')||'no cards'}`);selected.clear();collectCombatVictory()};return}if(c.stage==='afterFail'){root.innerHTML=header+`<div class="notice">Combat failed. Wound ${c.lastWound??c.wound} has been applied. Choose your next move.</div><div class="row"><button class="danger" id="combatFlee" ${state.res.Fate<2?'disabled':''}>Flee · 2 Fate</button><button class="primary" id="combatRetry">Try again · difficulty ${combatValuesFor(state,c.attempt+1).cv}</button></div>${state.res.Fate<2?'<p class="help">Flee unavailable: fewer than 2 Fate points.</p>':''}`;$('combatFlee').onclick=()=>{if(state.res.Fate<2)return;snapshot();state.res.Fate-=2;record(`Fled combat, spent 2 Fate after ${c.attempt+1} attempt(s)`);const dungeon=!!c.dungeon;state.combat=null;mode='';if(dungeon)dungeonCombatFinished(false);updateAction()};$('combatRetry').onclick=()=>{const next=c.attempt+1,nextDiff=combatValuesFor(state,next).cv;if(!Number.isSafeInteger(next)||!Number.isSafeInteger(nextDiff-6)||!Number.isSafeInteger(nextDiff+6)){notifyAction('Retry difficulty exceeds the supported whole-number range.');return}snapshot();c.attempt++;delete c.lastEquipment;delete c.lastWound;c.modifier=null;c.adjusted=false;c.adjustmentsUsed=0;c.stage='choose';selected.clear();record(`Combat retry ${c.attempt+1}: base challenge ${combatValuesFor(state).cv}`);updateAction()};return}root.innerHTML=header+`<div class="notice">Modifier ${c.modifier>=0?'+':''}${c.modifier} · Final challenge <strong>${final}</strong> · Action Hand <strong>${total}</strong> · ${total>=final?'Success':'Failure'}</div>${cards(state.zones.hand,new Set<any>(),false)}<div class="row"><button id="combatAdd" ${state.res.Fate<cost||!state.zones.deck.length?'disabled':''}>${costText} Fate: add card</button><button id="combatRemove" ${state.res.Fate<cost||!state.zones.hand.length?'disabled':''}>${costText} Fate: remove card</button><button class="primary" id="combatResolve">Resolve combat round</button></div>`;['Add','Remove'].forEach(x=>{$('combat'+x).onclick=()=>{c.stage='adjust';c.adjustMode=x.toLowerCase();selected.clear();renderOperation()}});$('combatResolve').onclick=()=>{snapshot();if(total===final){c.stage='exact';selected.clear();updateAction();return}if(!settleDeadlyEffort(c)){updateAction('GAME OVER');return}move([...state.zones.hand],'hand','fatigue');if(total>final){record(`Combat VICTORY: ${total} vs ${final}; Action Hand → Fatigue`);collectCombatVictory();return}const appliedWound=applyCombatEquipmentFailure(c);record(`Combat FAILURE: ${total} vs ${final}; Action Hand → Fatigue; Wound ${appliedWound}`);if(appliedWound===0){selected.clear();record('No wounds applied (effective WV 0).');if(checkFailureDeath()){state.combat=null;mode=''}else c.stage='afterFail';updateAction();return}c.stage='wounding';state.woundTask={value:appliedWound,source:'combat',stage:'fatigue',fatigue:[],deck:[]};selected.clear();updateAction()}}
+function closeNewGameModal(){$('newGameModal').classList.add('hidden')}
+function renderMenu(){const root=$('savedSlots');root.innerHTML=slots.length?slots.map(x=>`<div class="slot ${x.state.dead?'slot-gameover':''}"><div><strong title="${escapeHTML((x.state.characterName||'Unnamed Character')+(x.state.adventureModule?' - '+x.state.adventureModule:''))}">${escapeHTML(x.state.characterName||'Unnamed Character')}${x.state.adventureModule?' - '+escapeHTML(x.state.adventureModule):''}</strong>${x.state.dead?'<span class="gameover-label">GAME OVER</span>':''}<span class="help">${x.state.zones.deck.length} Attribute · ${x.state.zones.fatigue.length} Fatigue · ${x.state.zones.wound.length} Wounds</span></div><div class="row"><button class="primary" data-continue="${escapeHTML(x.id)}">Continue</button><button class="danger" data-export="${escapeHTML(x.id)}">Export</button><button class="danger" data-delete="${escapeHTML(x.id)}">Delete</button></div></div>`).join(''):'<p class="help">No saved characters. Create your first character to begin.</p>';$('createCharacter').disabled=storageLocked||slots.length>=5;$('importCharacter').disabled=storageLocked;$('slotsInfo').textContent=`${slots.length} / 5 character slots used`;
+root.querySelectorAll('[data-continue]').forEach(b=>b.onclick=()=>{const x=slots.find(v=>v.id===b.dataset.continue);if(!x)return;let loaded;try{loaded=normalizeCharacter(JSON.parse(JSON.stringify(x.state)))}catch(err){notify('Unable to load character: '+err.message);return}finishPendingDiceRoll();activeId=x.id;state=loaded;screen='game';resetCharacterUI();history=[];selected.clear();setupSelected.clear();mode=state.combat?'combat':state.challenge?'challenge':state.woundTask?'wound':state.restWoundResolved?'rest':'';viewZone=null;restoreDiceUI();render();$('status').textContent=''});
+root.querySelectorAll('[data-export]').forEach(b=>b.onclick=()=>{const x=slots.find(v=>v.id===b.dataset.export);if(!x)return;const safe=(x.state.characterName||'character').replace(/[^a-z0-9_-]/gi,'_').slice(0,48);downloadJSON({format:'quest-for-glory-character',version:20,character:x.state},'quest-for-glory-'+safe+'.json')});root.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{const x=slots.find(v=>v.id===b.dataset.delete);if(!x)return;pendingDelete=x.id;$('deleteMessage').textContent=`Delete ${x.state.characterName||'this character'} and all saved progress? This cannot be undone.`;$('deleteModal').classList.remove('hidden')})}
+// Validate imported and stored data before any field reaches the renderer.
+// Missing fields from older releases are derived; contradictory fields are rejected.
+function normalizeCharacter(data, rollbackDepth=0){
+ const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
+ const integer=(x,min=0)=>Number.isSafeInteger(x)&&x>=min;
+ const fail=message=>{throw Error(message)};
+ const cardList=ids=>Array.isArray(ids)&&ids.every(id=>ALL.includes(id))&&new Set<any>(ids).size===ids.length;
+ if(!object(data)||data.started!==true||!object(data.zones)||!object(data.res))fail('Invalid character save');
+ const zones=['deck','hand','fatigue','wound'];
+ if(Object.keys(data.zones).length!==4||!zones.every(z=>cardList(data.zones[z]))||!['Coin','Fate','Supply'].every(k=>integer(data.res[k])))fail('Invalid resources or card zones');
+ const owned=zones.flatMap(z=>data.zones[z]);
+ if(!owned.length||new Set<any>(owned).size!==owned.length)fail('Invalid or duplicated playing cards');
+ if(data.pool==null)data.pool=ALL.filter(id=>!owned.includes(id));
+ if(!cardList(data.pool)||owned.length+data.pool.length!==52||new Set<any>([...owned,...data.pool]).size!==52)fail('Invalid Attribute Pool Deck: every card must have one location');
+ const used=owned.reduce((n,id)=>n+value(id)*(id[0]==='D'?2:1),0);
+ if(data.pointLimit==null)data.pointLimit=Math.max(50,used);
+ if(!integer(data.pointLimit,1)||data.pointLimit<used)fail('Invalid Attribute Point limit');
+ if(data.upgradePoints==null)data.upgradePoints=data.pointLimit-used;
+ if(!integer(data.upgradePoints)||data.upgradePoints!==data.pointLimit-used)fail('Attribute Point balance does not match owned cards and limit');
+ const customPrefs=normalizeCustomPreferences(data.customKeywords??[],data.customCategories??[]);data.customKeywords=customPrefs.keywords;data.customCategories=customPrefs.categories;
+ if(data.eventKeywords==null)data.eventKeywords=[];if(!Array.isArray(data.eventKeywords)||data.eventKeywords.some(e=>!e||typeof e.keyword!=='string'||!e.keyword.trim()||e.keyword.length>300||/[,\-]/.test(e.keyword)||typeof e.adventureModule!=='string'))fail('Invalid event keywords');
+ if(data.round==null)data.round=0;
+ if(!integer(data.round))fail('Invalid Round counter');
+ if(data.dead!=null&&typeof data.dead!=='boolean')fail('Invalid Game Over status');
+ if(data.restWoundResolved!=null&&typeof data.restWoundResolved!=='boolean')fail('Invalid Rest state');
+ data.characterName=typeof data.characterName==='string'&&data.characterName.trim()?data.characterName:'Imported Character';
+ data.adventureModule=typeof data.adventureModule==='string'?data.adventureModule:'';
+ if(data.log==null)data.log=[];
+ if(!Array.isArray(data.log)||!data.log.every(e=>object(e)&&typeof e.t==='string'&&typeof e.message==='string'))fail('Invalid Recent Activity');
+ data.log=data.log.slice(0,30);
+ if(data.inventoryTipsSeen!=null&&(!object(data.inventoryTipsSeen)||!Object.keys(data.inventoryTipsSeen).every(k=>['purchase','sale'].includes(k)&&typeof data.inventoryTipsSeen[k]==='boolean')))fail('Invalid inventory tip preferences');
+ if(data.inventory==null)data.inventory=[];
+ if(!Array.isArray(data.inventory)||data.inventory.length>8)fail('Invalid inventory');
+ if(data.inventory.some(item=>!object(item)))fail('Invalid inventory item');
+ data.inventory=data.inventory.filter(item=>Object.prototype.hasOwnProperty.call(item,'name')||String(item.name||item.description||'').trim()||(Array.isArray(item.keywords)?item.keywords.length:String(item.keywords||'').trim())).map(item=>normalizeItem(item,true));
+ if(data.equipment==null)data.equipment={weapon:null,armor:null};
+ if(!object(data.equipment)||Object.keys(data.equipment).some(k=>!['weapon','armor'].includes(k)))fail('Invalid equipment slots');
+ for(const type of ['weapon','armor']){const item=data.equipment[type];data.equipment[type]=item==null?null:normalizeItem(item,true);if(data.equipment[type]&&data.equipment[type].equipment?.type!==type)fail('Equipment type does not match its slot')}
+ data.diceType=data.diceType||'6';
+ if(!['6','8','10','12','2d6'].includes(data.diceType))fail('Invalid die type');
+ const validRoll=(type,n)=>integer(n,1)&&(type==='2D6'?(n>=11&&n<=66&&n%10>=1&&n%10<=6):(['D6','D8','D10','D12'].includes(type)&&n<=Number(type.slice(1))));
+ if(data.diceHistory==null)data.diceHistory=[];
+ if(!Array.isArray(data.diceHistory)||!data.diceHistory.every(e=>object(e)&&validRoll(e.type,e.result)))fail('Invalid Roll History');
+ data.diceHistory=data.diceHistory.slice(0,20);
+ if(data.lastDice!=null&&(!object(data.lastDice)||!integer(data.lastDice.result,1)||data.lastDice.result>66||(data.lastDice.detail!=null&&typeof data.lastDice.detail!=='string')))fail('Invalid dice result');
+ data.challenge=data.challenge||null;data.combat=data.combat||null;data.woundTask=data.woundTask||null;
+ if(data.challenge&&data.combat)fail('Two simultaneous encounters are not supported');
+ const validateRollback=encounter=>{
+  // Some old encounters have no rollback. They remain playable, but cannot be cancelled.
+  if(encounter.rollback==null)return;
+  if(rollbackDepth||typeof encounter.rollback!=='string')fail('Invalid action rollback');
+  let previous;try{previous=JSON.parse(encounter.rollback)}catch{fail('Invalid action rollback')}
+  if(!object(previous)||previous.challenge||previous.combat||previous.woundTask)fail('Invalid pre-action snapshot');
+  previous=normalizeCharacter(previous,rollbackDepth+1);
+  const previousOwned=zones.flatMap(z=>previous.zones[z]);
+  if(previousOwned.length!==owned.length||previousOwned.some(id=>!owned.includes(id)))fail('Rollback changes owned cards');
+  encounter.rollback=JSON.stringify(previous);
+ };
+ const validateEncounter=(e,combat)=>{
+  const stages=combat?['choose','decide','adjust','exact','wounding','afterFail','reward']:['choose','decide','adjust','exact'];
+  if(!object(e)||!integer(e.base)||!stages.includes(e.stage)||typeof e.adjusted!=='boolean')fail('Invalid encounter state');
+  e.base=Math.max(1,e.base);
+  if(combat&&(!integer(e.attempt)||!integer(e.wound,0)))fail('Invalid combat values');
+  const deadly=e.deadlyCards??[];if(!cardList(deadly)||deadly.some(id=>!data.zones.hand.includes(id))||(['choose','afterFail','wounding','reward'].includes(e.stage)&&deadly.length))fail('Invalid Deadly Effort cards');
+  if(e.adjustmentsUsed==null)e.adjustmentsUsed=e.adjusted?1:0;
+  if(!integer(e.adjustmentsUsed)||e.adjustmentsUsed>53||e.adjusted!==(e.adjustmentsUsed>0))fail('Invalid Fate adjustment count');
+  if(combat){
+   e.enemy=migrateCombatEnemy(e.enemy,e.base,e.wound);if(e.lastEquipment!=null&&(!object(e.lastEquipment)||Object.keys(e.lastEquipment).length!==2||!['weapon','armor'].every(type=>typeof e.lastEquipment[type]==='boolean'&&(!e.lastEquipment[type]||data.equipment[type]))))fail('Invalid resolved equipment availability');
+   if(e.lastWound!=null&&(!integer(e.lastWound)||e.lastWound>e.wound+2*enemyAssociations(e.enemy.KW).filter(a=>a.kind==='strong').length))fail('Invalid effective combat wound');if(e.stage==='wounding'&&(e.lastWound??e.wound)===0)fail('Zero WV cannot create a wound allocation');
+   if(e.victorySoundPlayed==null&&e.stage==='reward')e.victorySoundPlayed=true;if(e.victorySoundPlayed!=null&&(typeof e.victorySoundPlayed!=='boolean'||(e.victorySoundPlayed&&e.stage!=='reward')))fail('Invalid victory sound state');
+   if(e.rewardsGranted==null)e.rewardsGranted=false;
+   if(typeof e.rewardsGranted!=='boolean'||(e.rewardsGranted&&e.stage!=='reward')||(e.rewardChoosing!=null&&typeof e.rewardChoosing!=='boolean'))fail('Invalid reward state');
+   if(e.stage==='reward'&&(data.zones.hand.length||data.woundTask||data.dead))fail('Invalid pending combat reward');
+  }
+
+  if(e.stage==='choose'&&(!Number.isSafeInteger((combat?combatValuesFor(data).cv:e.base)-6)||!Number.isSafeInteger((combat?combatValuesFor(data).cv:e.base)+6)))fail('Encounter difficulty cannot safely reveal a modifier');
+  if(['choose','afterFail'].includes(e.stage)){
+   if(e.modifier!==null&&e.stage==='choose')fail('Invalid unrevealed modifier');
+  }else if(![-6,-3,0,3,6].includes(e.modifier))fail('Invalid encounter modifier');
+  if(e.modifier!==null&&!Number.isSafeInteger((combat?combatValuesFor(data).cv:e.base)+e.modifier))fail('Encounter difficulty exceeds the supported limit');
+  if(e.stage==='adjust'&&(!['add','remove'].includes(e.adjustMode)||e.adjustmentsUsed>=53))fail('Invalid Fate adjustment');
+  if(!combat){
+   if(e.allowed==null)e.allowed=['H','S','C','D'];
+   if(!Array.isArray(e.allowed)||new Set<any>(e.allowed).size!==e.allowed.length||!e.allowed.every(s=>['H','S','C','D'].includes(s)))fail('Invalid eligible suits');
+   // Earlier saves sometimes stored only the three optional suits.
+   if(!e.allowed.includes('D'))e.allowed.push('D');
+   if(data.zones.hand.some(id=>!e.allowed.includes(id[0])))fail('Ineligible Action Hand card');
+  }
+  if(['choose','wounding','afterFail'].includes(e.stage)&&data.zones.hand.length)fail('Unexpected Action Hand');
+  if(e.stage==='exact'&&(sum(data.zones.hand)+(combat?weaponBonusFor(data):0))!==Math.max(1,(combat?combatValuesFor(data).cv:e.base)+e.modifier))e.stage='decide';
+  validateRollback(e);
+ };
+ if(data.challenge)validateEncounter(data.challenge,false);
+ if(data.combat)validateEncounter(data.combat,true);
+ if(!data.challenge&&!data.combat&&data.zones.hand.length)fail('Action Hand has no active encounter');
+ if(data.woundTask){
+  const w=data.woundTask;
+  if(!object(w)||!integer(w.value,1)||!['manual','rest','combat'].includes(w.source)||!['fatigue','deck'].includes(w.stage)||!cardList(w.fatigue)||!cardList(w.deck)||w.fatigue.some(id=>!data.zones.fatigue.includes(id))||w.deck.some(id=>!data.zones.deck.includes(id)))fail('Invalid wound allocation');
+  if(data.challenge||(w.source==='combat'?(!data.combat||data.combat.stage!=='wounding'):!!data.combat))fail('Wound does not match current operation');
+ }
+ if(data.woundTask?.source==='combat'&&data.woundTask.value!==(data.combat.lastWound??data.combat.wound))fail('Combat wound value does not match allocation');
+ if(data.combat&&data.combat.stage==='wounding'&&!data.woundTask)fail('Combat wound allocation is missing');
+ validateDungeonState(data);return data;
+}
+function downloadText(text,filename){const blob=new Blob([text],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000)}
+function downloadJSON(data,filename){downloadText(JSON.stringify(data,null,2),filename)}
+function resetCharacterUI(){closeOptions();dungeonLayoutKey=null;eventEditor=null;$('eventKeywordModal').classList.add('hidden');stopVictorySound();actionNotice='';$('actionStatus').textContent='';
+ for(const [body,toggle,chevron]of [['resourcesBody','resourcesToggle','resourcesChevron'],['cardZonesBody','cardZonesToggle','cardZonesChevron'],['actionsBody','actionsToggle','actionsChevron']])sectionVisibility(body,toggle,chevron,true);
+ for(const [body,toggle,chevron]of [['eventKeywordsBody','eventKeywordsToggle','eventKeywordsChevron'],['equipmentBody','equipmentToggle','equipmentChevron'],['inventoryBody','inventoryToggle','inventoryChevron'],['diceBody','diceToggle','diceChevron'],['diceHistoryContent','diceHistoryToggle','historyChevron'],['activityBody','activityToggle','activityChevron']]){
+  $(body).classList.add('hidden');$(toggle).setAttribute('aria-expanded','false');$(chevron).textContent='▾';
+ }
+}
+function restoreDiceUI(){const die=state.diceType||'6';const input=document.querySelector(`input[name="dieType"][value="${die}"]`);if(input)input.checked=true;$('diceResult').textContent=state.lastDice?String(state.lastDice.result):'—';$('diceDetail').textContent=state.lastDice?(state.lastDice.detail||''):'';renderDiceHistory()}
+function autoSizeInventory(el){el.style.height='auto';el.style.height=Math.max(36,el.scrollHeight)+'px'}
+function renderInventory(){const numerals=['I','II','III','IV','V','VI','VII','VIII'];const root=$('inventoryEntries');const items=Array.isArray(state.inventory)?state.inventory:[];$('inventoryAdd').disabled=items.length>=8||equipmentLocked();root.innerHTML=items.length?items.map((item,i)=>`<div class="inventory-entry"><div class="inventory-numeral">${numerals[i]}</div><div class="inventory-fields"><div class="inventory-item-name">${escapeHTML(item.name)}</div>${item.description?`<div class="inventory-item-description">${escapeHTML(item.description)}</div>`:''}<div class="inventory-item-keywords">${item.keywords.length?'<strong>Keywords:</strong> <em>'+escapeHTML(keywordText(item.keywords))+'</em>':''}</div><div class="inventory-item-value">Base Value: ${item.baseValue} Coin${item.baseValue===1?'':'s'}</div>${equipmentSummary(item)}<div class="inventory-item-actions">${item.equipment?`<button type="button" data-equip-item="${i}" ${equipmentLocked()?'disabled':''}>Equip ${item.equipment.type}</button>`:''}<button type="button" data-edit-item="${i}" ${equipmentLocked()?'disabled':''}>Edit</button><button type="button" class="danger" data-remove-item="${i}" ${equipmentLocked()?'disabled':''}>Remove Item</button></div></div></div>`).join(''):'<p class="help">No inventory items yet. Use Add Item to create one.</p>';root.querySelectorAll('[data-equip-item]').forEach(b=>b.onclick=()=>equipInventoryItem(Number(b.dataset.equipItem)));root.querySelectorAll('[data-edit-item]').forEach(el=>el.onclick=()=>openInventoryDialog('edit',Number(el.dataset.editItem)));root.querySelectorAll('[data-remove-item]').forEach(el=>el.onclick=()=>openInventoryDialog('remove',Number(el.dataset.removeItem)))}
+let inventoryDialogMode='',inventoryDialogIndex=-1;
+function closeInventoryDialog(){keywordDrafts.inventory=null;$('inventoryModal').classList.add('hidden');$('inventoryError').textContent=''}
+function validCoinNumber(v){return /^\d+$/.test(String(v).trim())&&Number.isSafeInteger(Number(v))&&Number(v)>=0}
+// Tips are character preferences: seeing one is not undone with a gameplay action.
+function preserveInventoryTips(restored){restored.customKeywords=(state.customKeywords||[]).map(e=>({...e}));restored.customCategories=[...(state.customCategories||[])];
+ if(state.inventoryTipsSeen){
+  const seen=Object.fromEntries(Object.entries(state.inventoryTipsSeen).filter(([,shown])=>shown===true));
+  restored.inventoryTipsSeen={...(restored.inventoryTipsSeen||{}),...seen};
+ }
+ return restored;
+}
+function showInventoryTip(kind,checked){
+ const tip=$(kind==='purchase'?'inventoryPurchaseTip':'inventorySaleTip');
+ const first=checked&&!state.inventoryTipsSeen?.[kind];
+ tip.classList.toggle('hidden',!first);
+ if(first){state.inventoryTipsSeen={...(state.inventoryTipsSeen||{}),[kind]:true};save()}
+}
+function openInventoryDialog(mode,index=-1,context='inventory'){
+ const starting=context.startsWith('starting-');if(!starting&&equipmentLocked())return;
+ inventoryContext=context;inventoryDialogMode=mode;inventoryDialogIndex=index;
+ const item=dialogItem()||{name:'',description:'',keywords:[],baseValue:1};beginKeywordDraft('inventory',mode==='edit'?item.keywords:[]);
+ $('inventoryPurchaseTip').classList.add('hidden');$('inventorySaleTip').classList.add('hidden');$('inventoryModal').classList.remove('hidden');$('inventoryError').textContent='';
+ $('inventoryItemForm').classList.toggle('hidden',mode==='remove');$('inventoryRemoveForm').classList.toggle('hidden',mode!=='remove');$('inventoryPurchaseForm').classList.toggle('hidden',mode!=='add'||context!=='inventory');
+ $('inventoryDialogTitle').textContent=mode==='remove'?'Remove Inventory Item':(mode==='edit'?'Edit ':'Add ')+(context==='inventory'?'Inventory Item':context==='starting-inventory'?'Starting Item':context.split('-')[1]);
+ $('inventoryName').value=mode==='add'?'':item.name;$('inventoryDescription').value=mode==='add'?'':item.description;$('inventoryKeywords').value=mode==='add'?'':keywordText(item.keywords);$('inventoryKeywords').setCustomValidity('');
+ $('inventoryDescription').maxLength=300;$('inventoryKeywords').maxLength=300;$('inventoryBaseValue').value=mode==='add'?1:item.baseValue;
+ const forced=context==='inventory'||context==='starting-inventory'?null:context.split('-')[1];setEquipmentFields('inventory',mode==='edit'?item.equipment:null,forced);
+ $('inventoryPurchased').checked=false;$('inventoryPurchaseDetails').classList.add('hidden');$('inventoryPurchasePrice').value=mode==='add'?1:item.baseValue;
+ $('inventorySold').checked=false;$('inventorySaleDetails').classList.add('hidden');$('inventorySalePrice').value=item.baseValue;
+ $('inventoryItemConfirm').textContent=mode==='edit'?'Save Changes':'Add Item';$('inventoryRemoveConfirm').textContent='Remove Item';
+ $('inventoryCharacterCount').textContent=(300-($('inventoryDescription').value.length+$('inventoryKeywords').value.length))+' characters remaining';if(mode==='remove')$('inventoryRemoveName').textContent=item.name;else $('inventoryName').focus();
+}
+function inventoryTextChanged(e){limitItemInput(e,$('inventoryDescription'),$('inventoryKeywords'),$('inventoryCharacterCount'));captureDraftKeywords('inventory',false);renderKeywordSuggestions('inventory')}
+$('inventoryAdd').onclick=()=>openInventoryDialog('add');$('inventoryDescription').oninput=inventoryTextChanged;$('inventoryKeywords').oninput=inventoryTextChanged;
+$('inventoryBaseValue').oninput=()=>{if(!$('inventoryPurchased').checked)$('inventoryPurchasePrice').value=$('inventoryBaseValue').value};
+$('inventoryPurchased').onchange=()=>{showInventoryTip('purchase',$('inventoryPurchased').checked);$('inventoryPurchaseDetails').classList.toggle('hidden',!$('inventoryPurchased').checked);if($('inventoryPurchased').checked)$('inventoryPurchasePrice').value=$('inventoryBaseValue').value};
+$('inventorySold').onchange=()=>{showInventoryTip('sale',$('inventorySold').checked);$('inventorySaleDetails').classList.toggle('hidden',!$('inventorySold').checked);if($('inventorySold').checked)$('inventorySalePrice').value=state.inventory[inventoryDialogIndex].baseValue};
+$('inventoryModalCancel').onclick=closeInventoryDialog;$('inventoryModal').onclick=e=>{if(e.target===$('inventoryModal'))closeInventoryDialog()};
+$('inventoryItemConfirm').onclick=()=>{try{
+ const starting=inventoryContext.startsWith('starting-');if(!starting&&equipmentLocked())return;
+ const previous=dialogItem(),itemName=$('inventoryName').value.trim(),description=$('inventoryDescription').value.trim(),rawKeywords=$('inventoryKeywords').value.trim();
+ if(!itemName)throw Error('Name is required.');
+ const keywords=previous&&rawKeywords===keywordText(previous.keywords)?[...previous.keywords]:parseKeywordInput(rawKeywords);
+ if(!validCoinNumber($('inventoryBaseValue').value))throw Error('Base Value must be a nonnegative whole number.');
+ const item=normalizeItem({name:itemName,description,keywords,baseValue:Number($('inventoryBaseValue').value),equipment:readEquipmentFields('inventory',previous?.equipment)});
+ if(inventoryContext==='inventory'){
+  if(inventoryDialogMode==='add'){
+   if(state.inventory.length>=8)throw Error('Inventory is full (8 items).');
+   const purchased=$('inventoryPurchased').checked,raw=$('inventoryPurchasePrice').value;if(purchased&&!validCoinNumber(raw))throw Error('Purchase Price must be a nonnegative whole number.');
+   const price=purchased?Number(raw):0;if(price>state.res.Coin)throw Error('Not enough Coins for this purchase.');
+   snapshot();if(purchased){const before={Coin:state.res.Coin,Fate:state.res.Fate};state.res.Coin-=price;queueRewardVisual(before,{Coin:state.res.Coin,Fate:state.res.Fate})}state.inventory.push(item);
+   record(purchased?`Purchased ${item.name} for ${price} Coin${price===1?'':'s'} (Coin -${price})`:`Acquired ${item.name} (Base Value ${item.baseValue})`);
+  }else{if(!previous)return;snapshot();state.inventory[inventoryDialogIndex]=item;record('Edited inventory item: '+item.name)}
+ }else if(inventoryContext==='starting-inventory'){
+  if(inventoryDialogMode==='add'){if(setupLoadout.inventory.length>=8)throw Error('Inventory is full (8 items).');setupLoadout.inventory.push(item)}else{if(!previous)return;setupLoadout.inventory[inventoryDialogIndex]=item}
+ }else{
+  const type=inventoryContext.split('-')[1];if(item.equipment?.type!==type)throw Error('Equipment type must match this slot.');
+  if(starting)setupLoadout.equipment[type]=item;else{if(inventoryDialogMode==='edit'&&!previous)return;snapshot();state.equipment[type]=item;record((previous?'Edited ':'Equipped ')+item.name)}
+ }
+ rememberItemKeywords(item);closeInventoryDialog();if(starting)renderStartingItems();else update('Inventory updated.');
+ }catch(error){$('inventoryError').textContent=error.message}};
+$('inventoryRemoveConfirm').onclick=()=>{
+ const item=state.inventory[inventoryDialogIndex];if(!item||equipmentLocked())return;const sold=$('inventorySold').checked,raw=$('inventorySalePrice').value;
+ if(sold&&!validCoinNumber(raw)){$('inventoryError').textContent='Sale Price must be a nonnegative whole number.';return}const price=sold?Number(raw):0;
+ if(sold&&!Number.isSafeInteger(state.res.Coin+price)){$('inventoryError').textContent='Coin total exceeds the supported limit.';return}
+ snapshot();if(sold){const before={Coin:state.res.Coin,Fate:state.res.Fate};state.res.Coin+=price;queueRewardVisual(before,{Coin:state.res.Coin,Fate:state.res.Fate})}state.inventory.splice(inventoryDialogIndex,1);
+ record(sold?`Sold ${item.name} for ${price} Coin${price===1?'':'s'} (Coin +${price})`:`Removed inventory item: ${item.name}`);closeInventoryDialog();update(sold?'Item sold.':'Item removed.');
+};
+
+function renderDiceHistory(){$('diceHistoryList').innerHTML=(state.diceHistory||[]).map(e=>`<li><strong>${escapeHTML(e.type)}</strong> — ${escapeHTML(e.result)} </li>`).join('')||'<li class="help">No rolls yet.</li>'}
+function beginCreation(){setupCustomKeywords=[];if(storageLocked){notify(storageError);return}if(slots.length>=5){notify('All 5 save slots are occupied. Delete a character first.');return}activeId=null;state=fresh();state.diceHistory=[];state.diceType='6';screen='create';resetCharacterUI();mode='';selected.clear();setupSelected.clear();setupLoadout={inventory:[],customKeywords:[],customCategories:[],eventKeywords:[],dungeonProgress:[],delve:null,equipment:{weapon:null,armor:null}};setupResources={Coin:8,Fate:4,Supply:2};setupName=generateRandomName();setupModule='';pointLimit=50;challengeSuits=new Set<any>(['H','S','C']);viewZone=null;target=0;history=[];$('status').textContent='';render()}
+$('newGameTop').onclick=()=>{finishPendingDiceRoll();save();screen='menu';mode='';selected.clear();history=[];$('status').textContent='';render()};
+$('generateName').onclick=()=>{setupName=generateRandomName();$('characterName').value=setupName;renderSetup()};$('createCharacter').onclick=beginCreation;$('importCharacter').onclick=()=>{if(storageLocked){notify(storageError);return}if(slots.length>=5){notify('All 5 save slots are occupied. Delete a character first.');return}$('importfile').click()};$('importfile').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(storageLocked)throw Error('Saved data must be recovered before importing');if(slots.length>=5)throw Error('All 5 character slots are occupied');const raw=JSON.parse(await file.text());const data=normalizeCharacter(raw&&raw.format==='quest-for-glory-character'?raw.character:raw);const id='slot-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);slots.push({id,state:data,updated:Date.now()});save();render();notify('Character imported successfully.')}catch(err){notify('Import failed: '+err.message)}finally{e.target.value=''}};
+$('deleteCancel').onclick=()=>{$('deleteModal').classList.add('hidden');pendingDelete=null};
+$('deleteConfirm').onclick=()=>{if(pendingDelete){slots=slots.filter(x=>x.id!==pendingDelete);if(activeId===pendingDelete){activeId=null;state=fresh()};save()}pendingDelete=null;$('deleteModal').classList.add('hidden');render()};
+$('deleteModal').onclick=e=>{if(e.target===$('deleteModal'))$('deleteCancel').click()};
+$('startGame').onclick=()=>{if(!setupName.trim()||!setupSelected.size||creationTotal([...setupSelected])>pointLimit)return;state=fresh();state.started=true;state.customKeywords=[...setupCustomKeywords];state.inventory=setupLoadout.inventory.map(copyItem);state.equipment={weapon:setupLoadout.equipment.weapon?copyItem(setupLoadout.equipment.weapon):null,armor:setupLoadout.equipment.armor?copyItem(setupLoadout.equipment.armor):null};state.characterName=setupName.trim();state.adventureModule=setupModule.trim();$('status').textContent='';state.res={...setupResources};state.zones.deck=[...setupSelected];state.pointLimit=pointLimit;state.upgradePoints=pointLimit-creationTotal([...setupSelected]);state.pool=ALL.filter(id=>!setupSelected.has(id));record(`New game: ${state.zones.deck.length} cards (value ${sum(state.zones.deck)})`);history=[];state.diceHistory=[];state.diceType='6';activeId='slot-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);slots.push({id:activeId,state:JSON.parse(JSON.stringify(state)),updated:Date.now()});screen='game';resetCharacterUI();restoreDiceUI();update()};$('actions').querySelectorAll('button').forEach(b=>b.onclick=()=>chooseAction(b.dataset.mode));$('zoneCounts').addEventListener('click',event=>{const tile=event.target.closest('[data-viewzone]');if(!tile||!$('zoneCounts').contains(tile))return;const zone=tile.dataset.viewzone;if(!['deck','fatigue','wound'].includes(zone))return;viewZone=viewZone===zone?null:zone;render()});$('undo').onclick=()=>{if(!history.length)return;stopPresentation();finishPendingDiceRoll();state=preserveInventoryTips(JSON.parse(history.pop()));selected.clear();mode=state.combat?'combat':state.challenge?'challenge':state.woundTask?'wound':state.restWoundResolved?'rest':'';update('Last change undone.')};$('clearLog').onclick=()=>{if(!state.log.length)return;snapshot();state.log=[];update()};$('inventoryToggle').onclick=()=>{const open=!$('inventoryBody').classList.toggle('hidden');$('inventoryToggle').setAttribute('aria-expanded',String(open));$('inventoryChevron').textContent=open?'▴':'▾'};$('activityToggle').onclick=()=>{const open=$('activityBody').classList.toggle('hidden')===false;$('activityToggle').setAttribute('aria-expanded',String(open));$('activityChevron').textContent=open?'▴':'▾'};
+let editingField=null;function editField(field,title,label){if(!state.started)return;editingField=field;$('editInfoTitle').textContent=title;$('editInfoLabel').textContent=label;$('editInfoInput').value=state[field]||'';$('editInfoModal').classList.remove('hidden');$('editInfoInput').focus()};function closeEdit(){$('editInfoModal').classList.add('hidden');editingField=null};$('renameCharacter').onclick=()=>editField('characterName','Rename Character','Character name');$('editModule').onclick=()=>editField('adventureModule','Adventure Module','Adventure Module (optional)');$('editInfoCancel').onclick=closeEdit;$('editInfoModal').onclick=e=>{if(e.target===$('editInfoModal'))closeEdit()};$('editInfoSave').onclick=()=>{if(!editingField)return;const val=$('editInfoInput').value.trim();if(editingField==='characterName'&&!val){notify('Character name cannot be empty.');return}snapshot();state[editingField]=val;record(editingField==='characterName'?'Character renamed to '+val:'Adventure Module updated');closeEdit();update()};$('editInfoInput').addEventListener('keydown',e=>{if(e.key==='Enter')$('editInfoSave').click();if(e.key==='Escape')closeEdit()});mode=state.combat?'combat':state.challenge?'challenge':state.woundTask?'wound':state.restWoundResolved?'rest':'';
+const dieOptions=document.querySelectorAll('input[name="dieType"]');
+let pendingDice=null;
+const randomDie=n=>Math.floor(Math.random()*n)+1;
+function makeDiceRoll(sides){if(sides==='2d6'){const a=randomDie(6),b=randomDie(6);return {result:a*10+b,detail:`${a} and ${b} (digits, not sum)`}}return {result:randomDie(Number(sides)),detail:''}}
+function finishPendingDiceRoll(){
+ const roll=pendingDice;if(!roll)return;pendingDice=null;clearInterval(roll.timer);
+ const entry=slots.find(x=>x.id===roll.ownerId);if(!entry)return;
+ const current=activeId===roll.ownerId;
+ const owner=current?state:entry.state;
+ if(owner.dead)return;
+ owner.diceType=roll.sides;owner.lastDice=roll.final;owner.diceHistory=owner.diceHistory||[];
+ owner.diceHistory.unshift({type:roll.sides==='2d6'?'2D6':'D'+roll.sides,result:roll.final.result});
+ owner.diceHistory=owner.diceHistory.slice(0,20);
+ if(current){
+  const box=document.querySelector('.dice-result');box.classList.remove('rolling');box.classList.add('landed');
+  $('diceResult').textContent=String(roll.final.result);$('diceDetail').textContent=roll.final.detail;
+  save();renderDiceHistory();
+ }else{entry.updated=Date.now();persistSlots()}
+}
+function rollAnimated(sides){
+ if(!state.started||state.dead||!activeId)return;
+ if(pendingDice){clearInterval(pendingDice.timer);pendingDice=null}
+ state.diceType=sides;
+ const box=document.querySelector('.dice-result'),start=Date.now();
+ const roll={ownerId:activeId,sides,final:makeDiceRoll(sides),timer:null};pendingDice=roll;
+ box.classList.remove('landed');box.classList.add('rolling');$('diceDetail').textContent='Rolling…';$('diceResult').textContent='—';
+ roll.timer=setInterval(()=>{
+  if(pendingDice!==roll)return;
+  if(Date.now()-start>=580){finishPendingDiceRoll();return}
+  if(activeId===roll.ownerId)$('diceResult').textContent=String(makeDiceRoll(sides).result);
+ },60);
+}
+dieOptions.forEach(input=>input.closest('label').addEventListener('click',e=>{
+ // Stop the label's synthetic input click from starting a second roll.
+ if(e.target!==input)e.preventDefault();
+ if(!state.started||state.dead||dungeonActionLocked())return;
+ input.checked=true;rollAnimated(input.value);
+}));
+$('diceToggle').onclick=()=>{const open=$('diceBody').classList.toggle('hidden')===false;$('diceToggle').setAttribute('aria-expanded',String(open));$('diceChevron').textContent=open?'▴':'▾'};
+$('diceHistoryToggle').onclick=()=>{const open=$('diceHistoryContent').classList.toggle('hidden')===false;$('diceHistoryToggle').setAttribute('aria-expanded',String(open));$('historyChevron').textContent=open?'▴':'▾'};
+$('restConfirmCancel').onclick=closeRestConfirmation;
+$('restConfirmYes').onclick=()=>{const owner=restConfirmOwner;closeRestConfirmation();if(screen==='game'&&owner===activeId&&!state.dead)setMode('rest',true)};
+$('healItemCancel').onclick=closeHealItemPicker;
+$('healItemSelect').onclick=()=>{const input=document.querySelector('input[name="healItem"]:checked');if(!input||mode!=='heal'||screen!=='game'||state.dead)return;const index=Number(input.value),item=state.inventory[index];if(!Number.isInteger(index)||!item||!healEligible(item))return;healItemSelection={owner:activeId,index,itemJSON:JSON.stringify(item)};closeHealItemPicker();renderOperation();$('healItemNotice')?.focus()};
+for(const [id,cancel]of [['restConfirmModal','restConfirmCancel'],['healItemModal','healItemCancel']]){const modal=$(id);modal.onclick=e=>{if(e.target===modal)$(cancel).click()};modal.onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();$(cancel).click()}else trapModalTab(e,modal)}}
+
+
+try{keywordCatalog=validateKeywordCatalog(libraries.keywords).keywords}catch(error){keywordCatalogError=error.message}
+$('enemyKeywords').oninput=()=>{captureEnemyKeywordDraft(false);updateEnemyAssociationSuggestions()};$('enemyKeywords').addEventListener('blur',()=>{captureEnemyKeywordDraft(true);if(!keywordPointerDown)setTimeout(updateEnemyAssociationSuggestions,0);else enemySuggestionsPending=true});
+$('inventoryEquipmentContainer').innerHTML=equipmentFieldsHTML('inventory');$('enemyItemEquipmentContainer').innerHTML=equipmentFieldsHTML('enemyItem');
+setEquipmentFields('inventory');setEquipmentFields('enemyItem');
+$('equipmentToggle').onclick=()=>{const open=!$('equipmentBody').classList.toggle('hidden');$('equipmentToggle').setAttribute('aria-expanded',String(open));$('equipmentChevron').textContent=open?'▴':'▾'};
+$('repairCost').oninput=validateRepairCost;$('repairCancel').onclick=closeRepair;
+$('repairModal').onclick=e=>{if(e.target===$('repairModal'))closeRepair()};$('repairModal').onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();closeRepair()}else trapModalTab(e,$('repairModal'))};
+$('repairForm').onsubmit=e=>{e.preventDefault();validateRepairCost();if($('repairConfirm').disabled||!validRepairTarget())return;const type=repairTarget.type,item=state.equipment[type],cost=Number($('repairCost').value);snapshot();const before={Coin:state.res.Coin,Fate:state.res.Fate};state.res.Coin-=cost;item.equipment.usage=[true,true,true,true];queueRewardVisual(before,{Coin:state.res.Coin,Fate:state.res.Fate});record('Fixed '+item.name+' for '+cost+' Coin');closeRepair();update('Equipment fixed.');document.querySelector('[data-edit-equipment="'+type+'"]')?.focus()};
+
+for(const id of ['enemySetupError','libraryError'])new MutationObserver(()=>{if($(id).textContent&&screen==='game')notifyAction($(id).textContent)}).observe($(id),{childList:true,characterData:true,subtree:true});
+document.addEventListener('pointerdown',()=>{keywordPointerDown=true},true);document.addEventListener('pointerup',()=>{keywordPointerDown=false;setTimeout(flushKeywordDrafts,0)},true);document.addEventListener('click',()=>{flushKeywordDrafts();if(enemySuggestionsPending){enemySuggestionsPending=false;setTimeout(updateEnemyAssociationSuggestions,0)}});document.addEventListener('keyup',event=>{if(event.key==='Tab')flushKeywordDrafts()});
+$('manageKeywords').onclick=openKeywordManager;$('keywordManagerCancel').onclick=()=>closeKeywordManager();
+$('keywordManagerModal').onclick=e=>{if(e.target===$('keywordManagerModal'))closeKeywordManager()};$('keywordManagerModal').onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();closeKeywordManager()}else trapModalTab(e,$('keywordManagerModal'))};
+$('manageKeywordAdd').onclick=()=>{if(!keywordManager)return;try{const entry=normalizeCustomPreferences([{keyword:$('manageKeywordText').value,category:$('manageKeywordCategory').value,origin:'custom'}]).keywords[0];if(!entry)throw Error('Enter a keyword');if(keywordManager.keywords.some((e,i)=>i!==keywordManager.editing&&keywordKey(e.keyword)===keywordKey(entry.keyword)))throw Error('This keyword is already in your list');if(keywordManager.editing===null)keywordManager.keywords.push(entry);else keywordManager.keywords[keywordManager.editing]=entry;resetKeywordManagerEntry();renderKeywordManager();$('keywordManagerError').textContent=''}catch(error){$('keywordManagerError').textContent=error.message}};
+$('createKeywordCategory').onclick=()=>{if(!keywordManager)return;const name=$('newKeywordCategory').value.trim();if(!name||name.length>60){$('keywordManagerError').textContent='Enter a category name up to 60 characters.';return}const existing=customCategoryOptions().find(c=>keywordKey(c)===keywordKey(name));if(!existing)keywordManager.categories.push(name);renderKeywordManager();$('manageKeywordCategory').value=existing||name;applyLiveManagedEdit();$('newKeywordCategory').value='';$('keywordManagerError').textContent=''};
+$('keywordManagerSave').onclick=()=>{if(!keywordManager||keywordManager.owner!==activeId||!applyLiveManagedEdit())return;try{const prefs=normalizeCustomPreferences(keywordManager.keywords,keywordManager.categories);state.customKeywords=prefs.keywords;state.customCategories=prefs.categories;closeKeywordManager();const saved=save();render();notify(saved?'Custom keywords updated.':storageError)}catch(error){$('keywordManagerError').textContent=error.message}};
+$('exportCustomKeywords').onclick=()=>{if(!keywordManager)return;const prefs=normalizeCustomPreferences(keywordManager.keywords,keywordManager.categories);downloadJSON({format:'quest-for-glory-custom-keywords',version:1,keywords:prefs.keywords,categories:prefs.categories},'quest-for-glory-custom-keywords.json')};
+$('importCustomKeywords').onclick=()=>$('importCustomKeywordFile').click();
+$('importCustomKeywordFile').onchange=async event=>{const file=event.target.files[0],draft=keywordManager;if(!file||!draft)return;try{const imported=validateCustomKeywordBundle(JSON.parse(await file.text()));if(keywordManager!==draft||draft.owner!==activeId)return;let added=0;for(const entry of imported.keywords)if(!draft.keywords.some(e=>keywordKey(e.keyword)===keywordKey(entry.keyword))){draft.keywords.push(entry);added++}for(const category of imported.categories)if(!customCategoryOptions().some(c=>keywordKey(c)===keywordKey(category)))draft.categories.push(category);resetKeywordManagerEntry();renderKeywordManager();$('keywordManagerError').textContent=`Imported ${added} keyword(s). Save changes to apply.`}catch(error){if(keywordManager===draft)$('keywordManagerError').textContent='Import failed: '+error.message}finally{event.target.value=''}};
+$('inventoryKeywords').addEventListener('blur',event=>keywordBlur('inventory',event));$('enemyItemKeywords').addEventListener('blur',event=>keywordBlur('enemyItem',event));
+
+const normalArea=document.createElement('div');normalArea.id='normalCharacterArea';$('game').append(normalArea);
+const dungeonButton=document.createElement('button');dungeonButton.id='startDungeonDelve';dungeonButton.type='button';dungeonButton.textContent='Dungeon Delve';$('game').insertBefore(dungeonButton,normalArea);
+const dungeonScreen=document.createElement('div');dungeonScreen.id='dungeonScreen';dungeonScreen.className='hidden';dungeonScreen.innerHTML='<section id="dungeonInfo" class="panel"></section><section class="panel"><div id="dungeonControls"></div></section><div id="dungeonActionHost"></div><section id="dungeonSheet" class="panel"><button id="dungeonSheetToggle" type="button" class="collapser" aria-expanded="false"><span>Character Sheet</span><span>▾</span></button><div id="dungeonSheetBody" class="hidden"></div></section>';$('game').append(dungeonScreen);
+try{dungeonLibrary=validateDungeonLibrary(libraries.dungeons,enemyLibrary).dungeons}catch(error){dungeonLibraryError=error.message}
+$('startDungeonDelve').onclick=openDungeonSelector;$('dungeonStart').onclick=enterSelectedDungeon;$('dungeonChoiceCancel').onclick=()=>{$('dungeonChoiceModal').classList.add('hidden');$('startDungeonDelve').focus()};
+$('dungeonSheetToggle').onclick=()=>{const open=!$('dungeonSheetBody').classList.toggle('hidden');$('dungeonSheetToggle').setAttribute('aria-expanded',String(open))};
+$('dungeonTreasureKeep').onclick=()=>finishDungeonTreasure(true);$('dungeonTreasureDecline').onclick=()=>finishDungeonTreasure(false);$('dungeonTreasureConfirm').onclick=()=>{const selected=document.querySelector('input[name="dungeonTreasureDiscard"]:checked');if(selected)finishDungeonTreasure(true,Number(selected.value))};$('dungeonTreasureBack').onclick=()=>{if(state.delve){state.delve.treasureChoosing=false;save();render();$('dungeonTreasureKeep').focus()}};
+for(const [id,cancel]of [['eventKeywordModal','eventKeywordCancel'],['dungeonChoiceModal','dungeonChoiceCancel']]){$(id).onclick=e=>{if(e.target===$(id))$(cancel).click()};$(id).onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();$(cancel).click()}else trapModalTab(e,$(id))}}
+$('dungeonTreasureModal').onkeydown=e=>{if(e.key==='Escape'){e.preventDefault();if(state.delve?.treasureChoosing)$('dungeonTreasureBack').click()}else trapModalTab(e,$('dungeonTreasureModal'))};
+$('optionsButton').onclick=()=>{const open=$('optionsMenu').classList.contains('hidden');$('optionsMenu').classList.toggle('hidden',!open);$('optionsButton').setAttribute('aria-expanded',String(open));if(open)$('renameCharacter').focus()};$('optionsMenu').addEventListener('click',e=>{if(e.target.closest('button'))closeOptions()});document.addEventListener('click',e=>{if(!e.target.closest('.options-wrap'))closeOptions()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('optionsMenu').classList.contains('hidden')){closeOptions();$('optionsButton').focus()}});
+const nameFields=new Set<any>(['characterName','setupModule','enemyName','inventoryName','enemyItemName','editInfoInput','newKeywordCategory']);document.addEventListener('input',e=>{if(nameFields.has(e.target.id)&&!e.isComposing)applyNameCase(e.target);if(e.target.id==='enemyName')enemyDefaultName=false},true);document.addEventListener('compositionend',e=>{if(nameFields.has(e.target.id))applyNameCase(e.target)},true);
+$('enemyName').addEventListener('pointerdown',()=>{if(enemyDefaultName&&$('enemyName').value==='Enemy'){$('enemyName').value='';enemyDefaultName=false}});$('enemyName').addEventListener('keydown',e=>{if(enemyDefaultName&&e.key.length===1){$('enemyName').value='';enemyDefaultName=false}});
+$('manageKeywordText').addEventListener('input',applyLiveManagedEdit);$('manageKeywordCategory').addEventListener('change',applyLiveManagedEdit);
+$('attributePoints').onclick=openUpgradeFromPoints;$('attributePoints').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openUpgradeFromPoints()}};
+$('eventKeywordsToggle').onclick=()=>{const open=!$('eventKeywordsBody').classList.toggle('hidden');$('eventKeywordsToggle').setAttribute('aria-expanded',String(open));$('eventKeywordsChevron').textContent=open?'▴':'▾'};$('eventKeywordAdd').onclick=()=>openEventEditor();$('eventKeywordCancel').onclick=closeEventEditor;
+$('eventKeywordSave').onclick=()=>{if(!eventEditor||eventEditor.owner!==activeId||equipmentLocked())return;try{const words=parseKeywordInput($('eventKeywordText').value);if(!words.length)throw Error('Enter at least one event keyword');const index=eventEditor.index,old=index===null?null:state.eventKeywords[index];if(index!==null&&JSON.stringify(old)!==eventEditor.snapshot)throw Error('The event keyword changed; reopen it.');snapshot();const entries=words.map(keyword=>({keyword,adventureModule:old?old.adventureModule:state.adventureModule}));if(index===null)state.eventKeywords.push(...entries);else state.eventKeywords.splice(index,1,...entries);record((old?'Edited':'Added')+' event keyword: '+words.join(' - '));closeEventEditor();update('Event keywords updated.')}catch(error){$('eventKeywordError').textContent=error.message}};
+
+$('dungeonVictoryExit').onclick=requestDungeonExit;$('dungeonVictoryModal').onkeydown=e=>{if(e.key==='Escape')e.preventDefault();else trapModalTab(e,$('dungeonVictoryModal'))};
+storage.onError=(error)=>{storageError='Save failed: '+(error instanceof Error?error.message:String(error))+'. Your latest changes remain in this tab. Export your characters before closing, then reload or retry saving.';renderStorageNotice()};loadSavedCharacters();if(!storageLocked&&storage.needsMigration)persistSlots();render();
+return {replaceLibraries:(next:LibraryBundle)=>{if(state.challenge||state.combat||state.woundTask||mode||state.delve)return false;const enemies=validateEnemyLibrary(next.enemies),keywords=validateKeywordCatalog(next.keywords),dungeons=validateDungeonLibrary(next.dungeons,enemies.enemies);enemyLibrary=enemies.enemies;keywordCatalog=keywords.keywords;dungeonLibrary=dungeons.dungeons;enemyLibraryError='';keywordCatalogError='';dungeonLibraryError='';render();return true},isBusy:()=>!!(state.challenge||state.combat||state.woundTask||mode||state.delve), exportRecovery:()=>downloadText(JSON.stringify({slots},null,2),'quest-for-glory-recovery.json')};
+
+}

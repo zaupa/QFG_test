@@ -1,0 +1,8 @@
+/// <reference lib="webworker" />
+export {};
+const scope=globalThis as unknown as ServiceWorkerGlobalScope;
+const BASE=new URL('./',scope.location.href),PREFIX='qfg-shell:'+BASE.pathname+':',CACHE=PREFIX+'__CACHE_VERSION__',ASSETS:string[]=/* PRECACHE */[];
+scope.addEventListener('install',event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await cache.addAll(ASSETS.map(file=>new URL(file,BASE).href))})()));
+scope.addEventListener('activate',event=>event.waitUntil((async()=>{await scope.clients.claim();const keys=await caches.keys();for(const key of keys)if(key.startsWith(PREFIX)&&key!==CACHE)await caches.delete(key)})()));
+scope.addEventListener('message',event=>{if(event.data?.type==='SKIP_WAITING')scope.skipWaiting()});
+scope.addEventListener('fetch',event=>{const request=event.request,url=new URL(request.url);if(request.method!=='GET'||url.origin!==BASE.origin||!url.pathname.startsWith(BASE.pathname))return;const relative=url.pathname.slice(BASE.pathname.length);if(relative.startsWith('data/')){event.respondWith(fetch(new Request(request,{cache:'no-store'})));return}if(request.mode==='navigate'){event.respondWith((async()=>{const cache=await caches.open(CACHE);return await cache.match(new URL('index.html',BASE).href)||fetch(request)})());return}if(!ASSETS.includes(relative))return;event.respondWith((async()=>{const cache=await caches.open(CACHE);return await cache.match(new URL(relative,BASE).href)||fetch(request)})())});

@@ -1,3 +1,11 @@
+# V29 — React / TypeScript PWA
+
+- Adds React startup/PWA controls, IndexedDB local character saves, a versioned service worker, installation metadata and offline shell assets.
+- Moves fonts, audio, layout and JSON into external files. Enemy, keyword and dungeon JSON refresh online at opening/foreground return without rebuilding; invalid updates preserve the validated offline bundle.
+- Preserves active encounter/delve snapshots, defers foreground library application while busy, and requires a safe explicit action to activate an app update.
+- Validates/migrates same-origin localStorage without deleting the old backup. Existing character JSON imports/exports support moving from the standalone HTML or another origin.
+- Preserves V28 in `legacy/` and the V27 backup. Character JSON format remains V28-compatible. See README for localhost development, production preview and JSON authoring locations.
+
 # V28
 
 - Upgrade flashes the Available points box when opened with unused points. Repeated action selection closes an unstarted action; an action with selected cards or an active encounter cannot be closed or reset through action selection.

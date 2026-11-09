@@ -1,0 +1,1254 @@
+{
+  "date": "2026-11-09T14:32:37.197Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "59034cede7dda5a48afca2e3f2e242a424317ece3abad3bffd54dcde8a90e162",
+  "passed": 249,
+  "failed": 0,
+  "results": [
+    {
+      "name": "02 creation rejects overspend and supports custom starting values",
+      "status": "PASS",
+      "ms": 1026
+    },
+    {
+      "name": "03 autosave and reload preserve resources, cards, inventory",
+      "status": "PASS",
+      "ms": 1244
+    },
+    {
+      "name": "04 independent slots and five-slot creation/import capacity",
+      "status": "PASS",
+      "ms": 1051
+    },
+    {
+      "name": "05 deletion requires in-app confirmation and Cancel preserves character",
+      "status": "PASS",
+      "ms": 978
+    },
+    {
+      "name": "06 JSON download/import roundtrip preserves character",
+      "status": "PASS",
+      "ms": 1030
+    },
+    {
+      "name": "07 invalid duplicate-card JSON rejected without overwriting save",
+      "status": "PASS",
+      "ms": 927
+    },
+    {
+      "name": "08 resource edits logged, zero protected and Undo restores state",
+      "status": "PASS",
+      "ms": 948
+    },
+    {
+      "name": "09 delegated card-zone tiles work after repeated UI refreshes",
+      "status": "PASS",
+      "ms": 1213
+    },
+    {
+      "name": "10 challenge success moves hand to Fatigue and preserves all cards",
+      "status": "PASS",
+      "ms": 1154
+    },
+    {
+      "name": "11 challenge failure is logged and cards move to Fatigue",
+      "status": "PASS",
+      "ms": 1168
+    },
+    {
+      "name": "12 modifier six equal random buckets produce -6,-3,0,0,3,6",
+      "status": "PASS",
+      "ms": 4002
+    },
+    {
+      "name": "13 excluded suits blocked at hand selection and Fate-add stage",
+      "status": "PASS",
+      "ms": 1382
+    },
+    {
+      "name": "14 first Fate adjustment costs one and the next costs two",
+      "status": "PASS",
+      "ms": 1739
+    },
+    {
+      "name": "15 exact-match recovery returns selected cards and conserves deck",
+      "status": "PASS",
+      "ms": 1282
+    },
+    {
+      "name": "16 exact-match permits choosing fewer than two cards (spec: up to two)",
+      "status": "PASS",
+      "ms": 1243
+    },
+    {
+      "name": "17 challenge Cancel restores complete pre-action persistent state",
+      "status": "PASS",
+      "ms": 1244
+    },
+    {
+      "name": "18 combat success and exact recovery",
+      "status": "PASS",
+      "ms": 1696
+    },
+    {
+      "name": "19 combat retries reduce difficulty by two and Cancel restores before all retries",
+      "status": "PASS",
+      "ms": 3345
+    },
+    {
+      "name": "20 combat fleeing costs two Fate; insufficient Fate disables flee",
+      "status": "PASS",
+      "ms": 2828
+    },
+    {
+      "name": "21 empty deck cannot begin challenge",
+      "status": "PASS",
+      "ms": 836
+    },
+    {
+      "name": "22 combat retry uses Fatigue hand for explicit two-Fate cost",
+      "status": "PASS",
+      "ms": 2362
+    },
+    {
+      "name": "23 wounds use Fatigue exclusively when it can cover target",
+      "status": "PASS",
+      "ms": 1044
+    },
+    {
+      "name": "24 insufficient Fatigue is fully allocated before deck cards",
+      "status": "PASS",
+      "ms": 1097
+    },
+    {
+      "name": "25 all owned cards wounded means persistent Game Over and disabled actions",
+      "status": "PASS",
+      "ms": 1249
+    },
+    {
+      "name": "26 successful challenge does not trigger empty-deck failure death",
+      "status": "PASS",
+      "ms": 1054
+    },
+    {
+      "name": "27 failed challenge detects empty deck + Fatigue + Wounds + zero Fate",
+      "status": "PASS",
+      "ms": 1092
+    },
+    {
+      "name": "28 Rest spends one Supply and enforces recovery value",
+      "status": "PASS",
+      "ms": 1069
+    },
+    {
+      "name": "29 Rest without Supply wounds five points before recovery",
+      "status": "PASS",
+      "ms": 2041
+    },
+    {
+      "name": "30 Healing recovers owned Wounds only, within value",
+      "status": "PASS",
+      "ms": 1104
+    },
+    {
+      "name": "31 upgrades use leftover budget, Diamonds double, Fate buys three points",
+      "status": "PASS",
+      "ms": 1138
+    },
+    {
+      "name": "32 inventory purchase/sale, custom price, persisted data and Undo",
+      "status": "PASS",
+      "ms": 1386
+    },
+    {
+      "name": "33 insufficient Coin rejects item purchase with no state mutation",
+      "status": "PASS",
+      "ms": 1092
+    },
+    {
+      "name": "34 inventory eight-item limit and combined 300-character bound",
+      "status": "PASS",
+      "ms": 1045
+    },
+    {
+      "name": "35 dice open does not roll; all types roll on tap with valid ranges",
+      "status": "PASS",
+      "ms": 4927
+    },
+    {
+      "name": "36 2D6 concatenates independent digits and history is newest-first capped at 20",
+      "status": "PASS",
+      "ms": 1771
+    },
+    {
+      "name": "38 save import requires full card-pool partition",
+      "status": "PASS",
+      "ms": 925
+    },
+    {
+      "name": "39 malformed active-action JSON is rejected before storing",
+      "status": "PASS",
+      "ms": 934
+    },
+    {
+      "name": "41 paid no-Supply Rest can resume after reload without a second wound",
+      "status": "PASS",
+      "ms": 1395
+    },
+    {
+      "name": "42 dice roll belongs to original character when switching during animation",
+      "status": "PASS",
+      "ms": 1790
+    },
+    {
+      "name": "43 character UI collapse defaults reset on character switch",
+      "status": "PASS",
+      "ms": 1457
+    },
+    {
+      "name": "45 challenge mid-action reload retains hand and Cancel rollback",
+      "status": "PASS",
+      "ms": 2503
+    },
+    {
+      "name": "46 selected cards keep ivory, tilt and shadow with a thin dark border",
+      "status": "PASS",
+      "ms": 1428
+    },
+    {
+      "name": "63 exact-match optional recovery covers zero and one card in both encounter types",
+      "status": "PASS",
+      "ms": 3277
+    },
+    {
+      "name": "64 no-Supply Rest resumes through menu and persisted cancellation starts a fresh Rest",
+      "status": "PASS",
+      "ms": 2438
+    },
+    {
+      "name": "65 active combat and allocated wounds survive reload and retain safe Cancel",
+      "status": "PASS",
+      "ms": 1531
+    },
+    {
+      "name": "66 v9 and v10 slot migrations preserve independent characters",
+      "status": "PASS",
+      "ms": 1054
+    },
+    {
+      "name": "67 numeric overflow is blocked for resource increments and Fate upgrades",
+      "status": "PASS",
+      "ms": 1011
+    },
+    {
+      "name": "68 a dice label starts one 2D6 roll rather than a duplicate synthetic click",
+      "status": "PASS",
+      "ms": 1638
+    },
+    {
+      "name": "69 character collapse defaults include Roll History and Inventory",
+      "status": "PASS",
+      "ms": 1151
+    },
+    {
+      "name": "70 live add previews update failure, exact match and success without spending Fate",
+      "status": "PASS",
+      "ms": 2042
+    },
+    {
+      "name": "71 live remove previews update success, exact match and failure before confirmation",
+      "status": "PASS",
+      "ms": 2161
+    },
+    {
+      "name": "72 preview respects Luck eligibility and face value; Back discards the preview",
+      "status": "PASS",
+      "ms": 1297
+    },
+    {
+      "name": "83 enemy prompt defaults and cancellation leave the character unchanged",
+      "status": "PASS",
+      "ms": 1215
+    },
+    {
+      "name": "84 ordinary victory adds configured Fate, Coin and inventory item exactly once",
+      "status": "PASS",
+      "ms": 1675
+    },
+    {
+      "name": "85 exact-match victory grants rewards only after the recovery choice",
+      "status": "PASS",
+      "ms": 1561
+    },
+    {
+      "name": "86 failed combat and fleeing do not grant configured rewards",
+      "status": "PASS",
+      "ms": 2468
+    },
+    {
+      "name": "87 full inventory decline retains all existing items and resource rewards",
+      "status": "PASS",
+      "ms": 1626
+    },
+    {
+      "name": "88 full inventory replacement lists all items and discards only the selected item without sale proceeds",
+      "status": "PASS",
+      "ms": 1573
+    },
+    {
+      "name": "89 pending reward survives reload and JSON transfer without duplicating resources",
+      "status": "PASS",
+      "ms": 2375
+    },
+    {
+      "name": "90 Undo of victory/replacement restores awards consistently without duplication",
+      "status": "PASS",
+      "ms": 1662
+    },
+    {
+      "name": "91 enemy and reward fields reject invalid values and enforce combined text length",
+      "status": "PASS",
+      "ms": 1443
+    },
+    {
+      "name": "92 malformed enemy rewards and adjustment counters are rejected on import",
+      "status": "PASS",
+      "ms": 1503
+    },
+    {
+      "name": "94 rewards that overflow resources remain pending until safely collectible",
+      "status": "PASS",
+      "ms": 1362
+    },
+    {
+      "name": "95 low Fate during adjustment disables confirmation and does not move cards",
+      "status": "PASS",
+      "ms": 1316
+    },
+    {
+      "name": "96 the five-card cap also applies to eligible Fatigue hands during an ongoing action",
+      "status": "PASS",
+      "ms": 1017
+    },
+    {
+      "name": "97 mobile enemy and full-inventory reward dialogs remain usable and text is escaped",
+      "status": "PASS",
+      "ms": 2379
+    },
+    {
+      "name": "98 full inventory without an item reward finishes normally and Game Over grants no reward",
+      "status": "PASS",
+      "ms": 2116
+    },
+    {
+      "name": "99 extreme or blank initial difficulty is rejected before an unsafe modifier calculation",
+      "status": "PASS",
+      "ms": 1280
+    },
+    {
+      "name": "100 restored pending reward asks before using a free inventory slot without re-awarding resources",
+      "status": "PASS",
+      "ms": 919
+    },
+    {
+      "name": "101 cancellation after escalating Fate costs and multiple retries restores the original character",
+      "status": "PASS",
+      "ms": 4056
+    },
+    {
+      "name": "102 an expanded paid hand and the next Fate cost survive reload",
+      "status": "PASS",
+      "ms": 1708
+    },
+    {
+      "name": "107 modifier-adjusted Challenge Value floors at one in both action types and previews",
+      "status": "PASS",
+      "ms": 3330
+    },
+    {
+      "name": "108 setup minimum and combat retry base both remain one or higher",
+      "status": "PASS",
+      "ms": 1709
+    },
+    {
+      "name": "112 each completed Rest advances Round once and Undo restores cards, Supply and Round",
+      "status": "PASS",
+      "ms": 1524
+    },
+    {
+      "name": "113 no-Supply Rest advances Round only after recovery; cancellation and fatal wounds do not",
+      "status": "PASS",
+      "ms": 3990
+    },
+    {
+      "name": "114 Round editor supports Add/Remove, preview, cancel, reload and nonnegative bounds",
+      "status": "PASS",
+      "ms": 1629
+    },
+    {
+      "name": "115 Round is independent per character and survives export/import; invalid counters are rejected",
+      "status": "PASS",
+      "ms": 1905
+    },
+    {
+      "name": "117 all resource totals open Add/Remove dialogs and update values and activity",
+      "status": "PASS",
+      "ms": 1798
+    },
+    {
+      "name": "118 custom resource changes reject empty, fractional, negative, excessive and overflow amounts without mutations",
+      "status": "PASS",
+      "ms": 1037
+    },
+    {
+      "name": "119 all sections collapse with expanded primary defaults and always-visible title, character and Round",
+      "status": "PASS",
+      "ms": 1211
+    },
+    {
+      "name": "120 collapsing active Actions preserves selection and cancellation restores manual counter changes",
+      "status": "PASS",
+      "ms": 1256
+    },
+    {
+      "name": "121 section defaults reset on character entry without leaking collapsed state",
+      "status": "PASS",
+      "ms": 1188
+    },
+    {
+      "name": "122 applied manual wounds shake the screen with a red overlay for half a second without extra state changes",
+      "status": "PASS",
+      "ms": 1917
+    },
+    {
+      "name": "124 victory totals save immediately while Coin and Fate count up and shake visually",
+      "status": "PASS",
+      "ms": 2223
+    },
+    {
+      "name": "125 hidden Resources stays collapsed on victory and reopening shows final totals without replay",
+      "status": "PASS",
+      "ms": 1336
+    },
+    {
+      "name": "128 Undo cancels transient effects and restores actual resource and wound values",
+      "status": "PASS",
+      "ms": 2663
+    },
+    {
+      "name": "132 combat chooser offers creation/library and every cancellation path leaves the character unchanged",
+      "status": "PASS",
+      "ms": 1347
+    },
+    {
+      "name": "133 library lists the JSON enemies, supports one selection and previews without starting combat",
+      "status": "PASS",
+      "ms": 1069
+    },
+    {
+      "name": "134 starting the selected library enemy snapshots the canonical card and raised enemy details",
+      "status": "PASS",
+      "ms": 1057
+    },
+    {
+      "name": "135 custom enemy entry stores description, italic keyword arrays, WV zero and array-based item reward",
+      "status": "PASS",
+      "ms": 1301
+    },
+    {
+      "name": "136 raised enemy details remain through adjustments, wounds, retries and reload",
+      "status": "PASS",
+      "ms": 2612
+    },
+    {
+      "name": "137 WV zero failure skips wound selection and wound animation while retaining retry/flee",
+      "status": "PASS",
+      "ms": 1315
+    },
+    {
+      "name": "138 library victory awards array-keyword items and edits never mutate the library definition",
+      "status": "PASS",
+      "ms": 1845
+    },
+    {
+      "name": "139 old keyword text and old combat reward fields migrate without losing phrases or hyphenated words",
+      "status": "PASS",
+      "ms": 1074
+    },
+    {
+      "name": "140 inventory keyword input produces arrays, italics and a canonical 300-character budget",
+      "status": "PASS",
+      "ms": 1318
+    },
+    {
+      "name": "141 purchases save Coin deductions atomically while the Coin display counts down",
+      "status": "PASS",
+      "ms": 2110
+    },
+    {
+      "name": "142 selling an item counts Coin up without animating Fate or repeating proceeds",
+      "status": "PASS",
+      "ms": 2242
+    },
+    {
+      "name": "143 free/zero-price transactions, unsold removals and failed purchases do not animate or change Coin",
+      "status": "PASS",
+      "ms": 3079
+    },
+    {
+      "name": "144 purchase animation respects Undo, character switching and reduced motion",
+      "status": "PASS",
+      "ms": 3945
+    },
+    {
+      "name": "154 expanded enemy labels spell out Challenge/Wound Value while the compact list keeps abbreviations",
+      "status": "PASS",
+      "ms": 2445
+    },
+    {
+      "name": "155 free-slot victory waits for Keep consent; reload and export preserve a single pending reward",
+      "status": "PASS",
+      "ms": 4689
+    },
+    {
+      "name": "156 declining a free-slot item retains Fate/Coin but adds no inventory item",
+      "status": "PASS",
+      "ms": 4487
+    },
+    {
+      "name": "157 Keep at capacity opens single-item replacement; Back and Discard retain existing items",
+      "status": "PASS",
+      "ms": 3532
+    },
+    {
+      "name": "158 keyword entry rejects commas in inventory/enemy/reward fields and treats spaces as one keyword",
+      "status": "PASS",
+      "ms": 2776
+    },
+    {
+      "name": "159 Rest confirmation Cancel/Escape do not alter cards, Supply, Round, log or Undo history",
+      "status": "PASS",
+      "ms": 2965
+    },
+    {
+      "name": "160 no-Supply Rest requires confirmation before wounds and retains default recovery value five",
+      "status": "PASS",
+      "ms": 2876
+    },
+    {
+      "name": "161 Heal defaults to five and Use item sits to the right of Healing value",
+      "status": "PASS",
+      "ms": 1581
+    },
+    {
+      "name": "162 selecting an item changes only Heal presentation; confirmation consumes exactly one item with no Coin change",
+      "status": "PASS",
+      "ms": 2419
+    },
+    {
+      "name": "163 cancelled Heal, picker cancellation, invalid healing and reload never consume the chosen item",
+      "status": "PASS",
+      "ms": 3028
+    },
+    {
+      "name": "164 empty inventory picker is recoverable; Heal without an item remains available",
+      "status": "PASS",
+      "ms": 2471
+    },
+    {
+      "name": "165 changed or removed inventory selection cannot consume a different item during Heal",
+      "status": "PASS",
+      "ms": 2750
+    },
+    {
+      "name": "166 required item name and optional description work across add/edit/remove/reward screens",
+      "status": "PASS",
+      "ms": 2629
+    },
+    {
+      "name": "169 Round hover matches resource-total hover and wound buttons use their new labels",
+      "status": "PASS",
+      "ms": 1080
+    },
+    {
+      "name": "170 Combat and Challenge omit adjustment explanations at every cost but retain button costs",
+      "status": "PASS",
+      "ms": 2511
+    },
+    {
+      "name": "175 equipment tab has one slot per type, collapses, and adds equipped gear through the shared item form",
+      "status": "PASS",
+      "ms": 1248
+    },
+    {
+      "name": "176 item equipment flag requires both type and positive integer modifier without side effects",
+      "status": "PASS",
+      "ms": 1708
+    },
+    {
+      "name": "177 equipping swaps exact items at full capacity and preserves all durability/enabled fields and Undo",
+      "status": "PASS",
+      "ms": 1255
+    },
+    {
+      "name": "178 weapon modifier changes victory/exact-match outcome without spending usage on success",
+      "status": "PASS",
+      "ms": 1339
+    },
+    {
+      "name": "179 combat Fate add/remove live previews include the weapon bonus at every cost",
+      "status": "PASS",
+      "ms": 1490
+    },
+    {
+      "name": "180 equipment has no effect on Challenge totals or wear and manual wounds do not use armor",
+      "status": "PASS",
+      "ms": 1471
+    },
+    {
+      "name": "181 failed combat spends one weapon/armor usage, reduces actual wound allocation and reload never repeats wear",
+      "status": "PASS",
+      "ms": 2610
+    },
+    {
+      "name": "182 last usage still applies its modifier, then broken equipment turns red and stops helping on retries",
+      "status": "PASS",
+      "ms": 2349
+    },
+    {
+      "name": "183 armor can prevent every wound; no allocation or wound animation occurs and zero-WV failure does not wear armor",
+      "status": "PASS",
+      "ms": 1513
+    },
+    {
+      "name": "184 broken equipment supplies no combat bonus or reduction and loses no usage points",
+      "status": "PASS",
+      "ms": 1272
+    },
+    {
+      "name": "185 exact-match/wound/reward stages lock equipped gear so changing equipment cannot invalidate a committed result",
+      "status": "PASS",
+      "ms": 1761
+    },
+    {
+      "name": "186 Fix validates cost and funds; Cancel is inert; payment, four points and enablement commit together and Undo restores them",
+      "status": "PASS",
+      "ms": 1242
+    },
+    {
+      "name": "187 repair supports armor and zero cost, persists through reload/export and never pays twice",
+      "status": "PASS",
+      "ms": 1389
+    },
+    {
+      "name": "189 usage indicators are read-only red/gray boxes without checkmarks or an enable control",
+      "status": "PASS",
+      "ms": 1044
+    },
+    {
+      "name": "190 equipping into an empty slot moves the item out of inventory and unequipping moves it back",
+      "status": "PASS",
+      "ms": 1156
+    },
+    {
+      "name": "193 custom enemy reward equipment fields are required and the accepted reward can be equipped with preserved condition",
+      "status": "PASS",
+      "ms": 1643
+    },
+    {
+      "name": "195 malformed equipment and mismatched equipped slots are rejected on import without overwriting saves",
+      "status": "PASS",
+      "ms": 1821
+    },
+    {
+      "name": "196 V22 saves migrate to empty equipment slots without guessing item types and new exact combat saves resume with weapon bonus",
+      "status": "PASS",
+      "ms": 1827
+    },
+    {
+      "name": "197 repairs are locked during combat and Cancel restores committed wear, cards and resources",
+      "status": "PASS",
+      "ms": 1257
+    },
+    {
+      "name": "200 wearing/reward item copies are independent of library/other item durability arrays",
+      "status": "PASS",
+      "ms": 724
+    },
+    {
+      "name": "201 editing gear preserves condition and cannot repair it; inventory can explicitly reclassify equipment as an ordinary item",
+      "status": "PASS",
+      "ms": 1401
+    },
+    {
+      "name": "202 equipment is automatic with available points and is locked throughout combat decisions",
+      "status": "PASS",
+      "ms": 1325
+    },
+    {
+      "name": "203 equipment reward replacement at full inventory preserves the reward condition and does not auto-equip it",
+      "status": "PASS",
+      "ms": 1568
+    },
+    {
+      "name": "204 paid gear purchase and sale retain equipment metadata and transaction Undo",
+      "status": "PASS",
+      "ms": 1430
+    },
+    {
+      "name": "205 Undo of failed resolution restores cards, both equipment usage counts and the pre-resolution decision",
+      "status": "PASS",
+      "ms": 1346
+    },
+    {
+      "name": "206 comma rejection and hyphen/space rules apply to generic, weapon, armor and starting-item keyword entry",
+      "status": "PASS",
+      "ms": 2156
+    },
+    {
+      "name": "207 legacy enabled flags are discarded; remaining usage automatically activates equipment and old commas migrate out",
+      "status": "PASS",
+      "ms": 1317
+    },
+    {
+      "name": "208 usage indicators are noninteractive, Edit is small at top right, and Fix sits beside Move to inventory",
+      "status": "PASS",
+      "ms": 1021
+    },
+    {
+      "name": "209 all ordinary inventory/equipment edits and moves remain locked from combat choose through failure/retry",
+      "status": "PASS",
+      "ms": 1561
+    },
+    {
+      "name": "210 dedicated reward acceptance and replacement remain available while ordinary inventory is locked",
+      "status": "PASS",
+      "ms": 1581
+    },
+    {
+      "name": "211 stale inventory editor confirmation cannot modify an item after combat has begun",
+      "status": "PASS",
+      "ms": 1069
+    },
+    {
+      "name": "212 Cube example uses resistant +6 CV and strong +2 WV, then applies armor reduction to actual wounds",
+      "status": "PASS",
+      "ms": 1390
+    },
+    {
+      "name": "213 keyword matching is whole-word, case-insensitive and supports old abbreviated association text",
+      "status": "PASS",
+      "ms": 1813
+    },
+    {
+      "name": "214 duplicate associations apply once while distinct matching effects stack and opposite effects offset",
+      "status": "PASS",
+      "ms": 1249
+    },
+    {
+      "name": "215 vulnerability/weakness floors CV at one and WV at zero before normal modifier and armor resolution",
+      "status": "PASS",
+      "ms": 1240
+    },
+    {
+      "name": "216 broken gear loses keyword associations next retry while the already-resolved increased wound survives reload",
+      "status": "PASS",
+      "ms": 2480
+    },
+    {
+      "name": "217 armor loses one usage when weakness prevents wounds even if its flat modifier is no longer needed",
+      "status": "PASS",
+      "ms": 1528
+    },
+    {
+      "name": "218 custom prose and unrelated enemy keywords are displayed without inventing automatic modifiers",
+      "status": "PASS",
+      "ms": 1171
+    },
+    {
+      "name": "219 enemy validation reserves safe numeric room for keyword CV/WV increases",
+      "status": "PASS",
+      "ms": 527
+    },
+    {
+      "name": "220 Heal picker accepts only exact heal keyword, case-insensitively, and consumes the correct original inventory index",
+      "status": "PASS",
+      "ms": 1272
+    },
+    {
+      "name": "221 a nonempty inventory with no heal keyword gives a recoverable picker message without allowing an item",
+      "status": "PASS",
+      "ms": 1181
+    },
+    {
+      "name": "222 removing the heal keyword from a selected item invalidates consumption without losing the item",
+      "status": "PASS",
+      "ms": 2032
+    },
+    {
+      "name": "224 suggestions append with hyphens, avoid duplicates and preserve arbitrary custom keyword phrases",
+      "status": "PASS",
+      "ms": 1804
+    },
+    {
+      "name": "225 suggestions work in starting/equipped/reward forms and cannot silently truncate content beyond the text budget",
+      "status": "PASS",
+      "ms": 1297
+    },
+    {
+      "name": "227 Card Zones colors are derived from nonempty Wounds/Fatigue and update after healing/rest/Undo",
+      "status": "PASS",
+      "ms": 1316
+    },
+    {
+      "name": "231 suggestion chips toggle add/remove case-insensitively without changing unrelated keywords",
+      "status": "PASS",
+      "ms": 994
+    },
+    {
+      "name": "232 manually confirmed keywords become character Custom toggles and remain after removal and Undo",
+      "status": "PASS",
+      "ms": 1468
+    },
+    {
+      "name": "233 cancelled/invalid drafts do not learn words and custom suggestions never leak between characters",
+      "status": "PASS",
+      "ms": 1470
+    },
+    {
+      "name": "236 enemy card keeps original stats first and lists keyword-adjusted combat base separately",
+      "status": "PASS",
+      "ms": 1371
+    },
+    {
+      "name": "237 Deadly Effort costs two Fate per selected card and caps selection by available Fate",
+      "status": "PASS",
+      "ms": 1533
+    },
+    {
+      "name": "238 successful Deadly Effort sends cards directly to Wounds in Combat and Challenge, independent of armor",
+      "status": "PASS",
+      "ms": 1740
+    },
+    {
+      "name": "239 exact-match recovery cannot return Deadly Effort cards and still sends them to Wounds",
+      "status": "PASS",
+      "ms": 1653
+    },
+    {
+      "name": "240 failed combat applies normal wounds separately from direct Deadly Effort wounds",
+      "status": "PASS",
+      "ms": 2043
+    },
+    {
+      "name": "241 Deadly Effort tracking survives reload, Cancel and Undo without repeat payment or lost cards",
+      "status": "PASS",
+      "ms": 2240
+    },
+    {
+      "name": "242 paid removal returns a Deadly Effort card to Fatigue, not the Attribute Deck, without refund",
+      "status": "PASS",
+      "ms": 1151
+    },
+    {
+      "name": "243 all cards entering Wounds via Deadly Effort causes Game Over even after success",
+      "status": "PASS",
+      "ms": 935
+    },
+    {
+      "name": "244 failed-action exhaustion requires zero Fate; one Fate survives in both action types",
+      "status": "PASS",
+      "ms": 2731
+    },
+    {
+      "name": "245 empty Attribute Deck buttons look unavailable but explain inside Actions without starting an encounter",
+      "status": "PASS",
+      "ms": 1288
+    },
+    {
+      "name": "246 victory, validation and reward messages are scoped to Actions while inventory messages remain global",
+      "status": "PASS",
+      "ms": 1570
+    },
+    {
+      "name": "247 malformed custom keyword metadata and Deadly Effort card tracking reject import without overwriting saves",
+      "status": "PASS",
+      "ms": 1436
+    },
+    {
+      "name": "250 exact recovery can return ordinary cards while tracked Deadly Effort cards always enter Wounds",
+      "status": "PASS",
+      "ms": 1147
+    },
+    {
+      "name": "251 equipment checkbox is beside and vertically aligned with its label in item and reward editors",
+      "status": "PASS",
+      "ms": 1111
+    },
+    {
+      "name": "252 blur creates selected temporary toggles and a single Cancel click discards them permanently",
+      "status": "PASS",
+      "ms": 1164
+    },
+    {
+      "name": "253 starting another keyword adds only completed phrases, with permanent learning on successful confirmation",
+      "status": "PASS",
+      "ms": 1203
+    },
+    {
+      "name": "254 temporary suggestions also work for starting equipment and enemy reward entry without leaking cancelled words",
+      "status": "PASS",
+      "ms": 1606
+    },
+    {
+      "name": "255 Manage Keywords adds/edits words, assigns predefined/new categories and retains custom origin",
+      "status": "PASS",
+      "ms": 1136
+    },
+    {
+      "name": "256 removing custom suggestions never rewrites items or reappears from unrelated item edits/Undo",
+      "status": "PASS",
+      "ms": 1505
+    },
+    {
+      "name": "257 manager Cancel discards category/keyword drafts and rejects comma names or duplicate case variants",
+      "status": "PASS",
+      "ms": 1222
+    },
+    {
+      "name": "261 enemy comma input disables Begin combat and clearing it restores the button without starting combat",
+      "status": "PASS",
+      "ms": 1176
+    },
+    {
+      "name": "262 enemy association toggles use the relevant equipment lists and toggle canonical/typed aliases",
+      "status": "PASS",
+      "ms": 1129
+    },
+    {
+      "name": "263 enemy associations selected through toggles feed actual combat values",
+      "status": "PASS",
+      "ms": 2447
+    },
+    {
+      "name": "265 normal combat victory plays once and challenge success/failure never plays it",
+      "status": "PASS",
+      "ms": 1738
+    },
+    {
+      "name": "266 exact combat sounds only after recovery is confirmed",
+      "status": "PASS",
+      "ms": 1255
+    },
+    {
+      "name": "267 pending victory rewards save sound state and do not replay on reload or item decisions",
+      "status": "PASS",
+      "ms": 1720
+    },
+    {
+      "name": "268 resource-overflow victory retries do not replay the fanfare or duplicate rewards",
+      "status": "PASS",
+      "ms": 1392
+    },
+    {
+      "name": "269 blocked audio playback is harmless and victory resources still save",
+      "status": "PASS",
+      "ms": 1235
+    },
+    {
+      "name": "270 Undo and menu navigation stop sound; a newly reconfirmed victory may play again",
+      "status": "PASS",
+      "ms": 1340
+    },
+    {
+      "name": "273 category manager preferences can change during combat without rewriting items or being reverted by cancellation",
+      "status": "PASS",
+      "ms": 1294
+    },
+    {
+      "name": "275 custom keyword labels/imports are escaped and cannot execute markup",
+      "status": "PASS",
+      "ms": 1138
+    },
+    {
+      "name": "277 name fields capitalize each word while descriptions remain unchanged",
+      "status": "PASS",
+      "ms": 1057
+    },
+    {
+      "name": "278 default Enemy clears on pointer focus without erasing later names",
+      "status": "PASS",
+      "ms": 1607
+    },
+    {
+      "name": "279 live managed keyword edits cancel without saving",
+      "status": "PASS",
+      "ms": 1018
+    },
+    {
+      "name": "280 event keywords start collapsed and save module metadata",
+      "status": "PASS",
+      "ms": 992
+    },
+    {
+      "name": "281 event keyword edits preserve original module and remove supports Undo",
+      "status": "PASS",
+      "ms": 1244
+    },
+    {
+      "name": "282 recent activity retains only thirty entries",
+      "status": "PASS",
+      "ms": 933
+    },
+    {
+      "name": "283 Attribute Points opens Upgrade using keyboard",
+      "status": "PASS",
+      "ms": 900
+    },
+    {
+      "name": "284 dungeon selection enters dedicated screen and collapsed character sheet",
+      "status": "PASS",
+      "ms": 1042
+    },
+    {
+      "name": "285 dungeon snapshot survives reload and keeps encounter definitions",
+      "status": "PASS",
+      "ms": 1210
+    },
+    {
+      "name": "286 dungeon challenge success banks first-level Coins until exit",
+      "status": "PASS",
+      "ms": 1274
+    },
+    {
+      "name": "287 repeat attempts start at level one without repeat level Coins",
+      "status": "PASS",
+      "ms": 1545
+    },
+    {
+      "name": "288 failed dungeon challenge permits retry and keeps support locked",
+      "status": "PASS",
+      "ms": 1260
+    },
+    {
+      "name": "289 delving deeper resets the level rest limit and support lock",
+      "status": "PASS",
+      "ms": 923
+    },
+    {
+      "name": "290 boss level permits only fight or exit before combat",
+      "status": "PASS",
+      "ms": 895
+    },
+    {
+      "name": "291 leaving a dungeon challenge does not refund committed cards",
+      "status": "PASS",
+      "ms": 1222
+    },
+    {
+      "name": "293 invalid saved dungeon reward gaps reject import",
+      "status": "PASS",
+      "ms": 900
+    },
+    {
+      "name": "294 dungeon cannot start with empty Attribute Deck",
+      "status": "PASS",
+      "ms": 1059
+    },
+    {
+      "name": "295 encounter roll uses enemy library and existing combat flow",
+      "status": "PASS",
+      "ms": 1236
+    },
+    {
+      "name": "296 Rest completes once per cleared level using existing Supply and Round rules",
+      "status": "PASS",
+      "ms": 997
+    },
+    {
+      "name": "297 boss victory pays Coins and offers treasure only after victory",
+      "status": "PASS",
+      "ms": 1597
+    },
+    {
+      "name": "298 exiting boss level grants no treasure and leaves dungeon retryable",
+      "status": "PASS",
+      "ms": 1063
+    },
+    {
+      "name": "300 enemy association custom target is temporary until Begin Combat",
+      "status": "PASS",
+      "ms": 1366
+    },
+    {
+      "name": "301 active keyword and contributing gear are bold red during combat",
+      "status": "PASS",
+      "ms": 1125
+    },
+    {
+      "name": "302 boss treasure replaces one full-inventory item without sale income",
+      "status": "PASS",
+      "ms": 1282
+    },
+    {
+      "name": "303 dungeon challenge and hand resume after reload",
+      "status": "PASS",
+      "ms": 1398
+    },
+    {
+      "name": "304 locked dungeon resources ignore manual adjustment while card inspection stays available",
+      "status": "PASS",
+      "ms": 1107
+    },
+    {
+      "name": "305 completed dungeon state exports and imports with its treasure decision",
+      "status": "PASS",
+      "ms": 1179
+    },
+    {
+      "name": "306 cancelled enemy association targets never enter permanent suggestions",
+      "status": "PASS",
+      "ms": 996
+    },
+    {
+      "name": "307 dungeon snapshot invalid base challenge rejects import without data loss",
+      "status": "PASS",
+      "ms": 908
+    },
+    {
+      "name": "308 dungeon normal combat victory banks encounter Coins until exit",
+      "status": "PASS",
+      "ms": 1270
+    },
+    {
+      "name": "309 repeated-level monster Coins are not awarded a second time",
+      "status": "PASS",
+      "ms": 1138
+    },
+    {
+      "name": "310 failed dungeon combat Flee uses normal Fate cost and exits dungeon",
+      "status": "PASS",
+      "ms": 2090
+    },
+    {
+      "name": "312 pending dungeon Coin overflow shows action instructions and pays exactly once",
+      "status": "PASS",
+      "ms": 1242
+    },
+    {
+      "name": "313 zero available Upgrade points do not flash on shortcut",
+      "status": "PASS",
+      "ms": 840
+    },
+    {
+      "name": "314 opening Upgrade from the action button flashes unused points",
+      "status": "PASS",
+      "ms": 1727
+    },
+    {
+      "name": "315 repeated action selection closes an unstarted Challenge Wound Heal or Upgrade",
+      "status": "PASS",
+      "ms": 2897
+    },
+    {
+      "name": "316 repeated Rest selection closes the open unstarted Rest without another confirmation",
+      "status": "PASS",
+      "ms": 1107
+    },
+    {
+      "name": "317 active Challenge selection cannot close or reset committed cards or Fate costs",
+      "status": "PASS",
+      "ms": 1478
+    },
+    {
+      "name": "318 active Combat selection cannot close the action or reset selected hand",
+      "status": "PASS",
+      "ms": 1148
+    },
+    {
+      "name": "319 selecting cards for Heal prevents action-button closing or switching",
+      "status": "PASS",
+      "ms": 988
+    },
+    {
+      "name": "320 dungeon progress has five noninteractive boxes and a final Boss label",
+      "status": "PASS",
+      "ms": 1042
+    },
+    {
+      "name": "321 progress advances current box and marks cleared levels",
+      "status": "PASS",
+      "ms": 1198
+    },
+    {
+      "name": "322 level challenge and Retry remain red until success",
+      "status": "PASS",
+      "ms": 1232
+    },
+    {
+      "name": "323 dungeon shows its encounter formula and enemy table before rolling",
+      "status": "PASS",
+      "ms": 926
+    },
+    {
+      "name": "324 per-dungeon base plus level formula drives the actual encounter roll",
+      "status": "PASS",
+      "ms": 1086
+    },
+    {
+      "name": "325 encounter probability caps at the die size and supports a zero chance",
+      "status": "PASS",
+      "ms": 1082
+    },
+    {
+      "name": "326 Heal Rest and Upgrade stay unavailable while an enemy is pending",
+      "status": "PASS",
+      "ms": 939
+    },
+    {
+      "name": "327 Upgrade shortcut is also blocked after clearing a dungeon level",
+      "status": "PASS",
+      "ms": 899
+    },
+    {
+      "name": "328 Coins stay unchanged until encounter victory then bank once",
+      "status": "PASS",
+      "ms": 1445
+    },
+    {
+      "name": "329 dungeon buttons use Dungeon Delve and Start Delve labels",
+      "status": "PASS",
+      "ms": 944
+    },
+    {
+      "name": "330 exited dungeon records deepest visited level and re-entry starts at one",
+      "status": "PASS",
+      "ms": 1113
+    },
+    {
+      "name": "331 boss congratulations lists rewards with only Exit Dungeon and no early Coin payout",
+      "status": "PASS",
+      "ms": 1330
+    },
+    {
+      "name": "332 pending boss congratulations resumes after reload and Escape cannot dismiss it",
+      "status": "PASS",
+      "ms": 1908
+    },
+    {
+      "name": "333 completed dungeons stay listed gray disabled and labeled Dungeon Completed",
+      "status": "PASS",
+      "ms": 1531
+    },
+    {
+      "name": "334 boss without treasure still shows completion then exits with one Coin payout",
+      "status": "PASS",
+      "ms": 1335
+    },
+    {
+      "name": "336 old dungeon history derives deepest level and malformed new depth rejects import",
+      "status": "PASS",
+      "ms": 1068
+    }
+  ]
+}

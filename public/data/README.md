@@ -1,6 +1,6 @@
 # Enemy library and template
 
-`enemies.json` contains the enemy library. `enemies.template.json` provides sample entries to copy when adding enemies. V28 embeds a validated snapshot of this library during the build. After editing the JSON, run `npm run build` from the repository root and distribute the rebuilt `board_game_tracker_v28.html`. The standalone HTML works offline without fetching a separate file.
+`enemies.json`, `keywords.json`, and `dungeons.json` are external runtime data for the React PWA. Edit these files in `public/data/` during development; in a deployed build, edit the served `data/` files (normally `dist/data/`). Reopen the app online or select Refresh libraries when idle. JSON-only edits do not require a rebuild. All three files are validated together and the last valid set remains available offline. Templates are authoring examples, not loaded by the app.
 
 Add as many enemy objects as needed inside the `enemies` array. Separate objects with commas, with no comma after the last entry. Remove unused sample entries. JSON does not allow comments.
 
@@ -70,11 +70,11 @@ Ordinary items may omit `equipment` or use `null`. A weapon or armor uses:
 - `usage`: four booleans; checked points are `true`. Omitted usage defaults to four checked points.
 - Equipment is active automatically while at least one usage point remains. There is no `enabled` field in V28. Old flags are ignored during migration. Zero remaining points means broken.
 - Usage is read-only in the app; failed combat/armor use spends points and Fix restores four points. These fields stay with the item through inventory, equipping, rewards, imports and swaps. Equipment received as a reward enters Inventory after Keep; it is not automatically equipped.
-- Ordinary items omit equipment metadata in canonical app saves/embedded snapshots. Explicit `null` is accepted in authoring files.
+- Ordinary items omit equipment metadata in canonical app saves and saved encounter snapshots. Explicit `null` is accepted in authoring files.
 
 To update an older library, retain/add item names as required by V22, set wrapper version to 5 and add `boss: false` to ordinary enemies, and optionally supply equipment objects. Existing V22 character items remain ordinary until explicitly marked Weapon or Armor in the app.
 
-The build rejects malformed data before replacing the HTML. Advanced usage: `node scripts/build-v28.cjs --data path/to/library.json --output path/to/app.html`. The default library is `data/enemies.json`; the template is not included automatically.
+The PWA rejects malformed data before replacing its last validated offline libraries. The standalone V28 builder is retained only for the legacy HTML; it does not control PWA library refresh.
 
 ## Standard enemy keyword associations
 
@@ -113,7 +113,7 @@ The supplied 36 entries cover the requested weapon, armor and generic categories
 
 Suggestions appear in shared inventory, starting-item, equipped-item and enemy-reward forms. Clicking a chip toggles it: add with ` - ` if absent, remove matching words if selected, and update the highlight. Free custom keywords remain allowed and need not appear in this catalog. Changing item type filters suggestions without rewriting typed text. The combined Description/Keywords limit remains 300 characters; an oversized suggestion is refused without truncating text.
 
-Run `npm run build` after changes to either JSON catalog. Both snapshots are embedded so the distributed HTML works offline. Advanced build flags include `--data`, `--keywords` and `--output`; invalid catalogs are rejected before output is replaced. If embedded suggestions are unavailable, custom keyword entry still works.
+JSON catalog edits take effect on the next online opening without rebuilding. Invalid files leave the last validated library bundle unchanged and show a notice.
 
 Heal's Use item picker accepts only an exact `heal` keyword (case-insensitive). `healing`, `heal potion` and `rest` are different keywords; adding `rest` to the suggestion catalog does not add a new Rest-item mechanic.
 
@@ -154,11 +154,11 @@ Export includes the manager's shown draft, including empty created categories. I
 
 Define Enemy keeps free text entry with no example placeholder. Expand Unprotected/Resistant to select weapon keywords, or Weak/Strong for armor keywords. Character custom words are also offered. Toggling adds/removes full association text; typed abbreviated aliases are recognized. A comma in enemy keywords, or in an enabled item reward's keywords, disables Begin combat until corrected. Submission validation remains in place as a guard.
 
-This does not change `keywords.json` version 1 or enemy library version 5. Build V28 after authoring changes as before; `--audio` additionally selects the WAV source embedded alongside the three JSON catalogs.
+This does not change `keywords.json` version 1 or enemy library version 5. The PWA loads these files at startup and keeps audio under `public/audio/`.
 
 ## Dungeon library (V28)
 
-`dungeons.json` is embedded in the offline HTML. Copy entries from `dungeons.template.json`; keep dungeon IDs unique. Files use `format: "quest-for-glory-dungeons"`, `version: 1`, and a `dungeons` array. Run `npm run build` after changing either library. Invalid formulas, incomplete roll tables, or missing enemy references stop the build.
+`dungeons.json` is fetched externally on each online opening. Copy entries from `dungeons.template.json`; keep dungeon IDs unique. Files use `format: "quest-for-glory-dungeons"`, `version: 1`, and a `dungeons` array. Reopen the app after changing the served JSON. Invalid formulas, incomplete roll tables, or missing enemy references reject the new bundle and preserve the previous valid set.
 
 Each dungeon has `id`, `name`, `type`, `description`, and `maxLevel`. `challenge` and `coinReward` each hold `base` and `perLevel`: value = base + perLevel × current level. The final level skips its challenge and fights the boss. `monsterChance` holds `base`, `die`, and `thresholdPerLevel`; an encounter occurs when the roll is at most base + level × thresholdPerLevel (capped at die size). Missing `base` defaults to zero for older files. The formula is declarative data, not executable JavaScript. For `1 + 1 × level` on 1d6, use `{"base":1,"thresholdPerLevel":1,"die":6}`; at level 2 the encounter range is 1–3. Nonnegative safe integers are required, and unsupported arithmetic ranges stop the build. `encounters` contains rows such as `{ "rolls": [1,2,3], "enemyId": "Giant Rats" }` covering every die result exactly once. Enemy IDs reference `enemies.json`. `boss` contains final `level` and `enemyId`, which must reference an enemy with the required boolean `boss: true`. Ordinary enemy cards use `boss: false`; enemy library version is now 5.
 

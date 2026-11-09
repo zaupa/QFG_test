@@ -1,0 +1,114 @@
+{
+  "date": "2026-11-09T14:35:41.570Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "6388692fad804143afa1d719a782721fa2f7f0ebe9f98ca8469d0badb59ec198",
+  "passed": 21,
+  "failed": 0,
+  "results": [
+    {
+      "name": "03 autosave and reload preserve resources, cards, inventory",
+      "status": "PASS",
+      "ms": 1317
+    },
+    {
+      "name": "10 challenge success moves hand to Fatigue and preserves all cards",
+      "status": "PASS",
+      "ms": 1183
+    },
+    {
+      "name": "17 challenge Cancel restores complete pre-action persistent state",
+      "status": "PASS",
+      "ms": 1364
+    },
+    {
+      "name": "18 combat success and exact recovery",
+      "status": "PASS",
+      "ms": 1777
+    },
+    {
+      "name": "31 upgrades use leftover budget, Diamonds double, Fate buys three points",
+      "status": "PASS",
+      "ms": 1480
+    },
+    {
+      "name": "32 inventory purchase/sale, custom price, persisted data and Undo",
+      "status": "PASS",
+      "ms": 1708
+    },
+    {
+      "name": "83 enemy prompt defaults and cancellation leave the character unchanged",
+      "status": "PASS",
+      "ms": 1334
+    },
+    {
+      "name": "101 cancellation after escalating Fate costs and multiple retries restores the original character",
+      "status": "PASS",
+      "ms": 4067
+    },
+    {
+      "name": "133 library lists the JSON enemies, supports one selection and previews without starting combat",
+      "status": "PASS",
+      "ms": 1050
+    },
+    {
+      "name": "181 failed combat spends one weapon/armor usage, reduces actual wound allocation and reload never repeats wear",
+      "status": "PASS",
+      "ms": 2761
+    },
+    {
+      "name": "212 Cube example uses resistant +6 CV and strong +2 WV, then applies armor reduction to actual wounds",
+      "status": "PASS",
+      "ms": 1309
+    },
+    {
+      "name": "237 Deadly Effort costs two Fate per selected card and caps selection by available Fate",
+      "status": "PASS",
+      "ms": 1283
+    },
+    {
+      "name": "263 enemy associations selected through toggles feed actual combat values",
+      "status": "PASS",
+      "ms": 2739
+    },
+    {
+      "name": "286 dungeon challenge success banks first-level Coins until exit",
+      "status": "PASS",
+      "ms": 1260
+    },
+    {
+      "name": "297 boss victory pays Coins and offers treasure only after victory",
+      "status": "PASS",
+      "ms": 1446
+    },
+    {
+      "name": "310 failed dungeon combat Flee uses normal Fate cost and exits dungeon",
+      "status": "PASS",
+      "ms": 2136
+    },
+    {
+      "name": "324 per-dungeon base plus level formula drives the actual encounter roll",
+      "status": "PASS",
+      "ms": 1105
+    },
+    {
+      "name": "326 Heal Rest and Upgrade stay unavailable while an enemy is pending",
+      "status": "PASS",
+      "ms": 968
+    },
+    {
+      "name": "331 boss congratulations lists rewards with only Exit Dungeon and no early Coin payout",
+      "status": "PASS",
+      "ms": 1330
+    },
+    {
+      "name": "332 pending boss congratulations resumes after reload and Escape cannot dismiss it",
+      "status": "PASS",
+      "ms": 1819
+    },
+    {
+      "name": "336 old dungeon history derives deepest level and malformed new depth rejects import",
+      "status": "PASS",
+      "ms": 1068
+    }
+  ]
+}

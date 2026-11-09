@@ -1,3 +1,15 @@
+# V25
+
+V24 is archived in `backup/` with its matching development files; the older V23 backup is removed.
+
+- Suggested keyword chips toggle add/remove and update their highlights. Confirmed custom words are saved per character under Custom, reused across item/equipment forms, and retained after item removal. Cancelled/invalid drafts do not add suggestions.
+- Enemy cards keep original CV/WV first, then show keyword-adjusted combat base values separately from retry reduction/random modifiers.
+- Deadly Effort is the ongoing encounter's Fatigue-hand option when the Attribute Deck is empty. It costs 2 Fate per selected card, shows the total/tip, and respects the five-card initial limit and available Fate.
+- Deadly Effort cards go directly to Wounds at resolution on success, failure or exact match, without wound modifiers. They cannot be recovered on an exact match; paid removal returns them to Fatigue without a Fate refund. Normal failed-combat wounds remain separate.
+- All-cards-wounded Game Over remains. The failed-action exhaustion condition now requires exactly zero Fate instead of fewer than two; one Fate survives that condition. Existing saved Game Over flags are retained.
+- Action results/warnings/errors/reward confirmations appear inside Actions. Empty-deck Combat/Challenge buttons look light gray and explain why they cannot start an encounter when activated.
+- Exports use envelope version 17. Existing storage keys and older saves remain supported. Already-committed older hands without origin tracking are not retroactively recharged or reclassified.
+
 # V24
 
 V23 is archived in `backup/` with its matching development files; the older V22 backup is removed.

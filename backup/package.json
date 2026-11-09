@@ -1,10 +1,10 @@
 {
-  "name": "quest-for-glory-v23",
-  "version": "23.0.0",
+  "name": "quest-for-glory-v24",
+  "version": "24.0.0",
   "private": true,
   "scripts": {
     "test": "node tests/baseline.cjs",
-    "build": "node scripts/build-v23.cjs"
+    "build": "node scripts/build-v24.cjs"
   },
   "devDependencies": {
     "playwright": "1.62.1"

@@ -1,0 +1,40 @@
+# Quest for Glory data workshop
+
+Open **data-editor.html** directly in a browser. It is a self-contained, offline HTML tool: no server, companion app, npm install or internet connection is needed to use it. Nothing in the main app imports or serves it.
+
+## Workflow
+
+1. Select Enemies, Keywords, Items or Dungeons. The included data is a snapshot from the repository at build time.
+2. Use **Open JSON files** to load the real files you want to edit. You can select enemies.json, keywords.json, items.json and dungeons.json together so references are validated against the same set. Opening replaces that library in the editor; it does not merge records.
+3. Select an entry, edit the labeled fields and use **Apply entry**. Add, duplicate or delete entries using the controls. Add/remove buttons inside an entry manage keywords, encounter rows, dice rolls and optional equipment, rewards and treasure. Required schema fields remain fixed to keep files compatible with the app.
+4. Use **Save current file** for each modified library. Supported browsers can write back to files selected with the browser file picker. New libraries prompt for a destination. If direct writing is unavailable, use the JSON download and replace the original file yourself. Downloads remain marked unsaved because the tool cannot verify replacement.
+5. For development, place enemy, keyword, item and dungeon files in `public/data/`. For an existing deployment, replace the corresponding served `data/` files, then use the companion's Refresh libraries control. Save related enemy/dungeon changes together.
+
+The editor checks files using the game's validation rules, including numeric limits, duplicate entries, equipment, dungeon roll coverage and enemy/boss references. Enemy IDs follow their names automatically. Renaming an enemy updates references in the editor's loaded dungeon library; save **both** modified files. Referenced enemies cannot be deleted until their dungeon references are changed. JSON import is atomic: a failed import leaves loaded libraries unchanged.
+
+Applied edits stay in memory until saved. Drafts prompt before switching records; closing the page warns about unsaved work. The editor does not modify character saves or browser game storage. Keep copies of original JSON files before replacing them.
+
+## Item presets
+
+The Items tab loads the game's **items.json** library (`quest-for-glory-items`, version 1). Save it alongside the other libraries in `public/data/` or the deployed `data/` directory.
+
+To reuse a catalog item, add a reward/treasure and choose **Copy from item catalog**. This copies the full item, including equipment and usage. Later catalog edits do not alter existing rewards; copy again to update them. Keyword suggestions use the currently loaded keyword catalog, and custom text remains allowed. Enemy suggestions generate the game's predefined associations.
+
+## Maintaining the tool
+
+`editor.template.html` is the editable source. `data-editor.html` is the generated, distributable artifact with rules and starting data embedded. After editing the template, changing game rules, or refreshing starting data, run from the repository:
+
+```sh
+npm ci
+node toolbox/build.mjs
+```
+
+The build uses the repository's TypeScript dependency to embed the shared rules without imports; there are no runtime dependencies in the generated HTML. Rebuilding does not read or overwrite files edited/downloaded in a browser.
+
+Browser regression checks:
+
+```sh
+node toolbox/test.cjs
+```
+
+The editor preserves and edits `completionFateReward` in dungeon data. The current game validator does not yet apply this field during gameplay; the toolbox does not change game rules.

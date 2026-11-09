@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import ts from 'typescript';
+import { fileURLToPath } from 'node:url';
+process.chdir(fileURLToPath(new URL('../', import.meta.url)));
+const rules=ts.transpileModule(fs.readFileSync('src/game/rules.ts','utf8').replace(/^export \{.*\};?\s*$/m,''),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.None}}).outputText;
+const data={};
+for(const name of ['enemies','keywords','items','dungeons']) data[name]=JSON.parse(fs.readFileSync(`public/data/${name}.json`));
+const escape=s=>s.replace(/</g,'\\u003c');
+const html=fs.readFileSync('toolbox/editor.template.html','utf8').replace('/* SHARED_RULES */',()=>rules).replace('/* INITIAL_DATA */',()=>escape(JSON.stringify(data)));
+fs.writeFileSync('toolbox/data-editor.html',html);
+console.log('Built toolbox/data-editor.html (standalone, no runtime dependencies)');

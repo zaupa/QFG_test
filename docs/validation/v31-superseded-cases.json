@@ -1,0 +1,98 @@
+[
+  {
+    "id": "28",
+    "name": "Rest spends one Supply and enforces recovery value"
+  },
+  {
+    "id": "29",
+    "name": "Rest without Supply wounds five points before recovery"
+  },
+  {
+    "id": "30",
+    "name": "Healing recovers owned Wounds only, within value"
+  },
+  {
+    "id": "31",
+    "name": "upgrades use leftover budget, Diamonds double, Fate buys three points"
+  },
+  {
+    "id": "41",
+    "name": "paid no-Supply Rest can resume after reload without a second wound"
+  },
+  {
+    "id": "64",
+    "name": "no-Supply Rest resumes through menu and persisted cancellation starts a fresh Rest"
+  },
+  {
+    "id": "67",
+    "name": "numeric overflow is blocked for resource increments and Fate upgrades"
+  },
+  {
+    "id": "112",
+    "name": "each completed Rest advances Round once and Undo restores cards, Supply and Round"
+  },
+  {
+    "id": "113",
+    "name": "no-Supply Rest advances Round only after recovery; cancellation and fatal wounds do not"
+  },
+  {
+    "id": "159",
+    "name": "Rest confirmation Cancel/Escape do not alter cards, Supply, Round, log or Undo history"
+  },
+  {
+    "id": "160",
+    "name": "no-Supply Rest requires confirmation before wounds and retains default recovery value five"
+  },
+  {
+    "id": "161",
+    "name": "Heal defaults to five and Use item sits to the right of Healing value"
+  },
+  {
+    "id": "162",
+    "name": "selecting an item changes only Heal presentation; confirmation consumes exactly one item with no Coin change"
+  },
+  {
+    "id": "163",
+    "name": "cancelled Heal, picker cancellation, invalid healing and reload never consume the chosen item"
+  },
+  {
+    "id": "164",
+    "name": "empty inventory picker is recoverable; Heal without an item remains available"
+  },
+  {
+    "id": "165",
+    "name": "changed or removed inventory selection cannot consume a different item during Heal"
+  },
+  {
+    "id": "186",
+    "name": "Fix validates cost and funds; Cancel is inert; payment, four points and enablement commit together and Undo restores them"
+  },
+  {
+    "id": "187",
+    "name": "repair supports armor and zero cost, persists through reload/export and never pays twice"
+  },
+  {
+    "id": "227",
+    "name": "Card Zones colors are derived from nonempty Wounds/Fatigue and update after healing/rest/Undo"
+  },
+  {
+    "id": "296",
+    "name": "Rest completes once per cleared level using existing Supply and Round rules"
+  },
+  {
+    "id": "314",
+    "name": "opening Upgrade from the action button flashes unused points"
+  },
+  {
+    "id": "315",
+    "name": "repeated action selection closes an unstarted Challenge Wound Heal or Upgrade"
+  },
+  {
+    "id": "316",
+    "name": "repeated Rest selection closes the open unstarted Rest without another confirmation"
+  },
+  {
+    "id": "319",
+    "name": "selecting cards for Heal prevents action-button closing or switching"
+  }
+]

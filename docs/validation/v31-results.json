@@ -1,0 +1,122 @@
+{
+  "version": "31.0.0",
+  "generatedAt": "2026-11-09T23:51:03.884732+00:00",
+  "baseCommit": "0727a93e96c05076989a8575f544f0c82869d8f6",
+  "branch": "pwa_wip",
+  "pushed": false,
+  "build": "PASS (TypeScript + Vite + service-worker generation)",
+  "whitespace": "PASS",
+  "passed": 371,
+  "failed": 0,
+  "suites": [
+    {
+      "suite": "Retained gameplay regressions",
+      "passed": 225,
+      "failed": 0,
+      "report": "v31-gameplay.json"
+    },
+    {
+      "suite": "V31 focused gameplay",
+      "passed": 44,
+      "failed": 0,
+      "report": "v31-focused.json"
+    },
+    {
+      "suite": "V31 transaction edge cases",
+      "passed": 4,
+      "failed": 0,
+      "report": "v31-focused-extra.json"
+    },
+    {
+      "suite": "V31 shared rules and source data",
+      "passed": 16,
+      "failed": 0,
+      "report": "v31-rules.json"
+    },
+    {
+      "suite": "PWA platform and refresh",
+      "passed": 37,
+      "failed": 0,
+      "report": "v31-platform.json"
+    },
+    {
+      "suite": "Custom catalogs",
+      "passed": 43,
+      "failed": 0,
+      "report": "v31-custom.json"
+    },
+    {
+      "suite": "Offline paths and stopped-server recovery",
+      "passed": 2,
+      "failed": 0,
+      "report": "v31-offline.json"
+    }
+  ],
+  "notes": [
+    "All reported browser checks use the final production build.",
+    "Focused gameplay was run as 44 cases plus 4 additional transaction cases.",
+    "24 obsolete manual-recovery/default-Upgrade/old-repair cases are replaced by the V31 suite; see v31-superseded-cases.json.",
+    "No new dependencies; Shop purchasing remains a placeholder."
+  ],
+  "sourceSHA256": {
+    "package-lock.json": "f2c65c2e83f9787e0327c7d633e65311cd582f85341bb17d781ab38b76eac7c5",
+    "package.json": "bdf899ef90812b9cb412e69807b8dd6850e04bd276f3934f758c03f4cfdd9b34",
+    "public/app/game.html": "5cb30e670299477494de04f2f3f5afed1f2f83e59bca05c25c2edab461a7a03c",
+    "public/audio/README.md": "215e7649e4dc0d5b37d145f32a0fea653d2fc254b7f4b9523287dedc62edcbfc",
+    "public/audio/medieval_fantasy_victory_fanfare_3s.wav": "9a589a69ad85dbcc6211153af1460f8a748807b8f1577ac9fe67667ecf798bc7",
+    "public/data/README.md": "8d2e4412b379424007bd05d9665bec4af9f38e7df3a0429c393582da5f00628a",
+    "public/data/dungeons.json": "0a5d60a77e8abda8dfdf01fd5bc715ff42e547b8ac142ea51d8feee9a2b1f29d",
+    "public/data/dungeons.template.json": "0a5d60a77e8abda8dfdf01fd5bc715ff42e547b8ac142ea51d8feee9a2b1f29d",
+    "public/data/enemies.json": "8bb1184d56c9cadd4f3ff4c64de248ccc23e09107294ac245d2fb30e8b7108f7",
+    "public/data/enemies.template.json": "b24b5f362257656b945071df41772185e5e5ecf6d4ba5914457b0eeb6f363a1f",
+    "public/data/items.json": "dce991e79dc127fdaf112d90156df58aaf1eb3767b7177bbb22d56549d3847ee",
+    "public/data/items.template.json": "a56e28c6fa2dbaab75cd5633dad4bddcebeb25a4ecb57776ddf418b7973b89f5",
+    "public/data/keywords.json": "cad9399700f344b5abbb634cfeeb665b0c3b4896b971742f53a46042c9a78dae",
+    "public/fonts/README.md": "ded34907d9a930ecf0dad323ab7d337e7a9b6c3504cf94fc4adfa63b50915bff",
+    "public/fonts/body.ttf": "9d7583b7dc9e812afd32a14280c5cac3160012efe50c8d08938f4fea266ff67f",
+    "public/fonts/cinzel.ttf": "74c84080364d7a2a313abb524b8601ba14fe719d6c5cb400599861c38578fa40",
+    "public/fonts/gothic.ttf": "4793af5cf383f3d4a1b86ca8d030a29de0d2c73b3e0f2d6b0b13e7b5d846a06f",
+    "public/fonts/righteous.woff2": "65c40800bb8bc418beead0d6ee049412c10d22f3cc52f8d863408a1f17472461",
+    "public/icons/icon-192.png": "a3a2fa8739e8f815a9784c709d498c39f4ce0876c70455a9b52e598b0feb1237",
+    "public/icons/icon-512.png": "1b88120027431810af4259ae2517c15c9352609bb9fb42e90bc63e00234b0dbe",
+    "public/manifest.webmanifest": "f483ad1e4075ba33df56458965b2aab80a6fcde1129f38ea8485569dbaa9586d",
+    "src/game/custom-manager.ts": "331a5916fd12705a820567fee5fc7e6441ce5acd1cfc2c0afd5d5b6500ce6fb5",
+    "src/game/definitions.ts": "dd579538b98f11afb9210af8c025c49a943514bb4a6d005c0af8648e9d28b500",
+    "src/game/engine.ts": "9da6ab0925129ed166e2b16b8b1acc043771a0754a04c2fddd58c8819e123922",
+    "src/game/rules.ts": "c7246d896221210d636ede35f6404bfae2e27851bca3071226cd580161499781",
+    "src/game/styles.css": "5969e7b6cf70570f941bac7284c621e8c7518cbbd8f65a7beadfd81640ee722c",
+    "src/game/types.ts": "9ff9d1db06fa1599c534065510582ebecfef2ed5c4944eb678ef2b73186e11ac",
+    "src/main.tsx": "c081c0ba4ba55a39c283d32d0926d43cd69af7c28544fff9f118e4ebf74a92f9",
+    "src/platform/layout.ts": "bd783c4f0d346e591e9ae60c0ec8bd0f4a9ebd00ac8b31e6685de9b77c98c2e1",
+    "src/platform/libraries.ts": "7c99d2ddd49b6ee651b47594f43580534162dd7ad36a6ec4b3010f87a12aa054",
+    "src/platform/offline.ts": "a69dab1d0748f12a0fc872e375bbbbfbda0d92a666704bb4a3f4174a48a17aab",
+    "src/platform/service-worker.ts": "02efd5b5790ad8877d52dad77f081bd6d074b63abd28a4958cb2c90c6cf6a243",
+    "src/platform/storage.ts": "5e43d2a4e03d233811a3ec9ca901554bc8d541f6c3c572d83bedba3dbe9ced6c",
+    "src/pwa.css": "fd0afedbe132f6f93e58e40a80a55e711bc4be41731dc6b1120d456c9ae8a2b7"
+  },
+  "productionSHA256": {
+    "dist/app/game.html": "5cb30e670299477494de04f2f3f5afed1f2f83e59bca05c25c2edab461a7a03c",
+    "dist/assets/index-9IDAMf1U.js": "7ebf8ff40b44ba1be50539dcc8ac6d6c279e805cb563cf33837359722ea32523",
+    "dist/assets/index-xwGasQCO.css": "bec6650dd1898ce058bbffe8ced61b46c1f60e6f6ef7cf8e21b573e6697df93a",
+    "dist/audio/README.md": "215e7649e4dc0d5b37d145f32a0fea653d2fc254b7f4b9523287dedc62edcbfc",
+    "dist/audio/medieval_fantasy_victory_fanfare_3s.wav": "9a589a69ad85dbcc6211153af1460f8a748807b8f1577ac9fe67667ecf798bc7",
+    "dist/data/README.md": "8d2e4412b379424007bd05d9665bec4af9f38e7df3a0429c393582da5f00628a",
+    "dist/data/dungeons.json": "0a5d60a77e8abda8dfdf01fd5bc715ff42e547b8ac142ea51d8feee9a2b1f29d",
+    "dist/data/dungeons.template.json": "0a5d60a77e8abda8dfdf01fd5bc715ff42e547b8ac142ea51d8feee9a2b1f29d",
+    "dist/data/enemies.json": "8bb1184d56c9cadd4f3ff4c64de248ccc23e09107294ac245d2fb30e8b7108f7",
+    "dist/data/enemies.template.json": "b24b5f362257656b945071df41772185e5e5ecf6d4ba5914457b0eeb6f363a1f",
+    "dist/data/items.json": "dce991e79dc127fdaf112d90156df58aaf1eb3767b7177bbb22d56549d3847ee",
+    "dist/data/items.template.json": "a56e28c6fa2dbaab75cd5633dad4bddcebeb25a4ecb57776ddf418b7973b89f5",
+    "dist/data/keywords.json": "cad9399700f344b5abbb634cfeeb665b0c3b4896b971742f53a46042c9a78dae",
+    "dist/fonts/README.md": "ded34907d9a930ecf0dad323ab7d337e7a9b6c3504cf94fc4adfa63b50915bff",
+    "dist/fonts/body.ttf": "9d7583b7dc9e812afd32a14280c5cac3160012efe50c8d08938f4fea266ff67f",
+    "dist/fonts/cinzel.ttf": "74c84080364d7a2a313abb524b8601ba14fe719d6c5cb400599861c38578fa40",
+    "dist/fonts/gothic.ttf": "4793af5cf383f3d4a1b86ca8d030a29de0d2c73b3e0f2d6b0b13e7b5d846a06f",
+    "dist/fonts/righteous.woff2": "65c40800bb8bc418beead0d6ee049412c10d22f3cc52f8d863408a1f17472461",
+    "dist/icons/icon-192.png": "a3a2fa8739e8f815a9784c709d498c39f4ce0876c70455a9b52e598b0feb1237",
+    "dist/icons/icon-512.png": "1b88120027431810af4259ae2517c15c9352609bb9fb42e90bc63e00234b0dbe",
+    "dist/index.html": "5a506ace61aafbe1c98a17e843c2f4277365372678d0c6a664d538d04087599f",
+    "dist/manifest.webmanifest": "f483ad1e4075ba33df56458965b2aab80a6fcde1129f38ea8485569dbaa9586d",
+    "dist/sw.js": "3214fbdf469e8a3ff7e5b9e5fc7a5be3c3925fe4bcc1c37b47f79657eeee902d"
+  }
+}

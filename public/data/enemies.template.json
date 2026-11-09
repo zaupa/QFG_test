@@ -47,6 +47,26 @@
         }
       },
       "boss": false
+    },
+    {
+      "id": "Healing Reward Enemy Example",
+      "name": "Healing Reward Enemy Example",
+      "description": "Example enemy with a healing item reward.",
+      "CV": 5,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": {
+        "name": "Healing Potion Example",
+        "description": "",
+        "keywords": [
+          "heal"
+        ],
+        "baseValue": 2,
+        "healingAmount": 5
+      },
+      "boss": false
     }
   ]
 }

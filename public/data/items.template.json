@@ -31,6 +31,23 @@
           true
         ]
       }
+    },
+    {
+      "name": "Healing Potion Example",
+      "description": "Replace with your item description.",
+      "keywords": [
+        "heal"
+      ],
+      "baseValue": 2,
+      "healingAmount": 5
+    },
+    {
+      "name": "Rest Item Example",
+      "description": "Consumed to promote Rest one level.",
+      "keywords": [
+        "rest"
+      ],
+      "baseValue": 2
     }
   ]
 }

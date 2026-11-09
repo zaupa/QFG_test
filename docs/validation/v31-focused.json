@@ -1,0 +1,183 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 44,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 City opens separate screen with collapsed Character Sheet and four actions",
+      "status": "PASS"
+    },
+    {
+      "name": "02 City exit restores normal panels and reload preserves city",
+      "status": "PASS"
+    },
+    {
+      "name": "03 Unused points can be spent outside Guild but Fate purchasing is hidden",
+      "status": "PASS"
+    },
+    {
+      "name": "04 Guild alone purchases Attribute Points for Fate and persists them",
+      "status": "PASS"
+    },
+    {
+      "name": "05 Dungeon prohibits upgrades and visiting city",
+      "status": "PASS"
+    },
+    {
+      "name": "06 Blacksmith repairs equipped broken gear for default five Coins",
+      "status": "PASS"
+    },
+    {
+      "name": "07 Blacksmith repairs inventory armor without equipping it",
+      "status": "PASS"
+    },
+    {
+      "name": "08 Repair cancel and unaffordable repair have no effect",
+      "status": "PASS"
+    },
+    {
+      "name": "09 No Fix controls outside Blacksmith and active gear is not repairable",
+      "status": "PASS"
+    },
+    {
+      "name": "10 Heal has no manual amount and requires an eligible item",
+      "status": "PASS"
+    },
+    {
+      "name": "11 Heal takes item amount and consumes only on confirmed recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "12 Heal cancellation keeps selected item and Wounds",
+      "status": "PASS"
+    },
+    {
+      "name": "13 Older heal item saves migrate to five healing points",
+      "status": "PASS"
+    },
+    {
+      "name": "14 Inventory heal field appears and validates positive integers",
+      "status": "PASS"
+    },
+    {
+      "name": "15 Custom item manager and enemy reward support healing amount",
+      "status": "PASS"
+    },
+    {
+      "name": "16 Normal Rest offers Partial fifteen, confirmation follows selection",
+      "status": "PASS"
+    },
+    {
+      "name": "17 Confirmed Partial Rest spends one Supply and advances Round exactly once",
+      "status": "PASS"
+    },
+    {
+      "name": "18 Rest item promotes Partial to Complete and is consumed on confirmation",
+      "status": "PASS"
+    },
+    {
+      "name": "19 No Supply demotes Partial to Bad and creates five-point Wound before recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "20 No Supply plus Rest item demotes then promotes to Partial",
+      "status": "PASS"
+    },
+    {
+      "name": "21 Confirmed Rest resumes across reload without spending again",
+      "status": "PASS"
+    },
+    {
+      "name": "22 Dungeon Rest is Bad and can be used once per cleared level",
+      "status": "PASS"
+    },
+    {
+      "name": "23 Dungeon Rest item promotes Bad to Partial",
+      "status": "PASS"
+    },
+    {
+      "name": "24 Dungeon encounter locks Rest and Heal until enemy defeated",
+      "status": "PASS"
+    },
+    {
+      "name": "25 Inn Complete Rest costs ten Coins and never consumes Supply",
+      "status": "PASS"
+    },
+    {
+      "name": "26 Inn Rest cancellation and insufficient Coin do not charge",
+      "status": "PASS"
+    },
+    {
+      "name": "27 Inn supplies convert integer bundles at one Coin to two Supply",
+      "status": "PASS"
+    },
+    {
+      "name": "28 Supply invalid and overflow purchases do not mutate resources",
+      "status": "PASS"
+    },
+    {
+      "name": "29 Boss completion Fate is additional to boss Fate and collected once on Exit",
+      "status": "PASS"
+    },
+    {
+      "name": "30 Old dungeon definition without completion Fate defaults to zero",
+      "status": "PASS"
+    },
+    {
+      "name": "31 Dungeon Fate overflow leaves all rewards pending without partial payout",
+      "status": "PASS"
+    },
+    {
+      "name": "32 Mobile city and recovery do not overflow horizontally",
+      "status": "PASS"
+    },
+    {
+      "name": "33 Upgrade available-points flash works in Guild and normal shortcut",
+      "status": "PASS"
+    },
+    {
+      "name": "34 Unstarted Rest toggles closed, confirmed Rest cannot close or switch",
+      "status": "PASS"
+    },
+    {
+      "name": "35 Removed heal item invalidates selection and cannot consume another item",
+      "status": "PASS"
+    },
+    {
+      "name": "36 Starting items require and retain their own heal amount",
+      "status": "PASS"
+    },
+    {
+      "name": "37 Shared healing item library refresh populates amount and rejects missing amount atomically",
+      "status": "PASS"
+    },
+    {
+      "name": "38 No-Supply wound allocation resumes after reload without a second item or payment",
+      "status": "PASS"
+    },
+    {
+      "name": "39 No-Supply fatal Rest does not advance Round",
+      "status": "PASS"
+    },
+    {
+      "name": "40 Inn confirmation Cancel keeps Coins, Supply and items unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "41 Unused points remain spendable inside city outside Guild without buying Fate",
+      "status": "PASS"
+    },
+    {
+      "name": "42 Paid Inn Rest and local character save continue fully offline",
+      "status": "PASS"
+    },
+    {
+      "name": "43 Pre-V31 cached heal libraries migrate offline without weakening network validation",
+      "status": "PASS"
+    },
+    {
+      "name": "44 Unstarted city actions toggle or switch, paid Rest locks every city action",
+      "status": "PASS"
+    }
+  ]
+}

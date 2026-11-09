@@ -1,0 +1,19 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 3,
+  "failed": 0,
+  "results": [
+    {
+      "name": "21 current item JSON can refresh without rebuilding",
+      "status": "PASS"
+    },
+    {
+      "name": "22 item JSON duplicate names preserve last valid offline libraries",
+      "status": "PASS"
+    },
+    {
+      "name": "39 foreground refresh applies item-only JSON changes",
+      "status": "PASS"
+    }
+  ]
+}

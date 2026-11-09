@@ -1,0 +1,110 @@
+{
+  "version": "30.0.1",
+  "passed": 41,
+  "failed": 0,
+  "platform": 37,
+  "itemRefresh": 3,
+  "stoppedServer": 1,
+  "serverOutput": "Local server stopped; navigator.onLine: true\n{\"documentIdentity\":\"same-document\",\"gameVisible\":true,\"notice\":\"Your current game and libraries are unchanged. Using the last validated libraries (11/9/2026, 10:10:58 PM). The server files could not be loaded or validated. enemies.json: Failed to fetch\",\"errors\":[]}\nPASS actual stopped-server refresh and offline reload\n",
+  "notes": [
+    "The user-specific edited file/folder/field has not been supplied; no confirmed PC-side cause is claimed.",
+    "Network JSON refresh passes, including item-only changes, invalid JSON fallback and precise cross-reference diagnostics.",
+    "Preview serves dist/data; development serves public/data. The local server must be running to refresh files.",
+    "completionFateReward remains a reserved, unimplemented field per user instruction.",
+    "No gameplay reward code, character storage schema or source JSON data were changed. No push was performed."
+  ],
+  "files": [
+    {
+      "file": "dist/app/game.html",
+      "sha256": "f027920b7b4810c2c16ef1bd9a0a328beb9ecb4fdd1f1686494aeebd66972fb8"
+    },
+    {
+      "file": "dist/assets/index-DDXPB0ba.js",
+      "sha256": "157a66203c8dd1c772551f79db324b87e1ad793fc0c7d517a920241d97641136"
+    },
+    {
+      "file": "dist/assets/index-Dx8Di3Cm.css",
+      "sha256": "cde73a9c7e66c1bf7a9cdeb8b79e2020ec3dc2c97f7d8b0c3df61c7e2419ce4f"
+    },
+    {
+      "file": "dist/audio/README.md",
+      "sha256": "215e7649e4dc0d5b37d145f32a0fea653d2fc254b7f4b9523287dedc62edcbfc"
+    },
+    {
+      "file": "dist/audio/medieval_fantasy_victory_fanfare_3s.wav",
+      "sha256": "9a589a69ad85dbcc6211153af1460f8a748807b8f1577ac9fe67667ecf798bc7"
+    },
+    {
+      "file": "dist/data/README.md",
+      "sha256": "fe1e28e4ed0a69b76c5fbc1f662ef7224caee09e10d3316856d30e8a450b27d6"
+    },
+    {
+      "file": "dist/data/dungeons.json",
+      "sha256": "0a5d60a77e8abda8dfdf01fd5bc715ff42e547b8ac142ea51d8feee9a2b1f29d"
+    },
+    {
+      "file": "dist/data/dungeons.template.json",
+      "sha256": "0a5d60a77e8abda8dfdf01fd5bc715ff42e547b8ac142ea51d8feee9a2b1f29d"
+    },
+    {
+      "file": "dist/data/enemies.json",
+      "sha256": "8bb1184d56c9cadd4f3ff4c64de248ccc23e09107294ac245d2fb30e8b7108f7"
+    },
+    {
+      "file": "dist/data/enemies.template.json",
+      "sha256": "cd6c86cff611d0ab743fc113d55cdc9ed17bea82c91a7132f5430219a8f9c280"
+    },
+    {
+      "file": "dist/data/items.json",
+      "sha256": "dce991e79dc127fdaf112d90156df58aaf1eb3767b7177bbb22d56549d3847ee"
+    },
+    {
+      "file": "dist/data/items.template.json",
+      "sha256": "dce991e79dc127fdaf112d90156df58aaf1eb3767b7177bbb22d56549d3847ee"
+    },
+    {
+      "file": "dist/data/keywords.json",
+      "sha256": "cad9399700f344b5abbb634cfeeb665b0c3b4896b971742f53a46042c9a78dae"
+    },
+    {
+      "file": "dist/fonts/README.md",
+      "sha256": "ded34907d9a930ecf0dad323ab7d337e7a9b6c3504cf94fc4adfa63b50915bff"
+    },
+    {
+      "file": "dist/fonts/body.ttf",
+      "sha256": "9d7583b7dc9e812afd32a14280c5cac3160012efe50c8d08938f4fea266ff67f"
+    },
+    {
+      "file": "dist/fonts/cinzel.ttf",
+      "sha256": "74c84080364d7a2a313abb524b8601ba14fe719d6c5cb400599861c38578fa40"
+    },
+    {
+      "file": "dist/fonts/gothic.ttf",
+      "sha256": "4793af5cf383f3d4a1b86ca8d030a29de0d2c73b3e0f2d6b0b13e7b5d846a06f"
+    },
+    {
+      "file": "dist/fonts/righteous.woff2",
+      "sha256": "65c40800bb8bc418beead0d6ee049412c10d22f3cc52f8d863408a1f17472461"
+    },
+    {
+      "file": "dist/icons/icon-192.png",
+      "sha256": "a3a2fa8739e8f815a9784c709d498c39f4ce0876c70455a9b52e598b0feb1237"
+    },
+    {
+      "file": "dist/icons/icon-512.png",
+      "sha256": "1b88120027431810af4259ae2517c15c9352609bb9fb42e90bc63e00234b0dbe"
+    },
+    {
+      "file": "dist/index.html",
+      "sha256": "6106a8c2824d7192d30106d5e87f2e0c0c0db94d68857d3cb1d636f0219d5cfc"
+    },
+    {
+      "file": "dist/manifest.webmanifest",
+      "sha256": "f483ad1e4075ba33df56458965b2aab80a6fcde1129f38ea8485569dbaa9586d"
+    },
+    {
+      "file": "dist/sw.js",
+      "sha256": "8a248b0bad1c790dc67d4d3393a25dc9e1efce51957eda1282863b262996c45a"
+    }
+  ]
+}

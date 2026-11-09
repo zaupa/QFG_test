@@ -26,9 +26,9 @@ function App(){
    await storage.current?.flush();
    if(!db.current||!game.current)throw new Error('The game has not finished opening.');
    const result=await loadLibraries(db.current);
-   if(result.notice){setNotice('Could not reach the server or validate updated JSON. Your current game and libraries are unchanged. Restart your local server to check for updates.');return}
+   if(result.notice){setNotice('Your current game and libraries are unchanged. '+result.notice);return}
    if(game.current.isBusy()){setPendingLibraries(result.bundle);setNotice('Updated libraries are ready and will apply after your current action or delve.');return}
-   game.current.replaceLibraries(result.bundle);librarySignature.current=signature(result.bundle);setPendingLibraries(null);setNotice('Game libraries refreshed. Your game remains open.');
+   const changed=signature(result.bundle)!==librarySignature.current;if(!game.current.replaceLibraries(result.bundle)){setPendingLibraries(result.bundle);setNotice('Updated libraries are ready and will apply after your current action or editor.');return}librarySignature.current=signature(result.bundle);setPendingLibraries(null);setNotice(changed?'Game libraries refreshed. Your game remains open.':'No changes found in the supported library definitions served at '+new URL('data/',document.baseURI).href+'. Your game remains open.');
   }catch(e){setNotice('Could not refresh libraries. Your game remains open. '+(e instanceof Error?e.message:String(e)))}
   finally{checkingLibraries.current=false;setRefreshing(false)}
  }

@@ -1,6 +1,6 @@
 # Quest For Glory — React + TypeScript PWA
 
-The companion now runs as an installable PWA with a service worker, IndexedDB character saves, and external JSON, font and audio files. The V28 game rules and interface are preserved. The original standalone HTML is retained in `legacy/board_game_tracker_v28.html`; V27 remains in `backup/`.
+The companion now runs as an installable PWA with a service worker, IndexedDB character saves, and external JSON, font and audio files. The current release is V31, with city services and item-based recovery built on the original V28 gameplay. The original standalone HTML is retained in `legacy/board_game_tracker_v28.html`; V27 remains in `backup/`.
 
 ## Run on your computer
 
@@ -109,3 +109,34 @@ Names are unique within each definition kind, ignoring case, Unicode compatibili
 Click an enemy’s name in the dungeon encounter table to inspect its full snapshot stats without starting a fight.
 
 V30's custom catalogs, duplicate-name policy, migration notes and test evidence are documented in [docs/V30_AUDIT.md](docs/V30_AUDIT.md).
+
+## If Refresh libraries appears not to update
+
+The server must be running at the installed app’s exact address/port to read edited files. With `npm run preview`, the served files are in `dist/data`, not `public/data`. After editing source JSON, copy it without rebuilding:
+
+```powershell
+Copy-Item .\public\data\*.json .\dist\data\ -Force
+npm.cmd run preview
+```
+
+Then use Refresh libraries when idle. Opening the app’s `/data/enemies.json` (or the corresponding library filename) in the same browser shows exactly what that server is supplying. With `npm run dev`, edit `public/data` directly. Refresh now reports unchanged supported definitions or the specific JSON file/validation error, while retaining the last valid bundle. Custom definitions and active encounter snapshots remain separate.
+
+V31 implements dungeon `completionFateReward`: additional Fate is banked after boss victory, listed in congratulations, and collected once with pending Coins on Exit Dungeon. Active delves keep their original definition snapshot; updated JSON affects the next delve.
+
+## V31 — City and recovery
+
+**Visit City**, beside Dungeon Delve, opens a separate screen with Blacksmith, Shop, Inn and Guild, plus a collapsed Character Sheet. Exit City returns to the normal screen. The Shop is a placeholder until its purchasing rules are defined. City visits, paid Rest transactions, and character progress persist in IndexedDB and work offline. Library/application updates wait until the city visit or other active operation ends.
+
+The **Guild** alone sells Attribute Points for Fate (3 points per Fate). The Card Zones Attribute Points shortcut still lets you spend already unused points outside the Guild, including elsewhere in the city. Upgrade is unavailable throughout a dungeon.
+
+**Heal** requires an inventory item with the exact `heal` keyword. Set its positive integer `healingAmount` in every item definition, including enemy rewards and dungeon treasure. The amount sets the maximum combined value of selected Wound cards; there is no manual Heal value. Confirmation consumes one selected item and returns those cards to the Attribute Deck; cancellation consumes nothing. Older character items and pre-V31 offline catalogs missing this value migrate to the previous default, 5. New forms, imports of custom definitions, and network JSON require an explicit amount.
+
+**Rest** starts with a location-specific type: Bad in a dungeon (5 Fatigue points), Partial normally (15), Complete in the Inn (30). Other types are shown disabled. Outside the Inn it spends 1 Supply when available; without Supply it drops one type (minimum Bad) and first causes 5 Wound points. An optional inventory item with `rest` promotes one type after this downgrade, capped at Complete, and is consumed on confirmation. Inn Rest costs 10 Coins, uses no Supply, never downgrades or causes the no-Supply Wound, and does not need a promoting item.
+
+Select the type/item before the final Rest prompt. Confirming commits costs/item use and persists the recovery transaction. It cannot then be cancelled or switched to another action; finish any Wound allocation, then choose Fatigue cards up to the fixed recovery limit and confirm recovery. Recovering zero cards is allowed so Rest can finish even if no Fatigue cards remain. Round advances once when recovery completes; dying during the Wound allocation does not advance Round. Reload resumes paid recovery without charging again. Dungeon Rest remains once per cleared level, after its challenge and encounter are won.
+
+The **Inn** also sells integer Supply bundles: 1 Coin buys 2 Supply. The **Blacksmith** repairs broken equipped or inventory weapons/armor. The repair confirmation starts at 5 Coins, supports an adjusted nonnegative payment, and restores all four usage points. Cancellation is free; no Fix control is available elsewhere. Repairs leave inventory equipment in inventory.
+
+Build and preview the update with `npm.cmd run build` then `npm.cmd run preview`. Keep the same browser profile, host and port to retain your local saves. Source JSON lives in `public/data`; preview serves the built `dist/data` copy.
+
+V31 validation and transaction details are in [docs/V31_AUDIT.md](docs/V31_AUDIT.md).

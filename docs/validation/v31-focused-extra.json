@@ -1,0 +1,23 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    {
+      "name": "45 Rest Undo restores the paid plan, then restores unspent Supply and item without duplication",
+      "status": "PASS"
+    },
+    {
+      "name": "46 Guild rejects overflowing and unaffordable Fate purchases without mutating state",
+      "status": "PASS"
+    },
+    {
+      "name": "47 Repair Undo restores payment and broken condition; zero-cost armor repair remains supported",
+      "status": "PASS"
+    },
+    {
+      "name": "48 Rest chooses one eligible item by original inventory index and keeps the other",
+      "status": "PASS"
+    }
+  ]
+}

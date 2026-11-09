@@ -1,3 +1,20 @@
+# V31 — City, item healing and location-based Rest
+
+- Adds Visit City with a collapsed Character Sheet, Guild, Inn, Blacksmith, and a Shop placeholder.
+- Restricts Fate purchases of Attribute Points to the Guild; spending unused points remains available outside the Guild through Card Zones, except in dungeons.
+- Heal requires a consumable heal item with `healingAmount`, used consistently in forms, custom catalogs, rewards, data and save migration.
+- Replaces manual Rest values with Bad/Partial/Complete recovery (5/15/30), location restrictions, Supply downgrade/Wounds and optional consumed Rest items. Confirmation follows selection; paid recovery resumes safely after reload.
+- Inn Complete Rest costs 10 Coins without Supply; Supply bundles cost 1 Coin for 2. Blacksmith repairs broken equipped/inventory gear, default 5 Coins, replacing Fix controls elsewhere.
+- Implements additional dungeon completion Fate, banked on boss victory and collected once with Coins on exit.
+- Includes pending library-refresh feedback improvements. Character exports use version 22.
+
+# V30.0.1 — Library refresh feedback
+
+- Reports the JSON filename and validation/network error when an update is rejected, while retaining the previous valid libraries.
+- Reports when served supported definitions have not changed, and identifies the served data URL.
+- Keeps replacement status accurate if a newly opened action/editor defers application.
+- Documents source versus preview data folders and the requirement to run the local server for refresh. The dungeon completion Fate field was still reserved in that patch; V31 implements it.
+
 # V30 — Custom enemy and item catalogs
 
 - Confirmed player-defined enemies persist as Custom records and appear in future enemy selection. Reusable custom item templates are learned at confirmation; item-name typing offers ranked saved/game matches.

@@ -19,7 +19,8 @@ function normalizeItem(item,legacy=false){
  if(typeof name!=='string'||!name.trim()||name.length>300)throw Error('Item Name is required (maximum 300 characters)');
  if(!Number.isSafeInteger(baseValue)||baseValue<0)throw Error('Invalid item Base Value');
  if(description.length+keywordText(keywords).length>300)throw Error('Item Description and Keywords exceed 300 characters');
- const normalized:{name:string;description:string;keywords:string[];baseValue:number;equipment?:any}={name:name.trim(),description,keywords,baseValue};
+ const normalized:{name:string;description:string;keywords:string[];baseValue:number;equipment?:any;healingAmount?:number}={name:name.trim(),description,keywords,baseValue};
+ if(hasKeyword({keywords},'heal')){const amount=legacy&&item.healingAmount==null?5:item.healingAmount;if(!Number.isSafeInteger(amount)||amount<1)throw Error('Healing amount must be a positive supported whole number');normalized.healingAmount=amount;}
  if(item.equipment!=null)normalized.equipment=normalizeEquipment(item.equipment);
  return normalized;
 }
@@ -104,7 +105,7 @@ function validateCustomKeywordBundle(data){
  if(!data||data.format!=='quest-for-glory-custom-keywords'||data.version!==1||!Array.isArray(data.keywords)||data.keywords.some(e=>e?.origin!=='custom')||!Array.isArray(data.categories))throw Error('Invalid custom keyword file');
  return normalizeCustomPreferences(data.keywords,data.categories);
 }
-function validateDungeonDefinition(d,enemies){
+function validateDungeonDefinition(d,enemies,legacy=false){
  const integer=(v,min=0)=>Number.isSafeInteger(v)&&v>=min;
  if(!d||typeof d!=='object'||Array.isArray(d)||typeof d.id!=='string'||!d.id.trim()||typeof d.name!=='string'||!d.name.trim()||typeof d.description!=='string'||typeof d.type!=='string'||!integer(d.maxLevel,1))throw Error('Invalid dungeon definition');
  for(const key of ['challenge','coinReward'])if(!d[key]||!integer(d[key].base,key==='challenge'?1:0)||!integer(d[key].perLevel))throw Error('Invalid dungeon '+key);
@@ -114,8 +115,9 @@ function validateDungeonDefinition(d,enemies){
  for(const row of d.encounters){if(!row||!Array.isArray(row.rolls)||!row.rolls.length||!lookup(row.enemyId))throw Error('Unknown dungeon enemy');for(const roll of row.rolls){if(!integer(roll,1)||roll>d.monsterChance.die||covered.has(roll))throw Error('Invalid dungeon roll coverage');covered.add(roll)}}
  if(covered.size!==d.monsterChance.die)throw Error('Dungeon encounter table must cover every roll');
  if(!d.boss||d.boss.level!==d.maxLevel||!lookup(d.boss.enemyId)?.boss)throw Error('Dungeon boss must reference a boss Enemy Card');
+ if(d.completionFateReward!==undefined&&!integer(d.completionFateReward))throw Error('Invalid dungeon completion Fate reward');
  const maxCoin=Math.max(...d.encounters.map(e=>lookup(e.enemyId).C));if(!Number.isSafeInteger(d.coinReward.base*d.maxLevel+d.coinReward.perLevel*d.maxLevel*(d.maxLevel+1)/2+maxCoin*(d.maxLevel-1)+lookup(d.boss.enemyId).C))throw Error('Dungeon coin total exceeds supported range');
- return {id:d.id,name:d.name,type:d.type,description:d.description,maxLevel:d.maxLevel,challenge:{...d.challenge},monsterChance:{...d.monsterChance,base:d.monsterChance.base??0},coinReward:{...d.coinReward},encounters:d.encounters.map(row=>({rolls:[...row.rolls],enemyId:row.enemyId})),boss:{level:d.maxLevel,enemyId:d.boss.enemyId},treasure:d.treasure==null?null:normalizeItem(d.treasure),...(d.timing?{timing:JSON.parse(JSON.stringify(d.timing))}:{})};
+ return {id:d.id,name:d.name,type:d.type,description:d.description,maxLevel:d.maxLevel,completionFateReward:d.completionFateReward??0,challenge:{...d.challenge},monsterChance:{...d.monsterChance,base:d.monsterChance.base??0},coinReward:{...d.coinReward},encounters:d.encounters.map(row=>({rolls:[...row.rolls],enemyId:row.enemyId})),boss:{level:d.maxLevel,enemyId:d.boss.enemyId},treasure:d.treasure==null?null:normalizeItem(d.treasure,legacy),...(d.timing?{timing:JSON.parse(JSON.stringify(d.timing))}:{})};
 }
 function validateDungeonLibrary(data,enemies){if(!data||data.format!=='quest-for-glory-dungeons'||data.version!==1||!Array.isArray(data.dungeons))throw Error('Invalid dungeon library');const seen=new Set<any>(),dungeons=data.dungeons.map(d=>validateDungeonDefinition(d,enemies));for(const d of dungeons){if(seen.has(d.id))throw Error('Duplicate dungeon id');seen.add(d.id)}return {format:data.format,version:1,dungeons}}
 

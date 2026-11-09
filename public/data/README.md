@@ -148,7 +148,7 @@ Manage Keywords edits suggestions, not existing item/gear/enemy text. Its draft 
 }
 ```
 
-Export includes the manager's shown draft, including empty created categories. Import validates the dedicated format and custom origin, then merges case-insensitively into the draft; existing words keep their current spelling/category. Save changes applies it; Cancel discards it. The file contains no character cards/resources and can be imported into another character or game using this format. Full character exports use envelope version 21.
+Export includes the manager's shown draft, including empty created categories. Import validates the dedicated format and custom origin, then merges case-insensitively into the draft; existing words keep their current spelling/category. Save changes applies it; Cancel discards it. The file contains no character cards/resources and can be imported into another character or game using this format. Full character exports use envelope version 22.
 
 ### Enemy entry toggles
 
@@ -173,3 +173,15 @@ V28 records `highestLevelReached` per character and dungeon, including the deepe
 `items.json` uses `{"format":"quest-for-glory-items","version":1,"items":[...]}`. Copy entries from `items.template.json`. Each item requires `name`, `keywords` (an array, possibly empty), and nonnegative integer `baseValue`; `description` is optional. Equipment optionally adds `{"type":"weapon"|"armor","modifier":positiveInteger,"usage":[true,true,true,true]}` under `equipment`. Names must be unique ignoring case and extra spaces. Loading items makes them available as inventory-name suggestions, not as starting possessions.
 
 Player-created definitions are separate per-character records: `{"origin":"custom","definition":{...}}`. Custom enemy/item exports use `quest-for-glory-custom-enemies` or `quest-for-glory-custom-items`, version 1, and a `definitions` array. Import through the matching manager. It validates the entire file and merges into a cancellable draft; conflicts never overwrite an existing definition. Game item definitions are never written back by a character action.
+
+## V31 item recovery and dungeon completion
+
+Items with the exact `heal` keyword (case-insensitive) require a positive safe integer `healingAmount`. This is the maximum combined Wound-card value restored when the item is consumed by Heal. It applies equally to generic items, weapons/armor, enemy `Item` rewards and dungeon `treasure`. Omit the field when the item has no heal keyword. New JSON is validated strictly; only older saved character items and cached pre-V31 catalogs receive the migration default of 5. The templates include healing examples; no new possessions are granted by loading them.
+
+```json
+{"name":"Healing Potion","description":"","keywords":["heal"],"baseValue":2,"healingAmount":5}
+```
+
+An item with `rest` can be consumed to promote Rest by one type. It needs no numeric recovery field: Bad/Partial/Complete have fixed maxima of 5/15/30.
+
+Dungeon `completionFateReward` is a nonnegative safe integer, default 0 for older files. It is additional to the boss card's own `F`. After victory it is banked once, shown in congratulations, and paid atomically with pending Coins on Exit Dungeon. An overflowing Coin or Fate pool leaves both payments pending until corrected. The treasure choice does not re-award currency. Changing JSON does not rewrite a dungeon snapshot already being explored.

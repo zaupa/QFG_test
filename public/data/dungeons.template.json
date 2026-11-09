@@ -21,6 +21,7 @@
         "base": 3,
         "perLevel": 1
       },
+      "completionFateReward": 0,
       "encounters": [
         {
           "rolls": [

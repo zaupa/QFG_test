@@ -1,3 +1,12 @@
+# V26
+
+- Weapon or armor checkboxes align beside their labels in shared item/reward editors.
+- Completed typed keywords appear as selected temporary toggles on blur or when the next keyword starts. They become character preferences only after item confirmation; cancelling discards them. Deferred redraw preserves Confirm/Cancel clicks.
+- Manage Keywords beside Edit Module edits/removes/adds character suggestions, assigns predefined categories, and creates new categories. Category changes preserve explicit custom origin and do not rewrite existing items or enemy cards.
+- Dedicated custom-keyword JSON exports/imports include categories and custom provenance. Imports merge into a cancellable draft without replacing existing duplicate assignments; empty categories can be shared. Older character words migrate to custom origin; full exports use version 18.
+- Define Enemy has association toggles using weapon/armor keyword lists and character custom words. The example placeholder is removed. Commas gray out Begin combat, including commas in an enabled item reward field.
+- The supplied three-second combat fanfare is stored unchanged in `audio/` and embedded into the standalone HTML. Confirmed combat victories play once; pending rewards/reload do not replay. Exact matches wait for recovery confirmation. Leaving the character/Undo stops playback; blocked sound does not affect gameplay.
+
 # V25
 
 V24 is archived in `backup/` with its matching development files; the older V23 backup is removed.

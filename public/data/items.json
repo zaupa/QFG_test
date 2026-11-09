@@ -38,7 +38,8 @@
         "heal",
         "potion"
       ],
-      "baseValue": 10
+      "baseValue": 10,
+      "healingAmount": 5
     }
   ]
 }

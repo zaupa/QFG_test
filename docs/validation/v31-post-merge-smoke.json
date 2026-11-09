@@ -1,0 +1,27 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 5,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 City opens separate screen with collapsed Character Sheet and four actions",
+      "status": "PASS"
+    },
+    {
+      "name": "10 Heal has no manual amount and requires an eligible item",
+      "status": "PASS"
+    },
+    {
+      "name": "11 Heal takes item amount and consumes only on confirmed recovery",
+      "status": "PASS"
+    },
+    {
+      "name": "14 Inventory heal field appears and validates positive integers",
+      "status": "PASS"
+    },
+    {
+      "name": "37 Shared healing item library refresh populates amount and rejects missing amount atomically",
+      "status": "PASS"
+    }
+  ]
+}

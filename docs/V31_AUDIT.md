@@ -37,3 +37,7 @@ Production build, TypeScript checking and whitespace validation passed. **371 ch
 | Offline asset paths and actually stopped server | 2 | 0 |
 
 The mobile city screenshot is [validation/v31-city-mobile.png](validation/v31-city-mobile.png). Run `npm test` to build and repeat all current suites, or `npm run test:v31` for the new feature checks against an existing build. The working branch is `pwa_wip`; no commit or push was performed.
+
+## Publish integration
+
+Before publishing, remote commits through `0b70fd9` were merged, preserving their toolbox and game-data updates. The toolbox tree remains exactly `c09c874fa7d4f600fd9bc2039814bdb447a10404`. The newly supplied Potion of Healing received `healingAmount: 5`, matching its description and V31's item schema. The production build, all 16 rule/data checks, and five targeted startup/healing/library-refresh checks passed after integration; see `validation/v31-post-merge-smoke.json`. The 371-check report above describes the pre-integration release audit; application runtime and stylesheet bytes are unchanged by this merge. The earlier no-push statement records audit-time status; publication was subsequently requested.

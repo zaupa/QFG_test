@@ -8,8 +8,7 @@
       "keywords": [
         "weapon"
       ],
-      "baseValue": 5,
-      "equipment": null
+      "baseValue": 5
     },
     {
       "name": "Specter of the unholy mice",
@@ -31,6 +30,15 @@
           true
         ]
       }
+    },
+    {
+      "name": "Potion of Healing",
+      "description": "The hero recovers 5 points of cards from the Wound Pile.",
+      "keywords": [
+        "heal",
+        "potion"
+      ],
+      "baseValue": 10
     }
   ]
 }

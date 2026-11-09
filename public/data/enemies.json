@@ -6,18 +6,19 @@
       "id": "Giant Rats",
       "name": "Giant Rats",
       "description": "A group of giant rats each teh size of a big cat",
+      "boss": false,
       "CV": 6,
       "WV": 1,
       "F": 1,
       "C": 0,
       "KW": [],
-      "Item": null,
-      "boss": false
+      "Item": null
     },
     {
       "id": "Skeleton",
       "name": "Skeleton",
       "description": "An undead Skeleton weaponless",
+      "boss": false,
       "CV": 8,
       "WV": 1,
       "F": 1,
@@ -25,13 +26,13 @@
       "KW": [
         "resistant slash"
       ],
-      "Item": null,
-      "boss": false
+      "Item": null
     },
     {
       "id": "Zombie",
       "name": "Zombie",
       "description": "An undead Zombie weaponless",
+      "boss": false,
       "CV": 8,
       "WV": 2,
       "F": 1,
@@ -39,25 +40,25 @@
       "KW": [
         "Unprotected fire"
       ],
-      "Item": null,
-      "boss": false
+      "Item": null
     },
     {
       "id": "Giant Spiders",
       "name": "Giant Spiders",
       "description": "A giant venomous spider the size of a dog",
+      "boss": false,
       "CV": 10,
       "WV": 3,
       "F": 1,
       "C": 0,
       "KW": [],
-      "Item": null,
-      "boss": false
+      "Item": null
     },
     {
       "id": "Thief",
       "name": "Thief",
       "description": "A human Thief",
+      "boss": false,
       "CV": 9,
       "WV": 1,
       "F": 1,
@@ -69,22 +70,63 @@
         "keywords": [
           "weapon"
         ],
-        "baseValue": 5,
-        "equipment": null
-      },
-      "boss": false
+        "baseValue": 5
+      }
     },
     {
       "id": "Giant Zombified Rat",
       "name": "Giant Zombified Rat",
-      "boss": true,
       "description": "A mummified gigantic Rat, 2 meters tall, dressed in old bandages with decaying flesh peeking in part. Glyphs and jewels are placed around its body in a macabre to make this abomination look regal",
+      "boss": true,
       "CV": 18,
       "WV": 4,
       "F": 3,
       "C": 0,
       "KW": [
         "Unprotected fire"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Corrupted Cats",
+      "name": "Corrupted Cats",
+      "description": "A somewhat normal looking cat at first glance but with an aura of decay and evil surround it",
+      "boss": false,
+      "CV": 6,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [
+        "Unprotected against holy"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Corrupted Servant Ghost",
+      "name": "Corrupted Servant Ghost",
+      "description": "",
+      "boss": false,
+      "CV": 8,
+      "WV": 1,
+      "F": 1,
+      "C": 1,
+      "KW": [
+        "Unprotected against holy",
+        "Resistant against mundane"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Corrupted goblins",
+      "name": "Corrupted goblins",
+      "description": "",
+      "boss": false,
+      "CV": 8,
+      "WV": 2,
+      "F": 1,
+      "C": 2,
+      "KW": [
+        "Unprotected against holy"
       ],
       "Item": null
     }

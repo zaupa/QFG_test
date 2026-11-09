@@ -20,7 +20,7 @@ npm run build
 npm run preview
 ```
 
-Open the printed **localhost** URL online once. Wait for **Ready offline**. You can then reload and play offline, or install using the browser’s installation controls / the app’s Install button when offered. Production hosting requires HTTPS; localhost is supported without HTTPS. Double-clicking `index.html` does not run this PWA.
+Open the printed **localhost** URL online once. Wait for **Ready offline**. This now checks the cached files and successful game startup, rather than just the presence of an active service worker. You can then reload and play offline, or install using the browser’s installation controls / the app’s Install button when offered. Production hosting requires HTTPS; localhost is supported without HTTPS. Double-clicking `index.html` does not run this PWA.
 
 Use the same URL **and port** when returning to your characters: browser storage belongs to an origin. `npm run dev` and `npm run preview` usually use different ports, so they have separate saves. Export/import characters to move between them.
 
@@ -88,3 +88,9 @@ The migration audit and verification limits are recorded in [docs/PWA_AUDIT.md](
 Start the server again from the project folder with `npm.cmd run preview` in Windows PowerShell (`npm run preview` in other shells). Use the same browser profile, address and port as installation. Reload the installed window with Ctrl+R; if it stays blank, try Ctrl+Shift+R while the server is running, or open the same address directly in the browser that installed it. Do not uninstall the PWA or clear site/browser data: those steps can remove IndexedDB characters. Export character backups after recovery.
 
 Version 29.0.1 changes manual library refresh to an in-place operation, adds an HTML recovery message if JavaScript cannot start, and retains two previous shell caches to handle older asset references during an app update. The Ready offline indicator waits for an active service worker. A stopped local server is tested separately from a disconnected internet connection.
+
+### Windows offline startup repair (29.0.2)
+
+Earlier Windows builds put backslashes in the service-worker asset list. That could bypass the cached `app/game.html` and show “Failed to fetch” after stopping the server. Asset paths now use URL forward slashes on every operating system. The matching game layout also has a content-verified IndexedDB fallback; character records are untouched.
+
+After installing this repair, keep the server running while opening the app and applying **Update app**. Wait until **Ready offline** appears, then stop the server and retry offline. “Network available” describes the browser network connection, not the status of the local preview server. Do not uninstall or clear site data when recovering.

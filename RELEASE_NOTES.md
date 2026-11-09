@@ -1,3 +1,10 @@
+# V29.0.2 — Windows offline startup
+
+- Normalizes filesystem paths into URL paths before filtering and generating the service-worker asset list. This fixes Windows builds skipping their cached game interface and incorrectly including data JSON in precaching.
+- Keeps a content-verified copy of the exact game interface in IndexedDB as a fallback, independently of character records.
+- Ready offline now requires verified cached assets and successful game startup. Missing files can be repaired when the server is reachable. Startup errors identify the missing interface; character storage is preserved.
+- Adds Windows path simulation, offline interface recovery, truthful readiness and cache-repair regressions.
+
 # V29.0.1 — Offline refresh recovery
 
 - Refresh libraries now fetches JSON in place, preserving the current character and document when the local server is unavailable.

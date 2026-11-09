@@ -32,7 +32,7 @@ Edit these source files while using `npm run dev`:
 - `public/data/keywords.json`
 - `public/data/dungeons.json`
 
-The app fetches all three files afresh on each opening, validates them together, and keeps the last valid complete set in IndexedDB. When an installed app returns to the foreground, it also checks for changes; new libraries apply once the current action or delve finishes, without reloading the game. **Refresh libraries** reopens the app safely when no action or delve is underway. There is no rebuild needed for JSON-only changes.
+The app fetches all three files afresh on each opening, validates them together, and keeps the last valid complete set in IndexedDB. When an installed app returns to the foreground, it also checks for changes; new libraries apply once the current action or delve finishes, without reloading the game. **Refresh libraries** checks and applies JSON updates in place when no action or delve is underway. It never reloads the document; if the server is stopped, the current character and libraries stay open and a message explains that updates are unavailable. There is no rebuild needed for JSON-only changes.
 
 For a built/deployed app, edit the files actually being served: `dist/data/*.json` (or the hosting server’s corresponding `data/` folder). Editing `public/data` alone does not change an already-built `dist` folder; copy the changed JSON into the served folder. Deploy related enemy/dungeon changes together so their references agree. An invalid or incomplete update shows a notice and preserves the last validated set instead of replacing it.
 
@@ -82,3 +82,9 @@ This builds and type-checks the PWA, runs platform/browser checks and a selected
 `npm run build:legacy` and `npm run test:legacy` retain the standalone V28 workflow. The PWA implementation is maintained on the `pwa_wip` branch.
 
 The migration audit and verification limits are recorded in [docs/PWA_AUDIT.md](docs/PWA_AUDIT.md).
+
+## Recover a blank installed window
+
+Start the server again from the project folder with `npm.cmd run preview` in Windows PowerShell (`npm run preview` in other shells). Use the same browser profile, address and port as installation. Reload the installed window with Ctrl+R; if it stays blank, try Ctrl+Shift+R while the server is running, or open the same address directly in the browser that installed it. Do not uninstall the PWA or clear site/browser data: those steps can remove IndexedDB characters. Export character backups after recovery.
+
+Version 29.0.1 changes manual library refresh to an in-place operation, adds an HTML recovery message if JavaScript cannot start, and retains two previous shell caches to handle older asset references during an app update. The Ready offline indicator waits for an active service worker. A stopped local server is tested separately from a disconnected internet connection.

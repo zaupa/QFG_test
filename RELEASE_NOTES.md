@@ -1,3 +1,10 @@
+# V29.0.1 — Offline refresh recovery
+
+- Refresh libraries now fetches JSON in place, preserving the current character and document when the local server is unavailable.
+- The initial HTML includes recovery instructions when application JavaScript fails to load. Offline readiness waits for an active worker.
+- Service-worker updates retain two previous shell caches and can resolve their older runtime/font/audio/icon assets.
+- Regression tests cover an actually stopped HTTP server while the browser still reports online, offline saving/reload, manual refresh without navigation, and boot recovery. No character-storage schema or game rules changed.
+
 # V29 — React / TypeScript PWA
 
 - Adds React startup/PWA controls, IndexedDB local character saves, a versioned service worker, installation metadata and offline shell assets.

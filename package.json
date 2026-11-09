@@ -1,17 +1,18 @@
 {
   "name": "quest-for-glory-pwa",
-  "version": "29.0.0",
+  "version": "29.0.1",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build && node scripts/build-sw.mjs",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "npm run build && node tests/pwa.cjs && node tests/gameplay-pwa.cjs",
+    "test": "npm run build && node tests/pwa.cjs && node tests/server-stopped.cjs && node tests/gameplay-pwa.cjs",
     "test:legacy": "node tests/baseline.cjs",
     "build:legacy": "node scripts/build-v28.cjs",
     "test:pwa": "node tests/pwa.cjs",
-    "test:gameplay": "node tests/gameplay-pwa.cjs"
+    "test:gameplay": "node tests/gameplay-pwa.cjs",
+    "test:server-stopped": "node tests/server-stopped.cjs"
   },
   "dependencies": {
     "react": "19.2.0",

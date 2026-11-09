@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-09T15:20:10.175Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "3ebcbbf966c1dd8ab09f3a3e959a55c00a8e9dfd7235ca6047c601bce939e56b",
+  "passed": 10,
+  "failed": 0,
+  "results": [
+    {
+      "name": "10 challenge success moves hand to Fatigue and preserves all cards",
+      "status": "PASS",
+      "ms": 1768
+    },
+    {
+      "name": "17 challenge Cancel restores complete pre-action persistent state",
+      "status": "PASS",
+      "ms": 2871
+    },
+    {
+      "name": "32 inventory purchase/sale, custom price, persisted data and Undo",
+      "status": "PASS",
+      "ms": 2865
+    },
+    {
+      "name": "83 enemy prompt defaults and cancellation leave the character unchanged",
+      "status": "PASS",
+      "ms": 2817
+    },
+    {
+      "name": "181 failed combat spends one weapon/armor usage, reduces actual wound allocation and reload never repeats wear",
+      "status": "PASS",
+      "ms": 4335
+    },
+    {
+      "name": "263 enemy associations selected through toggles feed actual combat values",
+      "status": "PASS",
+      "ms": 5110
+    },
+    {
+      "name": "286 dungeon challenge success banks first-level Coins until exit",
+      "status": "PASS",
+      "ms": 2587
+    },
+    {
+      "name": "297 boss victory pays Coins and offers treasure only after victory",
+      "status": "PASS",
+      "ms": 1554
+    },
+    {
+      "name": "331 boss congratulations lists rewards with only Exit Dungeon and no early Coin payout",
+      "status": "PASS",
+      "ms": 1491
+    },
+    {
+      "name": "332 pending boss congratulations resumes after reload and Escape cannot dismiss it",
+      "status": "PASS",
+      "ms": 2176
+    }
+  ]
+}

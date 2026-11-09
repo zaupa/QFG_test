@@ -27,3 +27,11 @@ Type-checking, a production build, development-server startup, static asset sepa
 Use `npm ci`, then `npm run dev` for feature development. Use `npm run build` and `npm run preview` to test installation/offline play. Edit `public/data/*.json` during development; edit the served `dist/data/*.json` after building/deploying. JSON-only updates require no rebuild. App-code and asset changes do require rebuilding. HTTPS is required outside localhost; opening index.html directly is unsupported.
 
 Browser storage is origin/port-specific and can be removed by the browser or user. Keep exported backups. Physical Safari/iOS installation and browser-specific eviction behavior have not been tested here. Chromium tests establish local PWA behavior, not an external hosting deployment. No server sync or cloud account has been added.
+
+## V29.0.1 offline refresh repair
+
+The user reported a blank installed window after stopping the preview server and selecting Refresh libraries. The old control was confirmed to navigate/restart the app; a stopped-server regression failed its no-navigation assertion. The exact blank Windows installed-window state was not reproduced in managed Chromium, so no claim is made that its cache state was identified.
+
+Manual refresh now fetches and validates JSON in place. Server/validation failures leave the current character and rules visible; active operations remain protected. Initial HTML contains recovery guidance before React loads, Ready offline waits for an active worker, and two previous version caches remain available for older asset references during updates. Character IndexedDB data is not cleared or migrated by this fix.
+
+See `docs/validation/offline-refresh-results.json` for the repair's final artifact hashes, platform checks, stopped-server regression and affected gameplay rerun. Recovery on an existing older installation starts by restoring the same local server and browser origin; reinstalling or clearing site data is not part of the remedy. This repair is prepared for publication to `pwa_wip`.

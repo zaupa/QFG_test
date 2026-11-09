@@ -1,0 +1,103 @@
+{
+  "version": "29.0.1",
+  "browser": "156.0.8078.79",
+  "passed": 41,
+  "failed": 0,
+  "platform": 30,
+  "stoppedServer": 1,
+  "affectedGameplay": 10,
+  "stoppedServerOutput": "Local server stopped; navigator.onLine: true\n{\"documentIdentity\":\"same-document\",\"gameVisible\":true,\"notice\":\"Could not reach the server or validate updated JSON. Your current game and libraries are unchanged. Restart your local server to check for updates.\",\"errors\":[]}\nPASS actual stopped-server refresh and offline reload\n",
+  "notes": [
+    "The old refresh control restarted the document; the stopped-server no-navigation regression failed before this repair.",
+    "The exact blank Windows installed-window state could not be reproduced in managed Chromium.",
+    "The new refresh keeps the open character, saves offline, and reloads from IndexedDB with the actual HTTP server stopped and navigator.onLine still true.",
+    "This is targeted repair verification, not a complete rerun of every previous gameplay case.",
+    "The repair does not clear or change the IndexedDB schema. It has not been pushed."
+  ],
+  "files": [
+    {
+      "file": "dist/app/game.html",
+      "sha256": "f6f1590e389ec4dc90f50380bb5e9ab4775927d6fb7233ca452970067e0d531d"
+    },
+    {
+      "file": "dist/assets/index-BmNXySdU.css",
+      "sha256": "ede24bca6291aebddb762857c84dca1a6af52ba7823c34d3be89f82b2d9eb3a8"
+    },
+    {
+      "file": "dist/assets/index-DzRn2Pws.js",
+      "sha256": "06f11454d42d15057e3d677a99db115fe7df451ab15648cf44f57b2c4deb57ea"
+    },
+    {
+      "file": "dist/audio/README.md",
+      "sha256": "215e7649e4dc0d5b37d145f32a0fea653d2fc254b7f4b9523287dedc62edcbfc"
+    },
+    {
+      "file": "dist/audio/medieval_fantasy_victory_fanfare_3s.wav",
+      "sha256": "9a589a69ad85dbcc6211153af1460f8a748807b8f1577ac9fe67667ecf798bc7"
+    },
+    {
+      "file": "dist/data/README.md",
+      "sha256": "ca770d49cd05d23d78be22604b9946ebda2bf78993e053a08851c9395d6e8f8c"
+    },
+    {
+      "file": "dist/data/dungeons.json",
+      "sha256": "a856d72076e5d353c7636690d905278c3da6b9933b0e63c11e4139abb656b7f8"
+    },
+    {
+      "file": "dist/data/dungeons.template.json",
+      "sha256": "a856d72076e5d353c7636690d905278c3da6b9933b0e63c11e4139abb656b7f8"
+    },
+    {
+      "file": "dist/data/enemies.json",
+      "sha256": "8bb1184d56c9cadd4f3ff4c64de248ccc23e09107294ac245d2fb30e8b7108f7"
+    },
+    {
+      "file": "dist/data/enemies.template.json",
+      "sha256": "cd6c86cff611d0ab743fc113d55cdc9ed17bea82c91a7132f5430219a8f9c280"
+    },
+    {
+      "file": "dist/data/keywords.json",
+      "sha256": "cad9399700f344b5abbb634cfeeb665b0c3b4896b971742f53a46042c9a78dae"
+    },
+    {
+      "file": "dist/fonts/README.md",
+      "sha256": "ded34907d9a930ecf0dad323ab7d337e7a9b6c3504cf94fc4adfa63b50915bff"
+    },
+    {
+      "file": "dist/fonts/body.ttf",
+      "sha256": "9d7583b7dc9e812afd32a14280c5cac3160012efe50c8d08938f4fea266ff67f"
+    },
+    {
+      "file": "dist/fonts/cinzel.ttf",
+      "sha256": "74c84080364d7a2a313abb524b8601ba14fe719d6c5cb400599861c38578fa40"
+    },
+    {
+      "file": "dist/fonts/gothic.ttf",
+      "sha256": "4793af5cf383f3d4a1b86ca8d030a29de0d2c73b3e0f2d6b0b13e7b5d846a06f"
+    },
+    {
+      "file": "dist/fonts/righteous.woff2",
+      "sha256": "65c40800bb8bc418beead0d6ee049412c10d22f3cc52f8d863408a1f17472461"
+    },
+    {
+      "file": "dist/icons/icon-192.png",
+      "sha256": "a3a2fa8739e8f815a9784c709d498c39f4ce0876c70455a9b52e598b0feb1237"
+    },
+    {
+      "file": "dist/icons/icon-512.png",
+      "sha256": "1b88120027431810af4259ae2517c15c9352609bb9fb42e90bc63e00234b0dbe"
+    },
+    {
+      "file": "dist/index.html",
+      "sha256": "3ebcbbf966c1dd8ab09f3a3e959a55c00a8e9dfd7235ca6047c601bce939e56b"
+    },
+    {
+      "file": "dist/manifest.webmanifest",
+      "sha256": "f483ad1e4075ba33df56458965b2aab80a6fcde1129f38ea8485569dbaa9586d"
+    },
+    {
+      "file": "dist/sw.js",
+      "sha256": "1227283880329015f8cf5af7b84359dea296502a869a05b744057479c84066f4"
+    }
+  ]
+}

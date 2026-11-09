@@ -266,6 +266,13 @@
       "uses": [
         "generic"
       ]
+    },
+    {
+      "keyword": "Potion",
+      "category": "Format",
+      "uses": [
+        "generic"
+      ]
     }
   ]
 }

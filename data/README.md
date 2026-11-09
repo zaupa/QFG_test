@@ -1,6 +1,6 @@
 # Enemy library and template
 
-`enemies.json` contains the enemy library. `enemies.template.json` provides sample entries to copy when adding enemies. V27 embeds a validated snapshot of this library during the build. After editing the JSON, run `npm run build` from the repository root and distribute the rebuilt `board_game_tracker_v27.html`. The standalone HTML works offline without fetching a separate file.
+`enemies.json` contains the enemy library. `enemies.template.json` provides sample entries to copy when adding enemies. V28 embeds a validated snapshot of this library during the build. After editing the JSON, run `npm run build` from the repository root and distribute the rebuilt `board_game_tracker_v28.html`. The standalone HTML works offline without fetching a separate file.
 
 Add as many enemy objects as needed inside the `enemies` array. Separate objects with commas, with no comma after the last entry. Remove unused sample entries. JSON does not allow comments.
 
@@ -15,7 +15,7 @@ Add as many enemy objects as needed inside the `enemies` array. Separate objects
 | `F` | Fate reward, nonnegative integer. |
 | `C` | Coin reward, nonnegative integer. |
 | `KW` | Array of enemy keywords, or `[]`. Display: *Keyword 1 - Keyword 2*. |
-| `Item` | Reward item using the V27 inventory structure below, or `null` for no item. |
+| `Item` | Reward item using the V28 inventory structure below, or `null` for no item. |
 
 ## Item reward
 
@@ -39,7 +39,7 @@ Enemy-level keywords use the abbreviated key `KW`. Keywords inside an item keep 
 
 Use `"Item": null` when there is no reward. The first template sample has no item; the second demonstrates keyword arrays, an item reward and the minimum Wound Value of 0. Neither template entry is a real enemy definition.
 
-The V27 JSON wrapper uses `format: "quest-for-glory-enemy-cards"`, `version: 5`, with an `enemies` array. All ten Enemy Card fields are required; unknown enemy fields and duplicate names are rejected. Numeric values must be safe integers; CV also reserves room for the +6 modifier.
+The V28 JSON wrapper uses `format: "quest-for-glory-enemy-cards"`, `version: 5`, with an `enemies` array. All ten Enemy Card fields are required; unknown enemy fields and duplicate names are rejected. Numeric values must be safe integers; CV also reserves room for the +6 modifier.
 
 In app text fields, `-` is the keyword separator, with or without surrounding spaces. Spaces alone stay within a keyword: `resistant slash-magic` creates `["resistant slash", "magic"]`. Commas are rejected in enemy and item keyword input. JSON still uses arrays with normal JSON commas **between** entries; do not put a comma inside a keyword string. For example, `["weapon", "heavy metal"]` is valid; `["weapon, heavy metal"]` is not.
 
@@ -68,13 +68,13 @@ Ordinary items may omit `equipment` or use `null`. A weapon or armor uses:
 - `type`: required `"weapon"` or `"armor"`.
 - `modifier`: required positive safe integer, at most `Number.MAX_SAFE_INTEGER - 364` so an Action Hand can be added safely.
 - `usage`: four booleans; checked points are `true`. Omitted usage defaults to four checked points.
-- Equipment is active automatically while at least one usage point remains. There is no `enabled` field in V27. Old flags are ignored during migration. Zero remaining points means broken.
+- Equipment is active automatically while at least one usage point remains. There is no `enabled` field in V28. Old flags are ignored during migration. Zero remaining points means broken.
 - Usage is read-only in the app; failed combat/armor use spends points and Fix restores four points. These fields stay with the item through inventory, equipping, rewards, imports and swaps. Equipment received as a reward enters Inventory after Keep; it is not automatically equipped.
 - Ordinary items omit equipment metadata in canonical app saves/embedded snapshots. Explicit `null` is accepted in authoring files.
 
 To update an older library, retain/add item names as required by V22, set wrapper version to 5 and add `boss: false` to ordinary enemies, and optionally supply equipment objects. Existing V22 character items remain ordinary until explicitly marked Weapon or Armor in the app.
 
-The build rejects malformed data before replacing the HTML. Advanced usage: `node scripts/build-v27.cjs --data path/to/library.json --output path/to/app.html`. The default library is `data/enemies.json`; the template is not included automatically.
+The build rejects malformed data before replacing the HTML. Advanced usage: `node scripts/build-v28.cjs --data path/to/library.json --output path/to/app.html`. The default library is `data/enemies.json`; the template is not included automatically.
 
 ## Standard enemy keyword associations
 
@@ -117,7 +117,7 @@ Run `npm run build` after changes to either JSON catalog. Both snapshots are emb
 
 Heal's Use item picker accepts only an exact `heal` keyword (case-insensitive). `healing`, `heal potion` and `rest` are different keywords; adding `rest` to the suggestion catalog does not add a new Rest-item mechanic.
 
-## Character custom suggestions in V27
+## Character custom suggestions in V28
 
 Character preferences are separate from the shared catalog:
 
@@ -148,20 +148,22 @@ Manage Keywords edits suggestions, not existing item/gear/enemy text. Its draft 
 }
 ```
 
-Export includes the manager's shown draft, including empty created categories. Import validates the dedicated format and custom origin, then merges case-insensitively into the draft; existing words keep their current spelling/category. Save changes applies it; Cancel discards it. The file contains no character cards/resources and can be imported into another character or game using this format. Full character exports use envelope version 19.
+Export includes the manager's shown draft, including empty created categories. Import validates the dedicated format and custom origin, then merges case-insensitively into the draft; existing words keep their current spelling/category. Save changes applies it; Cancel discards it. The file contains no character cards/resources and can be imported into another character or game using this format. Full character exports use envelope version 20.
 
 ### Enemy entry toggles
 
 Define Enemy keeps free text entry with no example placeholder. Expand Unprotected/Resistant to select weapon keywords, or Weak/Strong for armor keywords. Character custom words are also offered. Toggling adds/removes full association text; typed abbreviated aliases are recognized. A comma in enemy keywords, or in an enabled item reward's keywords, disables Begin combat until corrected. Submission validation remains in place as a guard.
 
-This does not change `keywords.json` version 1 or enemy library version 5. Build V27 after authoring changes as before; `--audio` additionally selects the WAV source embedded alongside the three JSON catalogs.
+This does not change `keywords.json` version 1 or enemy library version 5. Build V28 after authoring changes as before; `--audio` additionally selects the WAV source embedded alongside the three JSON catalogs.
 
-## Dungeon library (V27)
+## Dungeon library (V28)
 
 `dungeons.json` is embedded in the offline HTML. Copy entries from `dungeons.template.json`; keep dungeon IDs unique. Files use `format: "quest-for-glory-dungeons"`, `version: 1`, and a `dungeons` array. Run `npm run build` after changing either library. Invalid formulas, incomplete roll tables, or missing enemy references stop the build.
 
-Each dungeon has `id`, `name`, `type`, `description`, and `maxLevel`. `challenge` and `coinReward` each hold `base` and `perLevel`: value = base + perLevel × current level. The final level skips its challenge and fights the boss. `monsterChance` holds `die` and `thresholdPerLevel`; an encounter occurs when the roll is at most level × thresholdPerLevel (capped at die size). `encounters` contains rows such as `{ "rolls": [1,2,3], "enemyId": "Giant Rats" }` covering every die result exactly once. Enemy IDs reference `enemies.json`. `boss` contains final `level` and `enemyId`, which must reference an enemy with the required boolean `boss: true`. Ordinary enemy cards use `boss: false`; enemy library version is now 5.
+Each dungeon has `id`, `name`, `type`, `description`, and `maxLevel`. `challenge` and `coinReward` each hold `base` and `perLevel`: value = base + perLevel × current level. The final level skips its challenge and fights the boss. `monsterChance` holds `base`, `die`, and `thresholdPerLevel`; an encounter occurs when the roll is at most base + level × thresholdPerLevel (capped at die size). Missing `base` defaults to zero for older files. The formula is declarative data, not executable JavaScript. For `1 + 1 × level` on 1d6, use `{"base":1,"thresholdPerLevel":1,"die":6}`; at level 2 the encounter range is 1–3. Nonnegative safe integers are required, and unsupported arithmetic ranges stop the build. `encounters` contains rows such as `{ "rolls": [1,2,3], "enemyId": "Giant Rats" }` covering every die result exactly once. Enemy IDs reference `enemies.json`. `boss` contains final `level` and `enemyId`, which must reference an enemy with the required boolean `boss: true`. Ordinary enemy cards use `boss: false`; enemy library version is now 5.
 
-`treasure` is an inventory item or null, offered only after boss victory. `timing` is descriptive metadata, currently ignored. Rest uses existing rules and is allowed once per level per attempt after the level challenge is won. Boss-level preparation is unavailable; prepare before delving from the preceding level.
+`treasure` is an inventory item or null, offered only after boss victory. `timing` is descriptive metadata, currently ignored. Rest uses existing rules and is allowed once per level per attempt after the level challenge and any monster combat are won. Heal is also locked until the monster is defeated. Upgrade is unavailable throughout a delve. Boss-level preparation is unavailable; prepare before delving from the preceding level.
 
 Coins accumulate pending until exit or completion. Each level and its encounter Coins pay once per character across attempts; monster Fate and item rewards follow existing combat rules. Re-entry starts at level 1. Defeating the boss closes the dungeon for that character. Active delves save snapshots of dungeon and enemy definitions, so later library updates do not change a delve underway.
+
+V28 records `highestLevelReached` per character and dungeon, including the deepest visited level on exited attempts. Older history derives a minimum from rewarded levels and the active delve. Completed dungeons remain listed with **Dungeon Completed** and disabled selection. Boss victory persists a `victory` phase: congratulations lists pending Coins and treasure, then **Exit Dungeon** pays Coins and opens the existing treasure decision. No payout occurs merely by showing or reloading congratulations.

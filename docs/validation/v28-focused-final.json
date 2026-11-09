@@ -1,0 +1,134 @@
+{
+  "date": "2026-11-09T13:06:51.938Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "0847ec669320dafcf173bb40a2cc9c5d816b9b0cac9521b5f52b39ef25c0ca6b",
+  "passed": 25,
+  "failed": 0,
+  "results": [
+    {
+      "name": "314 opening Upgrade from the action button flashes unused points",
+      "status": "PASS",
+      "ms": 2412
+    },
+    {
+      "name": "315 repeated action selection closes an unstarted Challenge Wound Heal or Upgrade",
+      "status": "PASS",
+      "ms": 3869
+    },
+    {
+      "name": "316 repeated Rest selection closes the open unstarted Rest without another confirmation",
+      "status": "PASS",
+      "ms": 2009
+    },
+    {
+      "name": "317 active Challenge selection cannot close or reset committed cards or Fate costs",
+      "status": "PASS",
+      "ms": 1944
+    },
+    {
+      "name": "318 active Combat selection cannot close the action or reset selected hand",
+      "status": "PASS",
+      "ms": 1534
+    },
+    {
+      "name": "319 selecting cards for Heal prevents action-button closing or switching",
+      "status": "PASS",
+      "ms": 2128
+    },
+    {
+      "name": "320 dungeon progress has five noninteractive boxes and a final Boss label",
+      "status": "PASS",
+      "ms": 2145
+    },
+    {
+      "name": "321 progress advances current box and marks cleared levels",
+      "status": "PASS",
+      "ms": 2498
+    },
+    {
+      "name": "322 level challenge and Retry remain red until success",
+      "status": "PASS",
+      "ms": 1719
+    },
+    {
+      "name": "323 dungeon shows its encounter formula and enemy table before rolling",
+      "status": "PASS",
+      "ms": 2103
+    },
+    {
+      "name": "324 per-dungeon base plus level formula drives the actual encounter roll",
+      "status": "PASS",
+      "ms": 2352
+    },
+    {
+      "name": "325 encounter probability caps at the die size and supports a zero chance",
+      "status": "PASS",
+      "ms": 3138
+    },
+    {
+      "name": "326 Heal Rest and Upgrade stay unavailable while an enemy is pending",
+      "status": "PASS",
+      "ms": 1424
+    },
+    {
+      "name": "327 Upgrade shortcut is also blocked after clearing a dungeon level",
+      "status": "PASS",
+      "ms": 1781
+    },
+    {
+      "name": "328 Coins stay unchanged until encounter victory then bank once",
+      "status": "PASS",
+      "ms": 2803
+    },
+    {
+      "name": "329 dungeon buttons use Dungeon Delve and Start Delve labels",
+      "status": "PASS",
+      "ms": 1798
+    },
+    {
+      "name": "330 exited dungeon records deepest visited level and re-entry starts at one",
+      "status": "PASS",
+      "ms": 1414
+    },
+    {
+      "name": "331 boss congratulations lists rewards with only Exit Dungeon and no early Coin payout",
+      "status": "PASS",
+      "ms": 2695
+    },
+    {
+      "name": "332 pending boss congratulations resumes after reload and Escape cannot dismiss it",
+      "status": "PASS",
+      "ms": 3345
+    },
+    {
+      "name": "333 completed dungeons stay listed gray disabled and labeled Dungeon Completed",
+      "status": "PASS",
+      "ms": 2564
+    },
+    {
+      "name": "334 boss without treasure still shows completion then exits with one Coin payout",
+      "status": "PASS",
+      "ms": 2494
+    },
+    {
+      "name": "335 old dungeon definitions default to zero base and malformed formulas reject",
+      "status": "PASS",
+      "ms": 492
+    },
+    {
+      "name": "336 old dungeon history derives deepest level and malformed new depth rejects import",
+      "status": "PASS",
+      "ms": 2034
+    },
+    {
+      "name": "337 progress and encounter table fit mobile and display completed steps",
+      "status": "PASS",
+      "ms": 2996
+    },
+    {
+      "name": "338 new formula and completed-list flow work offline",
+      "status": "PASS",
+      "ms": 3384
+    }
+  ]
+}

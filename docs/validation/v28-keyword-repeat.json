@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-09T13:11:25.808Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "4e872e91351479f55321f6b824bbbfa51c043b019e6bcd14cf0b2fa57343cade",
+  "passed": 1,
+  "failed": 0,
+  "results": [
+    {
+      "name": "263 enemy associations selected through toggles feed actual combat values",
+      "status": "PASS",
+      "ms": 2599
+    }
+  ]
+}

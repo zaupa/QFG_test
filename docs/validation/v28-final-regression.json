@@ -1,0 +1,89 @@
+{
+  "date": "2026-11-09T13:11:16.603Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "4e872e91351479f55321f6b824bbbfa51c043b019e6bcd14cf0b2fa57343cade",
+  "passed": 16,
+  "failed": 0,
+  "results": [
+    {
+      "name": "224 suggestions append with hyphens, avoid duplicates and preserve arbitrary custom keyword phrases",
+      "status": "PASS",
+      "ms": 3146
+    },
+    {
+      "name": "255 Manage Keywords adds/edits words, assigns predefined/new categories and retains custom origin",
+      "status": "PASS",
+      "ms": 2524
+    },
+    {
+      "name": "261 enemy comma input disables Begin combat and clearing it restores the button without starting combat",
+      "status": "PASS",
+      "ms": 2199
+    },
+    {
+      "name": "262 enemy association toggles use the relevant equipment lists and toggle canonical/typed aliases",
+      "status": "PASS",
+      "ms": 1657
+    },
+    {
+      "name": "263 enemy associations selected through toggles feed actual combat values",
+      "status": "PASS",
+      "ms": 2499
+    },
+    {
+      "name": "272 manager and enemy association controls fit mobile and preserve keyboard cancellation",
+      "status": "PASS",
+      "ms": 3889
+    },
+    {
+      "name": "300 enemy association custom target is temporary until Begin Combat",
+      "status": "PASS",
+      "ms": 2142
+    },
+    {
+      "name": "314 opening Upgrade from the action button flashes unused points",
+      "status": "PASS",
+      "ms": 2703
+    },
+    {
+      "name": "324 per-dungeon base plus level formula drives the actual encounter roll",
+      "status": "PASS",
+      "ms": 1748
+    },
+    {
+      "name": "326 Heal Rest and Upgrade stay unavailable while an enemy is pending",
+      "status": "PASS",
+      "ms": 1500
+    },
+    {
+      "name": "328 Coins stay unchanged until encounter victory then bank once",
+      "status": "PASS",
+      "ms": 2522
+    },
+    {
+      "name": "331 boss congratulations lists rewards with only Exit Dungeon and no early Coin payout",
+      "status": "PASS",
+      "ms": 2578
+    },
+    {
+      "name": "332 pending boss congratulations resumes after reload and Escape cannot dismiss it",
+      "status": "PASS",
+      "ms": 3056
+    },
+    {
+      "name": "336 old dungeon history derives deepest level and malformed new depth rejects import",
+      "status": "PASS",
+      "ms": 2057
+    },
+    {
+      "name": "337 progress and encounter table fit mobile and display completed steps",
+      "status": "PASS",
+      "ms": 2790
+    },
+    {
+      "name": "338 new formula and completed-list flow work offline",
+      "status": "PASS",
+      "ms": 4620
+    }
+  ]
+}

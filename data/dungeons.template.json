@@ -14,7 +14,8 @@
       },
       "monsterChance": {
         "die": 6,
-        "thresholdPerLevel": 1
+        "thresholdPerLevel": 1,
+        "base": 0
       },
       "coinReward": {
         "base": 3,

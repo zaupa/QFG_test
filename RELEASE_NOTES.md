@@ -1,3 +1,13 @@
+# V28
+
+- Upgrade flashes the Available points box when opened with unused points. Repeated action selection closes an unstarted action; an action with selected cards or an active encounter cannot be closed or reset through action selection.
+- Dungeon Delve opens selection; Start Delve enters the selected dungeon. Completed entries remain gray, disabled and labeled Dungeon Completed. Exited attempts record the deepest visited level; re-entry starts at level one.
+- A numbered level progress display highlights the current/cleared levels and marks the final level Boss. Attempt/Retry Level Challenge uses red. The requested Coin guidance now reads “Each level grants Coins once per level. Treasure requires boss victory.” Existing once-per-character level reward history still prevents replay payouts.
+- Dungeon JSON defines encounter chance as base + thresholdPerLevel × level on its chosen die. Missing base defaults to zero. The app shows the formula, current range, enemy table and rolled results.
+- A pending monster locks Heal and Rest until victory. Upgrade and its Attribute Points shortcut are unavailable throughout a delve. Coins bank only after the challenge and any encounter are won.
+- Boss victory shows persistent congratulations, Coin and treasure rewards, and only Exit Dungeon. Exit collects Coins and continues the existing Keep/Discard/replacement flow. Reload never repeats rewards.
+- Character exports use version 20. Existing V27 histories and active delves migrate; the standalone HTML remains the development target before a separate PWA conversion.
+
 # V27
 
 - Start Game moves to the bottom right with vertical spacing. Name fields capitalize each word as typed; descriptions and keywords retain their spelling.

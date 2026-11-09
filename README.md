@@ -1,6 +1,6 @@
-# Quest For Glory V27
+# Quest For Glory V28
 
-`board_game_tracker_v27.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
+`board_game_tracker_v28.html` is the complete offline application. It needs no server, installation or network connection to play. `RELEASE_NOTES.md` describes the fixes and save compatibility.
 
 ## Development checks
 
@@ -24,9 +24,9 @@ TEST_FILTER='^(40|58|62) ' npm test
 
 On Windows PowerShell set `$env:TEST_FILTER='^(40|58|62) '` before `npm test`. Filtered runs write `filtered-results.json`; full runs write `baseline-results.json`. A failed assertion exits with status 1. Test fixtures are generated in the suite; no private saves are bundled.
 
-The production HTML is the test target, not a separate instrumented build. V27 has 313 browser checks. Read `docs/V27_AUDIT.md` for requirements, state migration, animation safety and verification limits; executed results are recorded in `docs/validation/v27-results.json`.
+The production HTML is the test target, not a separate instrumented build. V28 has 338 browser checks. Read `docs/V28_AUDIT.md` for requirements, state migration, animation safety and verification limits; executed results are recorded in `docs/validation/v28-results.json`.
 
-V27 remains a standalone offline HTML app. It adds dungeon delves, Event Keywords, Options, live keyword-management drafts, name capitalization, active combat highlighting, and shortcuts to upgrades. Exports use character envelope version 19. Enemy library version 5 adds a boss flag; dungeon library version 1 defines formulas, encounters, bosses and treasures. Real iOS Safari needs separate device verification.
+V28 remains a standalone offline HTML app. It adds dungeon level progress, per-dungeon encounter formulas and visible encounter rules, completed/unfinished dungeon status, and a boss congratulations screen. Encounter monsters must be defeated before Heal or Rest becomes available; Upgrade is unavailable throughout a delve. Repeated selection closes an unstarted action while keeping active actions open. Opening Upgrade flashes unused points. Character exports use version 20; existing V27 saves and zero-base encounter rules remain supported. The PWA conversion is deferred.
 
 ## Updating enemies
 
@@ -36,9 +36,9 @@ Edit `data/enemies.json` using `data/enemies.template.json` and `data/README.md`
 npm run build
 ```
 
-The build validates all three JSON catalogs and embeds their snapshots in V27. Distribute the rebuilt HTML; gameplay needs no separate JSON file or network connection. Rebuild whenever library data changes. Ongoing saved combats retain their original enemy snapshot. No fixed enemy count is imposed.
+The build validates all three JSON catalogs and embeds their snapshots in V28. Distribute the rebuilt HTML; gameplay needs no separate JSON file or network connection. Rebuild whenever library data changes. Ongoing saved combats retain their original enemy snapshot. No fixed enemy count is imposed.
 
-The `wip` branch contains V27 and its supporting files. Previous versions and backups have been removed from the branch; earlier commits retain their history.
+V28 is the current release on `wip`. The complete V27 app and matching data, audio, build scripts, tests and documentation are archived in `backup/`.
 
 ## Sound effects
 

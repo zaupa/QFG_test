@@ -273,6 +273,13 @@
       "uses": [
         "generic"
       ]
+    },
+    {
+      "keyword": "ring of many lives",
+      "category": "Custom",
+      "uses": [
+        "generic"
+      ]
     }
   ]
 }

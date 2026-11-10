@@ -129,6 +129,103 @@
         "Unprotected against holy"
       ],
       "Item": null
+    },
+    {
+      "id": "Animated Furniture",
+      "name": "Animated Furniture",
+      "description": "",
+      "boss": false,
+      "CV": 4,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [
+        "Unprotected against fire"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Animated Broom",
+      "name": "Animated Broom",
+      "description": "",
+      "boss": false,
+      "CV": 6,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [
+        "Unprotected against fire"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Cloud of Animated Cutlery",
+      "name": "Cloud of Animated Cutlery",
+      "description": "",
+      "boss": false,
+      "CV": 8,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [
+        "Resistant against pierce"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Animated Armor",
+      "name": "Animated Armor",
+      "description": "",
+      "boss": false,
+      "CV": 8,
+      "WV": 2,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": null
+    },
+    {
+      "id": "Imp",
+      "name": "Imp",
+      "description": "",
+      "boss": false,
+      "CV": 10,
+      "WV": 3,
+      "F": 1,
+      "C": 4,
+      "KW": [],
+      "Item": null
+    },
+    {
+      "id": " Cursed Necromancer",
+      "name": " Cursed Necromancer",
+      "description": " In the library room found in the 3 floor of the mansion you find the source of the corruption. A decaying corpse with members held together by some viscous internal membrane he is dressed in a rotten black robe covered in obscure arcane glyphs, his eyes look empty of life but shine in a bright red glow when he sees you. He moans barely discernible words before attacking.",
+      "boss": true,
+      "CV": 22,
+      "WV": 5,
+      "F": 4,
+      "C": 0,
+      "KW": [
+        "Resistant against mundane",
+        "Unprotected against holy"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Stone Golen",
+      "name": "Stone Golen",
+      "description": "",
+      "boss": true,
+      "CV": 18,
+      "WV": 4,
+      "F": 3,
+      "C": 0,
+      "KW": [
+        "Resistant against mundane",
+        "Resistant against masterpiece",
+        "Resistant against slash"
+      ],
+      "Item": null
     }
   ]
 }

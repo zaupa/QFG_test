@@ -36,6 +36,7 @@ Browser regression checks:
 ```sh
 node toolbox/test.cjs
 node toolbox/test-world.cjs
+node toolbox/test-visual-map.cjs
 ```
 
 The editor uses the current game validator for dungeon `completionFateReward`, including its default of zero. Items with the exact `heal` keyword require a positive whole-number `healingAmount`; edit Healing amount in the Items tab, enemy rewards, or dungeon treasure. It is omitted from saved non-healing items. The `rest` keyword does not require a healing amount.
@@ -56,7 +57,19 @@ The Cities, Terrain types, Maps and Adventures tabs edit the four world catalogs
 
 - Cities: add/remove optional blacksmith, shop, inn, guild and temple amenities; edit their prices, bundle amounts and recovery rates. Removed amenities are omitted from JSON, rather than written as null.
 - Terrain types: define stable IDs and display names. Referenced terrains cannot be deleted.
-- Maps: edit spaces, terrain, ring/index/count, exterior flags and adjacent-space lists. **Recalculate map adjacency** derives all neighbor IDs from the current ring geometry. Apply still checks complete rings, valid geometry and connectivity; recalculating edges does not fix incomplete rings.
+- Maps: use the visual editor to select spaces, edit names and terrain, paint terrain, or move spaces. Advanced map fields remain available in the collapsed geometry panel. **Recalculate map adjacency** derives all neighbor IDs from the current ring geometry. Apply still checks complete rings, valid geometry and connectivity; recalculating edges does not fix incomplete rings.
 - Adventures: choose the map, available cities/dungeons and city or wilderness start. Reference dropdowns store IDs and display names. Selecting a different map refreshes the starting-space options.
 
 Open related files together when their references change. Imports are staged and validated as a bundle before replacing anything. The game requires at least one terrain and adventure; folders missing those catalogs cannot be opened as a valid bundle until the required files are provided. To change a referenced world ID, add the replacement definition, update references, then delete the old one. The editor blocks invalid references rather than silently rewriting them. Existing world definitions are never substituted with embedded samples when opening a folder.
+
+## Visual map editing
+
+In Maps, click a colored space to show its name, terrain, exterior setting and neighbors in the inspector. The map is drawn from the same sector geometry as the game. Changes remain drafts until Apply entry, and require Save current file or Save all modified files to reach disk.
+
+- **Select / edit:** click a space, or focus it and press Enter/Space. Edit the selected space in the inspector.
+- **Paint terrain:** choose a terrain from the brush dropdown or terrain legend, then click spaces to paint them.
+- **Move spaces:** drag a source onto another sector, or click the source followed by the destination. The two spaces swap ring/index/count positions, keeping their IDs, names, terrain and exterior settings. Neighbor lists are recalculated automatically. Adventure starting locations still reference the same space ID after a move.
+- **Undo map change / Redo map change:** step through visual edits while the map entry is a draft. Applying/discarding the entry or switching entries resets this local history.
+- **Ring layout:** expand Add or remove spaces, set the size of each ring (0–30) and apply the layout. The center always exists; occupied rings must be contiguous. Existing sector data is kept, new sectors get unique IDs and the brush terrain, and removed spaces require confirmation. Removing an adventure's starting space is blocked. New outer-ring spaces start with Exterior checked; inspect this setting to reflect your map's intended boundary.
+
+Movement snaps to sectors because the game supports a center plus up to three half-circle rings. Free-position coordinates are not part of maps.json. Recalculate map adjacency and the full raw forms remain available for advanced authoring. All maps still pass the shared geometry/reference validator before saving.

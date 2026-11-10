@@ -3,7 +3,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
 (async()=>{
  const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH||'/usr/bin/chromium',args:['--no-sandbox']});
  const page=await browser.newPage({acceptDownloads:true});page.setDefaultTimeout(5000);const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
- const tab=name=>page.getByRole('navigation').getByRole('button',{name,exact:true}).click();const apply=()=>page.getByRole('button',{name:'Apply entry',exact:true}).click();const discard=()=>page.getByRole('button',{name:'Discard draft',exact:true}).click();let checks=0;const check=v=>{assert.ok(v);checks++};
+ const tab=async name=>{await page.getByRole('navigation').getByRole('button',{name,exact:true}).click();if(name==='Maps')await page.locator('#advancedMap').evaluate(el=>el.open=true)};const apply=async()=>{await page.getByRole('button',{name:'Apply entry',exact:true}).click();if(await page.locator('#advancedMap').count())await page.locator('#advancedMap').evaluate(el=>el.open=true)};const discard=async()=>{await page.getByRole('button',{name:'Discard draft',exact:true}).click();if(await page.locator('#advancedMap').count())await page.locator('#advancedMap').evaluate(el=>el.open=true)};let checks=0;const check=v=>{assert.ok(v);checks++};
  try{
  await page.setContent(fs.readFileSync(path.join(__dirname,'data-editor.html'),'utf8'));await page.evaluate(()=>{window.showOpenFilePicker=undefined;window.showSaveFilePicker=undefined});
  check(await page.getByRole('navigation').getByRole('button').count()===8);check(await page.evaluate(()=>{validateBundle();return true}));

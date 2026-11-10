@@ -38,6 +38,7 @@ node toolbox/test.cjs
 node toolbox/test-world.cjs
 node toolbox/test-visual-map.cjs
 node toolbox/test-terrain-enemies.cjs
+node toolbox/test-bulk-danger.cjs
 ```
 
 The editor uses the current game validator for dungeon `completionFateReward`, including its default of zero. Items with the exact `heal` keyword require a positive whole-number `healingAmount`; edit Healing amount in the Items tab, enemy rewards, or dungeon treasure. It is omitted from saved non-healing items. The `rest` keyword does not require a healing amount.
@@ -88,3 +89,13 @@ Enemy renames update both dungeon references and map encounter tables; save ever
 ### Source-data repairs in this update
 
 The published adventure/map JSON contained committed merge-conflict markers. The repair preserves the edited 16-space geometry (rings 1/5/6/4, including T20), removes obsolete module-wide city/dungeon fields and retains V33 location/encounter fields. R1 remains at its existing map space; the former module-level R2/T1 dungeon availability is migrated to the adventure's starting space. No enemy statistics or item definitions are changed.
+
+## Bulk danger levels and expanded sections
+
+In Maps → Terrain encounter enemies, each terrain column has a **Danger level** control. Enter a whole number from 0 to 6 and click **Apply danger to [terrain]**. This changes every space of that terrain in the selected map. Zero never triggers an encounter; six always triggers one. Apply entry, then save maps.json.
+
+If the map was using global danger mode, applying a terrain level switches it to tile mode and preserves every other space's previous effective danger level. Other terrain groups therefore keep the same encounter chances. In existing tile mode, other groups and their individual overrides remain untouched. Mixed levels show a blank input with Mixed levels as its placeholder until you choose a uniform value.
+
+**Reset [terrain] danger** removes those space overrides; the game's tile-mode default is 2. It does not change the map's danger mode. Undo/Redo includes bulk changes and mode switching.
+
+Expanded map settings, space settings, ring layout, encounter board and advanced sections retain their open/closed state throughout edits, Apply entry and Undo/Redo. Space settings stay expanded when you select another space. Closing a section explicitly keeps it closed. Enemy-column scroll positions are retained when controls rebuild the editor. These preferences last for the current page session.

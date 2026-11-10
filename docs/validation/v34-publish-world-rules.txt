@@ -1,25 +1,25 @@
-PASS 01 Two through six surrounding rings validate and generate finite SVG geometry 
-PASS 02 Ring counts below two and above six are rejected 
-PASS 03 Every configured ring must contain all its sectors 
-PASS 04 Root adventure city and dungeon lists are absent in the authored schema 
-PASS 05 Locations reference existing city and dungeon definitions 
-PASS 06 A location can occupy only one tile per map 
-PASS 07 City and dungeon can share a tile 
-PASS 08 Starting city must be physically present on the configured starting tile 
-PASS 09 Source maps default to Danger Level two 
-PASS 10 Global danger ignores tile overrides; tile mode uses the starting tile override 
-PASS 11 Tile enemy table overrides the map table 
-PASS 12 Danger Level zero and six are supported but fractional negative or above-six values reject 
-PASS 13 Unknown map and tile enemy IDs reject the entire world 
-PASS 14 Enemy lists are nonempty and unweighted unique IDs 
-PASS 15 Every authored terrain movement CV is five 
-PASS 16 Missing terrain movement CV migrates to five 
-PASS 17 Terrain CVs must be safe positive integers with random-modifier headroom 
-PASS 18 Source settings always come from the given origin terrain 
-PASS 19 Legacy cached module-wide locations migrate onto the old starting space 
-PASS 20 New-schema deprecated lists cannot grant locations absent from the map 
-PASS 21 Corner-only contacts and skipped rings remain nonadjacent 
-PASS 22 Complete new templates validate with shared enemies 
-PASS 23 Dangerous IDs and unsupported location types reject 
-PASS 24 Authored map preserves the revised fifteen-space layout 
-PASS 25 Validation returns independent journey configuration snapshots 
+PASS 01 Two through six surrounding rings validate and generate finite SVG geometry
+PASS 02 Ring counts below two and above six are rejected
+PASS 03 Every configured ring must contain all its sectors
+PASS 04 Root adventure city and dungeon lists are absent in the authored schema
+PASS 05 Locations reference existing city and dungeon definitions
+PASS 06 A location can occupy only one tile per map
+PASS 07 City and dungeon can share a tile
+PASS 08 Starting city must be physically present on the configured starting tile
+PASS 09 Source maps default to Danger Level two
+PASS 10 Global danger ignores tile overrides; tile mode uses the starting tile override
+PASS 11 Tile enemy table overrides the map table
+PASS 12 Danger Level zero and six are supported but fractional negative or above-six values reject
+PASS 13 Unknown map and tile enemy IDs reject the entire world
+PASS 14 Enemy lists are nonempty and unweighted unique IDs
+PASS 15 Every authored terrain movement CV is five
+PASS 16 Missing terrain movement CV migrates to five
+PASS 17 Terrain CVs must be safe positive integers with random-modifier headroom
+PASS 18 Source settings always come from the given origin terrain
+PASS 19 Legacy cached module-wide locations migrate onto the old starting space
+PASS 20 New-schema deprecated lists cannot grant locations absent from the map
+PASS 21 Corner-only contacts and skipped rings remain nonadjacent
+PASS 22 Complete new templates validate with shared enemies
+PASS 23 Dangerous IDs and unsupported location types reject
+PASS 24 Authored map preserves the revised fifteen-space layout
+PASS 25 Validation returns independent journey configuration snapshots

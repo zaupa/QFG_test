@@ -10,7 +10,9 @@
         "lithengard"
       ],
       "dungeonIds": [
-        "R1"
+        "R1",
+        "R2",
+        "T1"
       ],
       "startingLocation": {
         "type": "city",

@@ -24,8 +24,8 @@
         },
         {
           "id": "T02",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
+          "name": "Forest",
+          "terrainTypeId": "forest",
           "adjacentIds": [
             "T01",
             "T03",
@@ -87,13 +87,13 @@
         },
         {
           "id": "T06",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
+          "name": "Forest",
+          "terrainTypeId": "forest",
           "adjacentIds": [
             "T01",
             "T05",
             "T11",
-            "T12"
+            "T20"
           ],
           "ring": 1,
           "index": 4,
@@ -102,13 +102,12 @@
         },
         {
           "id": "T07",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
+          "name": "Forest",
+          "terrainTypeId": "forest",
           "adjacentIds": [
             "T02",
             "T08",
-            "T13",
-            "T14"
+            "T13"
           ],
           "ring": 2,
           "index": 0,
@@ -124,8 +123,8 @@
             "T03",
             "T07",
             "T09",
-            "T14",
-            "T15"
+            "T13",
+            "T14"
           ],
           "ring": 2,
           "index": 1,
@@ -141,8 +140,7 @@
             "T04",
             "T08",
             "T10",
-            "T15",
-            "T16"
+            "T14"
           ],
           "ring": 2,
           "index": 2,
@@ -158,8 +156,7 @@
             "T05",
             "T09",
             "T11",
-            "T16",
-            "T17"
+            "T15"
           ],
           "ring": 2,
           "index": 3,
@@ -174,9 +171,9 @@
             "T05",
             "T06",
             "T10",
-            "T12",
-            "T17",
-            "T18"
+            "T20",
+            "T15",
+            "T16"
           ],
           "ring": 2,
           "index": 4,
@@ -184,19 +181,18 @@
           "exterior": false
         },
         {
-          "id": "T12",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T06",
-            "T11",
-            "T18",
-            "T19"
-          ],
+          "id": "T20",
+          "name": "New space",
+          "terrainTypeId": "forest",
           "ring": 2,
           "index": 5,
           "count": 6,
-          "exterior": true
+          "exterior": true,
+          "adjacentIds": [
+            "T06",
+            "T11",
+            "T16"
+          ]
         },
         {
           "id": "T13",
@@ -204,11 +200,12 @@
           "terrainTypeId": "mountains",
           "adjacentIds": [
             "T07",
+            "T08",
             "T14"
           ],
           "ring": 3,
           "index": 0,
-          "count": 7,
+          "count": 4,
           "exterior": true
         },
         {
@@ -216,14 +213,14 @@
           "name": "Horseshoe Mountains",
           "terrainTypeId": "mountains",
           "adjacentIds": [
-            "T07",
             "T08",
+            "T09",
             "T13",
             "T15"
           ],
           "ring": 3,
           "index": 1,
-          "count": 7,
+          "count": 4,
           "exterior": true
         },
         {
@@ -231,14 +228,14 @@
           "name": "Horseshoe Mountains",
           "terrainTypeId": "mountains",
           "adjacentIds": [
-            "T08",
-            "T09",
+            "T10",
+            "T11",
             "T14",
             "T16"
           ],
           "ring": 3,
           "index": 2,
-          "count": 7,
+          "count": 4,
           "exterior": true
         },
         {
@@ -246,57 +243,13 @@
           "name": "Horseshoe Mountains",
           "terrainTypeId": "mountains",
           "adjacentIds": [
-            "T09",
-            "T10",
-            "T15",
-            "T17"
+            "T11",
+            "T20",
+            "T15"
           ],
           "ring": 3,
           "index": 3,
-          "count": 7,
-          "exterior": true
-        },
-        {
-          "id": "T17",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T10",
-            "T11",
-            "T16",
-            "T18"
-          ],
-          "ring": 3,
-          "index": 4,
-          "count": 7,
-          "exterior": true
-        },
-        {
-          "id": "T18",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T11",
-            "T12",
-            "T17",
-            "T19"
-          ],
-          "ring": 3,
-          "index": 5,
-          "count": 7,
-          "exterior": true
-        },
-        {
-          "id": "T19",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T12",
-            "T18"
-          ],
-          "ring": 3,
-          "index": 6,
-          "count": 7,
+          "count": 4,
           "exterior": true
         }
       ]

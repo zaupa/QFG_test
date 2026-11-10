@@ -3,12 +3,25 @@
   "version": 1,
   "items": [
     {
-      "name": "A dagger",
+      "name": "Dagger",
       "description": "A dagger",
       "keywords": [
-        "weapon"
+        "slash",
+        "mundane",
+        "melee",
+        "metal"
       ],
-      "baseValue": 5
+      "baseValue": 5,
+      "equipment": {
+        "type": "weapon",
+        "modifier": 1,
+        "usage": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
     },
     {
       "name": "Specter of the unholy mice",

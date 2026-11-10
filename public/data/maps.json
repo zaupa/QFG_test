@@ -25,6 +25,14 @@
             {
               "type": "city",
               "id": "lithengard"
+            },
+            {
+              "type": "dungeon",
+              "id": "R2"
+            },
+            {
+              "type": "dungeon",
+              "id": "T1"
             }
           ]
         },
@@ -209,15 +217,12 @@
           "index": 5,
           "count": 6,
           "exterior": true,
-<<<<<<< HEAD
           "adjacentIds": [
             "T06",
             "T11",
             "T16"
-          ]
-=======
+          ],
           "locations": []
->>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         },
         {
           "id": "T13",
@@ -230,14 +235,9 @@
           ],
           "ring": 3,
           "index": 0,
-<<<<<<< HEAD
           "count": 4,
-          "exterior": true
-=======
-          "count": 7,
           "exterior": true,
           "locations": []
->>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         },
         {
           "id": "T14",
@@ -251,14 +251,9 @@
           ],
           "ring": 3,
           "index": 1,
-<<<<<<< HEAD
           "count": 4,
-          "exterior": true
-=======
-          "count": 7,
           "exterior": true,
           "locations": []
->>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         },
         {
           "id": "T15",
@@ -272,14 +267,9 @@
           ],
           "ring": 3,
           "index": 2,
-<<<<<<< HEAD
           "count": 4,
-          "exterior": true
-=======
-          "count": 7,
           "exterior": true,
           "locations": []
->>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         },
         {
           "id": "T16",
@@ -292,60 +282,9 @@
           ],
           "ring": 3,
           "index": 3,
-<<<<<<< HEAD
           "count": 4,
-          "exterior": true
-=======
-          "count": 7,
           "exterior": true,
           "locations": []
-        },
-        {
-          "id": "T17",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T10",
-            "T11",
-            "T16",
-            "T18"
-          ],
-          "ring": 3,
-          "index": 4,
-          "count": 7,
-          "exterior": true,
-          "locations": []
-        },
-        {
-          "id": "T18",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T11",
-            "T12",
-            "T17",
-            "T19"
-          ],
-          "ring": 3,
-          "index": 5,
-          "count": 7,
-          "exterior": true,
-          "locations": []
-        },
-        {
-          "id": "T19",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T12",
-            "T18"
-          ],
-          "ring": 3,
-          "index": 6,
-          "count": 7,
-          "exterior": true,
-          "locations": []
->>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         }
       ],
       "ringCount": 3,

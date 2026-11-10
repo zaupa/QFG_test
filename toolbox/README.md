@@ -37,6 +37,7 @@ Browser regression checks:
 node toolbox/test.cjs
 node toolbox/test-world.cjs
 node toolbox/test-visual-map.cjs
+node toolbox/test-terrain-enemies.cjs
 ```
 
 The editor uses the current game validator for dungeon `completionFateReward`, including its default of zero. Items with the exact `heal` keyword require a positive whole-number `healingAmount`; edit Healing amount in the Items tab, enemy rewards, or dungeon treasure. It is omitted from saved non-healing items. The `rest` keyword does not require a healing amount.
@@ -58,7 +59,7 @@ The Cities, Terrain types, Maps and Adventures tabs edit the four world catalogs
 - Cities: add/remove optional blacksmith, shop, inn, guild and temple amenities; edit their prices, bundle amounts and recovery rates. Removed amenities are omitted from JSON, rather than written as null.
 - Terrain types: define stable IDs and display names. Referenced terrains cannot be deleted.
 - Maps: use the visual editor to select spaces, edit names and terrain, paint terrain, or move spaces. Advanced map fields remain available in the collapsed geometry panel. **Recalculate map adjacency** derives all neighbor IDs from the current ring geometry. Apply still checks complete rings, valid geometry and connectivity; recalculating edges does not fix incomplete rings.
-- Adventures: choose the map, available cities/dungeons and city or wilderness start. Reference dropdowns store IDs and display names. Selecting a different map refreshes the starting-space options.
+- Adventures: choose the map and city or wilderness start. Cities and dungeons now belong to individual map spaces. Reference dropdowns store IDs and display names. Selecting a different map refreshes the starting-space options.
 
 Open related files together when their references change. Imports are staged and validated as a bundle before replacing anything. The game requires at least one terrain and adventure; folders missing those catalogs cannot be opened as a valid bundle until the required files are provided. To change a referenced world ID, add the replacement definition, update references, then delete the old one. The editor blocks invalid references rather than silently rewriting them. Existing world definitions are never substituted with embedded samples when opening a folder.
 
@@ -72,4 +73,18 @@ In Maps, click a colored space to show its name, terrain, exterior setting and n
 - **Undo map change / Redo map change:** step through visual edits while the map entry is a draft. Applying/discarding the entry or switching entries resets this local history.
 - **Ring layout:** expand Add or remove spaces, set the size of each ring (0–30) and apply the layout. The center always exists; occupied rings must be contiguous. Existing sector data is kept, new sectors get unique IDs and the brush terrain, and removed spaces require confirmation. Removing an adventure's starting space is blocked. New outer-ring spaces start with Exterior checked; inspect this setting to reflect your map's intended boundary.
 
-Movement snaps to sectors because the game supports a center plus up to three half-circle rings. Free-position coordinates are not part of maps.json. Recalculate map adjacency and the full raw forms remain available for advanced authoring. All maps still pass the shared geometry/reference validator before saving.
+Movement snaps to sectors because the game supports a center plus two to six half-circle rings. Free-position coordinates are not part of maps.json. Recalculate map adjacency and the full raw forms remain available for advanced authoring. All maps still pass the shared geometry/reference validator before saving.
+
+## V33 terrain encounters
+
+Open Maps and use **Terrain encounter enemies**. Each colored terrain column lists the enemies available on its spaces. **All enemies** is the catalog pool. Drag an enemy's name from the pool to add it, or between terrain columns to move it. The Move/Copy selector controls transfers between terrains. Destination dropdowns and action buttons provide the same operations without dragging. Remove deletes an assignment from that terrain group. Undo/Redo covers encounter changes.
+
+The game stores encounters per map/space, not per terrain definition. Group operations write `enemyIds` overrides onto every matching space in the selected map; the global map default is retained. Changes do not affect other maps. Duplicate enemy IDs are prevented, and removal/movement is blocked if it would empty any source space's list. Mixed per-space lists are labeled explicitly; adding/removing a card preserves the other per-space differences.
+
+Expand **Map-wide danger and default enemy list** for global/tile danger mode, Danger Level 0–6, and the inherited default pool. Select a space and expand **Space locations and encounter settings** to edit its city/dungeon placements, optional Danger Level and enemy override. Use default controls remove overrides rather than writing null. Terrain types now expose movement CV. Ring layout and map rendering support two through six surrounding rings.
+
+Enemy renames update both dungeon references and map encounter tables; save every modified file. Old world catalogs are normalized together on import, promoted to schema version 2, and marked unsaved when migration changes them. The validator uses the real enemy catalog to reject unknown encounter IDs.
+
+### Source-data repairs in this update
+
+The published adventure/map JSON contained committed merge-conflict markers. The repair preserves the edited 16-space geometry (rings 1/5/6/4, including T20), removes obsolete module-wide city/dungeon fields and retains V33 location/encounter fields. R1 remains at its existing map space; the former module-level R2/T1 dungeon availability is migrated to the adventure's starting space. No enemy statistics or item definitions are changed.

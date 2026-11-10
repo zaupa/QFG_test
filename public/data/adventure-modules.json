@@ -6,17 +6,6 @@
       "id": "goriaths-revenge",
       "name": "Goriath's Revenge",
       "mapId": "goriath-map",
-<<<<<<< HEAD
-      "cityIds": [
-        "lithengard"
-      ],
-      "dungeonIds": [
-        "R1",
-        "R2",
-        "T1"
-      ],
-=======
->>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
       "startingLocation": {
         "type": "city",
         "spaceId": "T01",

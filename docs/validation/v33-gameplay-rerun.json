@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-10T14:19:12.059Z",
+  "browser": "156.0.8078.79",
+  "sourceSHA256": "8149f5645e7c0402ce50cac441e8a75234df82c8a2fb2716bbaffeb6b8ce1899",
+  "passed": 4,
+  "failed": 0,
+  "results": [
+    {
+      "name": "297 boss victory pays Coins and offers treasure only after victory",
+      "status": "PASS",
+      "ms": 9221
+    },
+    {
+      "name": "298 exiting boss level grants no treasure and leaves dungeon retryable",
+      "status": "PASS",
+      "ms": 5557
+    },
+    {
+      "name": "330 exited dungeon records deepest visited level and re-entry starts at one",
+      "status": "PASS",
+      "ms": 4914
+    },
+    {
+      "name": "333 completed dungeons stay listed gray disabled and labeled Dungeon Completed",
+      "status": "PASS",
+      "ms": 6052
+    }
+  ]
+}

@@ -11,7 +11,7 @@ function validate(bundle:LibraryBundle):LibraryBundle {
  const keywords=fromFile('keywords.json',()=>validateKeywordCatalog(bundle.keywords));
  const dungeons=fromFile('dungeons.json',()=>validateDungeonLibrary(bundle.dungeons,enemies.enemies));
  const items=fromFile('items.json',()=>validateItemLibrary(bundle.items??{format:'quest-for-glory-items',version:1,items:[]}));
- const world=bundle.world?fromFile('adventure libraries',()=>validateWorld(bundle.world,dungeons.dungeons)):undefined;
+ const world=bundle.world?fromFile('adventure libraries',()=>validateWorld(bundle.world,dungeons.dungeons,enemies.enemies)):undefined;
  return {enemies,keywords,dungeons,items,world,loadedAt:bundle.loadedAt,recoveryVersion:1};
 }
 // Only cached pre-V31 bundles receive the former default healing amount.

@@ -1,0 +1,35 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 7,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 Creation offers all three meeples and saves the selected Ranger",
+      "status": "PASS"
+    },
+    {
+      "name": "03 Tile locations are local: T01 has the city and T04 has the dungeon",
+      "status": "PASS"
+    },
+    {
+      "name": "05 Successful movement with no encounter reaches the destination once",
+      "status": "PASS"
+    },
+    {
+      "name": "09 Origin per-tile danger and enemy table trigger combat before arrival",
+      "status": "PASS"
+    },
+    {
+      "name": "10 Winning movement combat grants rewards and then moves the hero",
+      "status": "PASS"
+    },
+    {
+      "name": "17 Meeple and movement persist offline with cached SVG assets",
+      "status": "PASS"
+    },
+    {
+      "name": "25 Dungeon entry is local and spends one Action while exit is free",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 21,
+  "failed": 1,
+  "results": [
+    {
+      "name": "01 Adventure creation uses a predefined selection and starts in Lithengard at T01",
+      "status": "PASS"
+    },
+    {
+      "name": "02 Exit starting city returns to Wilderness on the same map space",
+      "status": "PASS"
+    },
+    {
+      "name": "04 Selecting a destination is a draft; Cancel leaves current position and resources unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "07 Visit City opens a module-filtered chooser and entering preserves the return space",
+      "status": "PASS"
+    },
+    {
+      "name": "08 Temple heals up to five points for ten Coins without consuming an item",
+      "status": "PASS"
+    },
+    {
+      "name": "09 Temple Cancel and unaffordable healing do not charge or move cards",
+      "status": "PASS"
+    },
+    {
+      "name": "10 City amenities and prices come from JSON; unlisted cities stay hidden",
+      "status": "PASS"
+    },
+    {
+      "name": "11 Configured Inn Rest price and Supply bundles replace hard-coded defaults",
+      "status": "PASS"
+    },
+    {
+      "name": "12 Configured Guild rate governs Fate purchases",
+      "status": "PASS"
+    },
+    {
+      "name": "13 Blacksmith repair defaults to the configured city price",
+      "status": "PASS"
+    },
+    {
+      "name": "15 Editing adventure uses selection and moves to configured start without losing possessions",
+      "status": "PASS"
+    },
+    {
+      "name": "16 Older typed module names remain intact and unknown adventures require explicit selection",
+      "status": "PASS"
+    },
+    {
+      "name": "17 Legacy active city and paid Rest migrate without relocation or duplicate payment",
+      "status": "PASS"
+    },
+    {
+      "name": "18 Invalid world JSON refresh preserves the complete previous bundle",
+      "status": "PASS"
+    },
+    {
+      "name": "20 Map and city chooser fit a 320px mobile screen with contained map scrolling",
+      "status": "FAIL",
+      "error": "locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#worldClose')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" id=\"worldClose\">Cancel</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - element is outside of the viewport\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    27 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - element is outside of the viewport\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n\n    at Object.fn (/workspace/QuestForGloryApp/tests/v32.cjs:52:659)\n    at async /workspace/QuestForGloryApp/tests/v32.cjs:64:804",
+      "errors": []
+    },
+    {
+      "name": "21 Desktop map shows the Horseshoe Mountains and starting city",
+      "status": "PASS"
+    },
+    {
+      "name": "23 Older offline caches without world libraries keep characters usable until refresh restores maps",
+      "status": "PASS"
+    },
+    {
+      "name": "24 Temple Undo restores Coins and Wound cards without consuming inventory",
+      "status": "PASS"
+    },
+    {
+      "name": "25 Active city configuration survives library updates; reentry uses the updated prices",
+      "status": "PASS"
+    },
+    {
+      "name": "27 Terrain names render as literal text and cannot inject SVG markup",
+      "status": "PASS"
+    },
+    {
+      "name": "28 Zero-priced Temple Inn and Supply configurations are honored without false Wound warnings",
+      "status": "PASS"
+    },
+    {
+      "name": "29 Renaming an Adventure in JSON updates the displayed module and migrates its saved name on reload",
+      "status": "PASS"
+    }
+  ]
+}

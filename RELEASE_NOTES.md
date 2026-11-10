@@ -1,3 +1,12 @@
+# V33 — Adventure Actions, local locations and movement encounters
+
+- Renames the travel button to Map; all tiles can be inspected, with local city/dungeon listings and Settlement/Stairs markers. Entries are restricted to the hero's current tile. Adventure Modules derive locations solely from their map.
+- Supports 2–6 surrounding rings and adaptive SVG geometry, including mobile panning/scrollable dialogs.
+- Adds two saved Adventure Actions per Round. Movement attempts and location entry cost one; failed movement still spends it. At zero actions, offer Rest when permitted, allow the agreed supporting activities if declined, and refill only after completed Rest.
+- Reuses the existing Challenge/Combat flow for movement: origin terrain CV (default 5), then origin encounter chance/enemy list, then arrival after victory. Default Danger Level is 2; global/per-tile configuration and independent movement checks are supported. Pending travel, rolls and rewards persist without duplicate charges or rerolls.
+- Adds cosmetic Hero/Ranger/Spellcaster meeple selection during new-character creation and offline SVG assets.
+- Uses map/adventure/terrain schema version 2 and character export envelope 24. Intended for fresh V33 characters. Toolbox files are unchanged.
+
 # V32 — Adventure modules and graphical terrain movement
 
 - Replaces typed Adventure Modules with selection from an external catalog, including per-module city/dungeon lists and starting locations.

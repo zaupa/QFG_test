@@ -1,11 +1,12 @@
 {
   "format": "quest-for-glory-adventure-modules",
-  "version": 1,
+  "version": 2,
   "modules": [
     {
       "id": "goriaths-revenge",
       "name": "Goriath's Revenge",
       "mapId": "goriath-map",
+<<<<<<< HEAD
       "cityIds": [
         "lithengard"
       ],
@@ -14,6 +15,8 @@
         "R2",
         "T1"
       ],
+=======
+>>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
       "startingLocation": {
         "type": "city",
         "spaceId": "T01",

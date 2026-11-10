@@ -1,6 +1,6 @@
 {
   "format": "quest-for-glory-maps",
-  "version": 1,
+  "version": 2,
   "maps": [
     {
       "id": "goriath-map",
@@ -20,7 +20,13 @@
           "ring": 0,
           "index": 0,
           "count": 1,
-          "exterior": false
+          "exterior": false,
+          "locations": [
+            {
+              "type": "city",
+              "id": "lithengard"
+            }
+          ]
         },
         {
           "id": "T02",
@@ -35,7 +41,8 @@
           "ring": 1,
           "index": 0,
           "count": 5,
-          "exterior": true
+          "exterior": true,
+          "locations": []
         },
         {
           "id": "T03",
@@ -51,7 +58,8 @@
           "ring": 1,
           "index": 1,
           "count": 5,
-          "exterior": false
+          "exterior": false,
+          "locations": []
         },
         {
           "id": "T04",
@@ -67,7 +75,13 @@
           "ring": 1,
           "index": 2,
           "count": 5,
-          "exterior": false
+          "exterior": false,
+          "locations": [
+            {
+              "type": "dungeon",
+              "id": "R1"
+            }
+          ]
         },
         {
           "id": "T05",
@@ -83,7 +97,8 @@
           "ring": 1,
           "index": 3,
           "count": 5,
-          "exterior": false
+          "exterior": false,
+          "locations": []
         },
         {
           "id": "T06",
@@ -98,7 +113,8 @@
           "ring": 1,
           "index": 4,
           "count": 5,
-          "exterior": true
+          "exterior": true,
+          "locations": []
         },
         {
           "id": "T07",
@@ -112,7 +128,8 @@
           "ring": 2,
           "index": 0,
           "count": 6,
-          "exterior": true
+          "exterior": true,
+          "locations": []
         },
         {
           "id": "T08",
@@ -129,7 +146,8 @@
           "ring": 2,
           "index": 1,
           "count": 6,
-          "exterior": false
+          "exterior": false,
+          "locations": []
         },
         {
           "id": "T09",
@@ -145,7 +163,8 @@
           "ring": 2,
           "index": 2,
           "count": 6,
-          "exterior": false
+          "exterior": false,
+          "locations": []
         },
         {
           "id": "T10",
@@ -161,7 +180,8 @@
           "ring": 2,
           "index": 3,
           "count": 6,
-          "exterior": false
+          "exterior": false,
+          "locations": []
         },
         {
           "id": "T11",
@@ -178,7 +198,8 @@
           "ring": 2,
           "index": 4,
           "count": 6,
-          "exterior": false
+          "exterior": false,
+          "locations": []
         },
         {
           "id": "T20",
@@ -188,11 +209,15 @@
           "index": 5,
           "count": 6,
           "exterior": true,
+<<<<<<< HEAD
           "adjacentIds": [
             "T06",
             "T11",
             "T16"
           ]
+=======
+          "locations": []
+>>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         },
         {
           "id": "T13",
@@ -205,8 +230,14 @@
           ],
           "ring": 3,
           "index": 0,
+<<<<<<< HEAD
           "count": 4,
           "exterior": true
+=======
+          "count": 7,
+          "exterior": true,
+          "locations": []
+>>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         },
         {
           "id": "T14",
@@ -220,8 +251,14 @@
           ],
           "ring": 3,
           "index": 1,
+<<<<<<< HEAD
           "count": 4,
           "exterior": true
+=======
+          "count": 7,
+          "exterior": true,
+          "locations": []
+>>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         },
         {
           "id": "T15",
@@ -235,8 +272,14 @@
           ],
           "ring": 3,
           "index": 2,
+<<<<<<< HEAD
           "count": 4,
           "exterior": true
+=======
+          "count": 7,
+          "exterior": true,
+          "locations": []
+>>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         },
         {
           "id": "T16",
@@ -249,10 +292,73 @@
           ],
           "ring": 3,
           "index": 3,
+<<<<<<< HEAD
           "count": 4,
           "exterior": true
+=======
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T17",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T10",
+            "T11",
+            "T16",
+            "T18"
+          ],
+          "ring": 3,
+          "index": 4,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T18",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T11",
+            "T12",
+            "T17",
+            "T19"
+          ],
+          "ring": 3,
+          "index": 5,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T19",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T12",
+            "T18"
+          ],
+          "ring": 3,
+          "index": 6,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+>>>>>>> 8f2a22644f773c1605e007be6a5fa26ac6c36d19
         }
-      ]
+      ],
+      "ringCount": 3,
+      "encounters": {
+        "dangerMode": "global",
+        "dangerLevel": 2,
+        "enemyIds": [
+          "Giant Rats",
+          "Skeleton",
+          "Zombie",
+          "Giant Spiders"
+        ]
+      }
     }
   ]
 }

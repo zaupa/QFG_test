@@ -1,0 +1,78 @@
+{
+  "passed": 18,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 Default adventure starts in Lithengard at T01",
+      "status": "PASS"
+    },
+    {
+      "name": "02 Map has exactly nineteen distinct IDs",
+      "status": "PASS"
+    },
+    {
+      "name": "03 Exterior spaces form Horseshoe Mountains",
+      "status": "PASS"
+    },
+    {
+      "name": "04 All five terrain types are represented",
+      "status": "PASS"
+    },
+    {
+      "name": "05 Adjacency is symmetric and agrees with shared borders",
+      "status": "PASS"
+    },
+    {
+      "name": "06 Nonneighbor sectors and skipped rings cannot be traversed",
+      "status": "PASS"
+    },
+    {
+      "name": "07 Corner-only contact is not adjacency",
+      "status": "PASS"
+    },
+    {
+      "name": "08 All SVG paths and labels have supported coordinates",
+      "status": "PASS"
+    },
+    {
+      "name": "09 Invalid adjacency and unknown neighbors reject the bundle",
+      "status": "PASS"
+    },
+    {
+      "name": "10 Missing sectors and duplicate geometry are rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "11 Duplicate space IDs and unknown terrain types are rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "14 Prices are safe integers and recovery and purchase ratios are positive",
+      "status": "PASS"
+    },
+    {
+      "name": "15 Omitted amenities and free healing rest and repair validate",
+      "status": "PASS"
+    },
+    {
+      "name": "16 Unknown amenities and misspelled price fields are rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "17 All external templates validate",
+      "status": "PASS"
+    },
+    {
+      "name": "18 Validation returns independent snapshots",
+      "status": "PASS"
+    },
+    {
+      "name": "19 Stable world IDs cannot contain HTML or whitespace",
+      "status": "PASS"
+    },
+    {
+      "name": "20 Prototype property names cannot masquerade as amenities or price fields",
+      "status": "PASS"
+    }
+  ]
+}

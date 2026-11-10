@@ -21,7 +21,6 @@
         "base": 3,
         "perLevel": 1
       },
-      "completionFateReward": 0,
       "encounters": [
         {
           "rolls": [
@@ -78,7 +77,125 @@
       "timing": {
         "actions": 1,
         "perLevels": 2
-      }
+      },
+      "completionFateReward": 0
+    },
+    {
+      "id": "R2",
+      "name": "Old Corrupted Mansion",
+      "type": "Ruins",
+      "description": "Description: An old decrepit estate hidden in the middle of nowhere, from the state of the decaying wood gate, the walls covered in overgrown moss and the general sense of uneasy that you feel you know that something wrong and corrupted happened inside the walls.\n\t- Passing by the the outer walls, easy passed by the destroyed gate you can see the mansion. It is a big construction looking to easily more than 15 rooms and 3 floors, a decaying stable and a garden turned to jungle frame the white peeling walls of the main building.\n\t- Looking close you can see bones scattered around the ground half hidden by the overgrown plants, some clearly animal but some looking very close to human.",
+      "maxLevel": 4,
+      "challenge": {
+        "base": 2,
+        "perLevel": 2
+      },
+      "monsterChance": {
+        "die": 6,
+        "thresholdPerLevel": 1,
+        "base": 1
+      },
+      "coinReward": {
+        "base": 6,
+        "perLevel": 1
+      },
+      "encounters": [
+        {
+          "rolls": [
+            1,
+            2
+          ],
+          "enemyId": "Corrupted Cats"
+        },
+        {
+          "rolls": [
+            3,
+            4
+          ],
+          "enemyId": "Corrupted Servant Ghost"
+        },
+        {
+          "rolls": [
+            5,
+            6
+          ],
+          "enemyId": "Corrupted goblins"
+        }
+      ],
+      "boss": {
+        "level": 4,
+        "enemyId": " Cursed Necromancer"
+      },
+      "treasure": {
+        "name": "Ring of many lives",
+        "description": "when using this ring it allows the player to spend 3♣ to activate its power allowing the moving 5 Wound Points to the Fatigue Pile. This power can be used 3 times before the ring lose its power and be activated 1/round",
+        "keywords": [
+          "magical",
+          "profane",
+          "ring of many lives"
+        ],
+        "baseValue": 50
+      },
+      "completionFateReward": 8
+    },
+    {
+      "id": "T1",
+      "name": "Abandoned Wizard Tower ",
+      "type": "Ruins",
+      "description": "",
+      "maxLevel": 4,
+      "challenge": {
+        "base": 4,
+        "perLevel": 2
+      },
+      "monsterChance": {
+        "die": 6,
+        "thresholdPerLevel": 1,
+        "base": 1
+      },
+      "coinReward": {
+        "base": 3,
+        "perLevel": 2
+      },
+      "encounters": [
+        {
+          "rolls": [
+            1,
+            2
+          ],
+          "enemyId": "Animated Furniture"
+        },
+        {
+          "rolls": [
+            3
+          ],
+          "enemyId": "Animated Broom"
+        },
+        {
+          "rolls": [
+            4
+          ],
+          "enemyId": "Cloud of Animated Cutlery"
+        },
+        {
+          "rolls": [
+            5
+          ],
+          "enemyId": "Animated Armor"
+        },
+        {
+          "rolls": [
+            6
+          ],
+          "enemyId": "Imp"
+        }
+      ],
+      "boss": {
+        "level": 4,
+        "enemyId": "Stone Golen"
+      },
+      "treasure": null,
+      "completionFateReward": 0
     }
   ]
 }

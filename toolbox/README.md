@@ -5,7 +5,7 @@ Open **data-editor.html** directly in a browser. It is a self-contained, offline
 ## Workflow
 
 1. Select Enemies, Keywords, Items or Dungeons. The included data is a snapshot from the repository at build time.
-2. Use **Open data folder** to choose the folder containing your JSON libraries. All four standard files load together, with save destinations linked to that folder in supported browsers. Alternatively, use **Open JSON files** to edit just one file or any selected subset. You can select enemies.json, keywords.json, items.json and dungeons.json together so references are validated against the same set. Opening replaces that library in the editor; it does not merge records.
+2. Use **Open data folder** to choose the folder containing your JSON libraries. All eight standard files load together, with save destinations linked to that folder in supported browsers. Alternatively, use **Open JSON files** to edit just one file or any selected subset. You can select several libraries together so references are validated against the same set. Opening replaces that library in the editor; it does not merge records.
 3. Select an entry, edit the labeled fields and use **Apply entry**. Add, duplicate or delete entries using the controls. Add/remove buttons inside an entry manage keywords, encounter rows, dice rolls and optional equipment, rewards and treasure. Required schema fields remain fixed to keep files compatible with the app.
 4. Use **Save current file** for one library, or **Save all modified files** to write every changed library, including new keywords and item presets. The editor validates the full bundle before a bulk save. Writes happen one file at a time; if a write fails, completed files are reported and remaining files stay marked unsaved. Supported browsers can write back to files selected with the browser file picker. New libraries prompt for a destination. If direct writing is unavailable, use the JSON download and replace the original file yourself. Downloads remain marked unsaved because the tool cannot verify replacement.
 5. For development, place enemy, keyword, item and dungeon files in `public/data/`. For an existing deployment, replace the corresponding served `data/` files, then use the companion's Refresh libraries control. Save related enemy/dungeon changes together.
@@ -35,16 +35,41 @@ Browser regression checks:
 
 ```sh
 node toolbox/test.cjs
+node toolbox/test-world.cjs
+node toolbox/test-visual-map.cjs
 ```
 
 The editor uses the current game validator for dungeon `completionFateReward`, including its default of zero. Items with the exact `heal` keyword require a positive whole-number `healingAmount`; edit Healing amount in the Items tab, enemy rewards, or dungeon treasure. It is omitted from saved non-healing items. The `rest` keyword does not require a healing amount.
 
 ## Folder editing
 
-Choose the directory that directly contains `enemies.json`, `keywords.json`, `items.json` and `dungeons.json` (normally `public/data`). Other files and nested folders are ignored. Reopen the folder when starting a new editor session. Chrome and Edge support direct folder writing when allowed by browser permissions. Other browsers can load a folder through the directory upload picker; use individual JSON downloads to replace those files afterward. Single-file loading and saving remain available at all times.
+Choose the directory that directly contains `enemies.json`, `keywords.json`, `items.json`, `dungeons.json`, `cities.json`, `terrain-types.json`, `maps.json` and `adventure-modules.json` (normally `public/data`). Other files and nested folders are ignored. Reopen the folder when starting a new editor session. Chrome and Edge support direct folder writing when allowed by browser permissions. Other browsers can load a folder through the directory upload picker; use individual JSON downloads to replace those files afterward. Single-file loading and saving remain available at all times.
 
 Missing standard files prompt before loading as empty libraries; embedded sample data is never mixed into a selected folder. A missing file is created only when you save that library. Malformed files or invalid cross-references leave the previous libraries and file destinations untouched. Bulk saving is sequential, not a filesystem transaction.
 
 When you create or change an enemy reward or dungeon treasure to an item name not already in the catalog, Apply entry asks whether to add it to `items.json`. Accepting copies the complete item, including keywords, value, equipment and usage; declining keeps it only in the reward/treasure. Existing catalog items are not overwritten. Save both the edited library and the item catalog, or use Save all modified files.
 
 The toolbox build validates all JSON libraries and templates under `public/data/` before regenerating the standalone HTML. Rebuild after data or rule changes to keep the starting snapshot and embedded validators current.
+
+## V32 world data
+
+The Cities, Terrain types, Maps and Adventures tabs edit the four world catalogs. They load and save alongside the original four libraries, including from a selected folder. The generated tool includes the current world data and the same city, map-geometry and cross-reference validators as the game.
+
+- Cities: add/remove optional blacksmith, shop, inn, guild and temple amenities; edit their prices, bundle amounts and recovery rates. Removed amenities are omitted from JSON, rather than written as null.
+- Terrain types: define stable IDs and display names. Referenced terrains cannot be deleted.
+- Maps: use the visual editor to select spaces, edit names and terrain, paint terrain, or move spaces. Advanced map fields remain available in the collapsed geometry panel. **Recalculate map adjacency** derives all neighbor IDs from the current ring geometry. Apply still checks complete rings, valid geometry and connectivity; recalculating edges does not fix incomplete rings.
+- Adventures: choose the map, available cities/dungeons and city or wilderness start. Reference dropdowns store IDs and display names. Selecting a different map refreshes the starting-space options.
+
+Open related files together when their references change. Imports are staged and validated as a bundle before replacing anything. The game requires at least one terrain and adventure; folders missing those catalogs cannot be opened as a valid bundle until the required files are provided. To change a referenced world ID, add the replacement definition, update references, then delete the old one. The editor blocks invalid references rather than silently rewriting them. Existing world definitions are never substituted with embedded samples when opening a folder.
+
+## Visual map editing
+
+In Maps, click a colored space to show its name, terrain, exterior setting and neighbors in the inspector. The map is drawn from the same sector geometry as the game. Changes remain drafts until Apply entry, and require Save current file or Save all modified files to reach disk.
+
+- **Select / edit:** click a space, or focus it and press Enter/Space. Edit the selected space in the inspector.
+- **Paint terrain:** choose a terrain from the brush dropdown or terrain legend, then click spaces to paint them.
+- **Move spaces:** drag a source onto another sector, or click the source followed by the destination. The two spaces swap ring/index/count positions, keeping their IDs, names, terrain and exterior settings. Neighbor lists are recalculated automatically. Adventure starting locations still reference the same space ID after a move.
+- **Undo map change / Redo map change:** step through visual edits while the map entry is a draft. Applying/discarding the entry or switching entries resets this local history.
+- **Ring layout:** expand Add or remove spaces, set the size of each ring (0–30) and apply the layout. The center always exists; occupied rings must be contiguous. Existing sector data is kept, new sectors get unique IDs and the brush terrain, and removed spaces require confirmation. Removing an adventure's starting space is blocked. New outer-ring spaces start with Exterior checked; inspect this setting to reflect your map's intended boundary.
+
+Movement snaps to sectors because the game supports a center plus up to three half-circle rings. Free-position coordinates are not part of maps.json. Recalculate map adjacency and the full raw forms remain available for advanced authoring. All maps still pass the shared geometry/reference validator before saving.

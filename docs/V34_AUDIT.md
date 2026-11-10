@@ -1,6 +1,6 @@
 # V34 audit
 
-V34 targets fresh characters, as requested. No old-character migration work was added. The toolbox remains unchanged. Changes have not been committed or pushed.
+V34 targets fresh characters, as requested. No old-character migration work was added. The toolbox remains unchanged. The original implementation audit predates publication; see the publication addendum below.
 
 ## Implemented behavior
 
@@ -27,3 +27,10 @@ The V33 movement-lock check also needed its removed counter-Rest selector replac
 - Existing character-owned shop stock and rates are retained on library refresh. Updated initial stock/rates apply to new characters or shops not yet initialized for a character.
 - Shops transact one item per confirmation. Equipped equipment must be moved to inventory before selling.
 - Browser automation covers Chromium, including narrow mobile layouts; no physical phone installation was tested.
+
+
+## Publication merge
+
+The remote `pwa_wip` had advanced to `6e42a15fd69d0c33c7de9e8181f1ca8b51de53ed`. Publication merges that version, preserving its revised fifteen-tile map, custom-border support, item definitions, and exact toolbox tree. The shop reference follows the remote item rename from A dagger to Dagger. Test fixtures were adjusted for the authored map configuration without reverting its content.
+
+The earlier 216-check report describes the pre-merge implementation. Post-merge validation covers the production build, 23 V34 browser cases, 12 V34 rule cases, 25 world rule cases, six custom-border rule cases, and the custom-border browser case. Publication fingerprints and reports are recorded separately under `docs/validation/v34-publish-*`. The prior remote version becomes `pwa_wip_backup`; V34 becomes `pwa_wip`.

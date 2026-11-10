@@ -12,10 +12,11 @@ for(const [key,name]of Object.entries(catalogs)) data[key]=JSON.parse(fs.readFil
 const validate=vm.runInNewContext(rules+world+`;({enemies:validateEnemyLibrary,keywords:validateKeywordCatalog,items:data=>{if(data.format!=='quest-for-glory-items'||data.version!==1||!Array.isArray(data.items))throw Error('Invalid item library');const seen=new Set();for(const item of data.items){const normalized=normalizeItem(item),key=normalized.name.normalize('NFKC').trim().replace(/\\s+/g,' ').toLowerCase();if(seen.has(key))throw Error('Duplicate item name: '+normalized.name);seen.add(key)}return data},dungeons:data=>validateDungeonLibrary(data,${JSON.stringify(data.enemies.enemies)})})`);
 for(const name of fs.readdirSync('public/data').filter(name=>name.endsWith('.json'))){
  const kind=name.split('.')[0];const key=Object.keys(catalogs).find(k=>catalogs[k]===kind);if(!key)throw Error('Unsupported data file: '+name);
- try{const value=JSON.parse(fs.readFileSync('public/data/'+name));if(validate[kind])validate[kind](value);const all={...data,[key]:value};vm.runInNewContext(world+`;validateWorld(${JSON.stringify({terrains:all.terrainTypes,cities:all.cities,maps:all.maps,adventures:all.modules})},${JSON.stringify(all.dungeons.dungeons)})`)}catch(error){throw Error(name+': '+error.message)}
+ try{const value=JSON.parse(fs.readFileSync('public/data/'+name));if(validate[kind])validate[kind](value);const all=name.includes('.template.')&&!['cities','terrainTypes','maps','modules'].includes(key)?data:{...data,[key]:value};vm.runInNewContext(world+`;validateWorld(${JSON.stringify({terrains:all.terrainTypes,cities:all.cities,maps:all.maps,adventures:all.modules})},${JSON.stringify(all.dungeons.dungeons)},${JSON.stringify(all.enemies.enemies)})`)}catch(error){throw Error(name+': '+error.message)}
  console.log('Validated public/data/'+name);
 }
 const escape=s=>s.replace(/</g,'\\u003c');
-const html=fs.readFileSync('toolbox/editor.template.html','utf8').replace('/* SHARED_RULES */',()=>rules+'\n'+world).replace('/* INITIAL_DATA */',()=>escape(JSON.stringify(data)));
+const markers=Object.fromEntries(['city','dungeon'].map(type=>[type,'data:image/svg+xml;base64,'+fs.readFileSync(`public/icons/location-${type}.svg`).toString('base64')]));
+const html=fs.readFileSync('toolbox/editor.template.html','utf8').replace('/* SHARED_RULES */',()=>rules+'\n'+world).replace('/* INITIAL_DATA */',()=>escape(JSON.stringify(data))).replace('/* LOCATION_MARKERS */',()=>JSON.stringify(markers));
 fs.writeFileSync('toolbox/data-editor.html',html);
 console.log('Built toolbox/data-editor.html (standalone, no runtime dependencies)');

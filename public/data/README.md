@@ -320,3 +320,9 @@ Map and tile encounter configurations optionally add `enemyWeights`, keyed by ID
 Weights are integers **1–4**, default **1**. In this example the probabilities are 4/7, 2/7, and 1/7 after an encounter triggers. Danger Level still controls the chance of any encounter. A tile with its own roster uses its own weights/defaults; otherwise tile weights may override individual map weights. Unknown IDs and invalid weights reject the whole refresh. The origin's cards, weights and Danger Level are saved with pending travel.
 
 Dungeon level Challenge types are assigned by gameplay, not JSON: Trap (Body/Mind), Puzzle (Mind/Cunning), Physical Barrier (Body), Magical Barrier (Mind), or Deceiving Encounter (Cunning). Luck is always available. Types have equal odds, reroll on every level entry, and persist through retries/reloads within that visit. Boss levels have no Challenge type. Character export envelope is **25**. This release targets newly created characters; no old-character migration is required.
+
+## Optional custom map borders
+
+A tile may define both `startAngle` and `endAngle` as finite degrees within 0–180 across the fan. Omit both for the original equal-width sector determined by index/count. The start must be smaller than the end. Within a ring, sectors sorted by index must cover 0–180 continuously without gaps or overlap; the center always spans 0–180.
+
+The toolbox's Edit borders tool writes these fields and rebuilds symmetric adjacentIds automatically. Shared-border overlap, excluding point-only contact, determines connections between neighboring rings. The PWA renderer and movement validation use the same endpoints. Deploy the application code supporting custom borders together with maps that use them.

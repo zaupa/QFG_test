@@ -1,0 +1,7 @@
+PASS Existing maps retain equal-width geometry
+PASS Edited borders change symmetric adjacent-ring connections
+PASS Point-only contact remains nonadjacent
+PASS Custom endpoints drive both paths and label positions
+PASS Gaps overlaps missing endpoints and invalid angles reject
+PASS Stale adjacency cannot survive a changed boundary
+PASS: 6 border geometry rule checks

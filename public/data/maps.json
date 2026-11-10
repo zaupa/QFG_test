@@ -14,8 +14,7 @@
             "T02",
             "T03",
             "T04",
-            "T05",
-            "T06"
+            "T05"
           ],
           "ring": 0,
           "index": 0,
@@ -25,13 +24,18 @@
             {
               "type": "city",
               "id": "lithengard"
+            },
+            {
+              "type": "dungeon",
+              "id": "T1"
             }
-          ]
+          ],
+          "dangerLevel": 2
         },
         {
           "id": "T02",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
+          "name": "Forest",
+          "terrainTypeId": "forest",
           "adjacentIds": [
             "T01",
             "T03",
@@ -40,9 +44,12 @@
           ],
           "ring": 1,
           "index": 0,
-          "count": 5,
+          "count": 4,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "startAngle": 0,
+          "endAngle": 36,
+          "dangerLevel": 2
         },
         {
           "id": "T03",
@@ -57,9 +64,12 @@
           ],
           "ring": 1,
           "index": 1,
-          "count": 5,
+          "count": 4,
           "exterior": false,
-          "locations": []
+          "locations": [],
+          "startAngle": 36,
+          "endAngle": 72,
+          "dangerLevel": 2
         },
         {
           "id": "T04",
@@ -74,14 +84,17 @@
           ],
           "ring": 1,
           "index": 2,
-          "count": 5,
+          "count": 4,
           "exterior": false,
           "locations": [
             {
               "type": "dungeon",
               "id": "R1"
             }
-          ]
+          ],
+          "startAngle": 72,
+          "endAngle": 108,
+          "dangerLevel": 3
         },
         {
           "id": "T05",
@@ -90,47 +103,36 @@
           "adjacentIds": [
             "T01",
             "T04",
-            "T06",
             "T10",
-            "T11"
+            "T11",
+            "T20"
           ],
           "ring": 1,
           "index": 3,
-          "count": 5,
+          "count": 4,
           "exterior": false,
-          "locations": []
-        },
-        {
-          "id": "T06",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T01",
-            "T05",
-            "T11",
-            "T12"
-          ],
-          "ring": 1,
-          "index": 4,
-          "count": 5,
-          "exterior": true,
-          "locations": []
+          "locations": [],
+          "startAngle": 108,
+          "endAngle": 180,
+          "dangerLevel": 2
         },
         {
           "id": "T07",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
+          "name": "Forest",
+          "terrainTypeId": "forest",
           "adjacentIds": [
             "T02",
             "T08",
-            "T13",
-            "T14"
+            "T13"
           ],
           "ring": 2,
           "index": 0,
           "count": 6,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "startAngle": 0,
+          "endAngle": 12.933,
+          "dangerLevel": 2
         },
         {
           "id": "T08",
@@ -141,14 +143,22 @@
             "T03",
             "T07",
             "T09",
-            "T14",
-            "T15"
+            "T13",
+            "T14"
           ],
           "ring": 2,
           "index": 1,
           "count": 6,
           "exterior": false,
-          "locations": []
+          "locations": [
+            {
+              "type": "dungeon",
+              "id": "R2"
+            }
+          ],
+          "startAngle": 12.933,
+          "endAngle": 62.531,
+          "dangerLevel": 2
         },
         {
           "id": "T09",
@@ -159,14 +169,16 @@
             "T04",
             "T08",
             "T10",
-            "T15",
-            "T16"
+            "T14"
           ],
           "ring": 2,
           "index": 2,
           "count": 6,
           "exterior": false,
-          "locations": []
+          "locations": [],
+          "startAngle": 62.531,
+          "endAngle": 90,
+          "dangerLevel": 3
         },
         {
           "id": "T10",
@@ -177,14 +189,16 @@
             "T05",
             "T09",
             "T11",
-            "T16",
-            "T17"
+            "T15"
           ],
           "ring": 2,
           "index": 3,
           "count": 6,
           "exterior": false,
-          "locations": []
+          "locations": [],
+          "startAngle": 90,
+          "endAngle": 130.57,
+          "dangerLevel": 2
         },
         {
           "id": "T11",
@@ -192,33 +206,37 @@
           "terrainTypeId": "plains",
           "adjacentIds": [
             "T05",
-            "T06",
             "T10",
-            "T12",
-            "T17",
-            "T18"
+            "T20",
+            "T15",
+            "T16"
           ],
           "ring": 2,
           "index": 4,
           "count": 6,
           "exterior": false,
-          "locations": []
+          "locations": [],
+          "startAngle": 130.57,
+          "endAngle": 164.146,
+          "dangerLevel": 2
         },
         {
-          "id": "T12",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T06",
-            "T11",
-            "T18",
-            "T19"
-          ],
+          "id": "T20",
+          "name": "New space",
+          "terrainTypeId": "forest",
           "ring": 2,
           "index": 5,
           "count": 6,
           "exterior": true,
-          "locations": []
+          "adjacentIds": [
+            "T05",
+            "T11",
+            "T16"
+          ],
+          "locations": [],
+          "startAngle": 164.146,
+          "endAngle": 180,
+          "dangerLevel": 2
         },
         {
           "id": "T13",
@@ -226,112 +244,74 @@
           "terrainTypeId": "mountains",
           "adjacentIds": [
             "T07",
+            "T08",
             "T14"
           ],
           "ring": 3,
           "index": 0,
-          "count": 7,
+          "count": 4,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "startAngle": 0,
+          "endAngle": 20.582,
+          "dangerLevel": 2
         },
         {
           "id": "T14",
           "name": "Horseshoe Mountains",
           "terrainTypeId": "mountains",
           "adjacentIds": [
-            "T07",
             "T08",
+            "T09",
             "T13",
             "T15"
           ],
           "ring": 3,
           "index": 1,
-          "count": 7,
+          "count": 4,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "startAngle": 20.582,
+          "endAngle": 90,
+          "dangerLevel": 2
         },
         {
           "id": "T15",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
+          "name": "Forest",
+          "terrainTypeId": "forest",
           "adjacentIds": [
-            "T08",
-            "T09",
+            "T10",
+            "T11",
             "T14",
             "T16"
           ],
           "ring": 3,
           "index": 2,
-          "count": 7,
+          "count": 4,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "dangerLevel": 2
         },
         {
           "id": "T16",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
+          "name": "Forest",
+          "terrainTypeId": "forest",
           "adjacentIds": [
-            "T09",
-            "T10",
-            "T15",
-            "T17"
+            "T11",
+            "T20",
+            "T15"
           ],
           "ring": 3,
           "index": 3,
-          "count": 7,
+          "count": 4,
           "exterior": true,
-          "locations": []
-        },
-        {
-          "id": "T17",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T10",
-            "T11",
-            "T16",
-            "T18"
-          ],
-          "ring": 3,
-          "index": 4,
-          "count": 7,
-          "exterior": true,
-          "locations": []
-        },
-        {
-          "id": "T18",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T11",
-            "T12",
-            "T17",
-            "T19"
-          ],
-          "ring": 3,
-          "index": 5,
-          "count": 7,
-          "exterior": true,
-          "locations": []
-        },
-        {
-          "id": "T19",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
-          "adjacentIds": [
-            "T12",
-            "T18"
-          ],
-          "ring": 3,
-          "index": 6,
-          "count": 7,
-          "exterior": true,
-          "locations": []
+          "locations": [],
+          "dangerLevel": 2
         }
       ],
       "ringCount": 3,
       "encounters": {
-        "dangerMode": "global",
+        "dangerMode": "tile",
         "dangerLevel": 2,
         "enemyIds": [
           "Giant Rats",

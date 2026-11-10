@@ -1,0 +1,11 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 1,
+  "failed": 0,
+  "results": [
+    {
+      "name": "42 Custom border angles change real PWA geometry and available neighbors",
+      "status": "PASS"
+    }
+  ]
+}

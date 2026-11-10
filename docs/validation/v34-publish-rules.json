@@ -1,0 +1,54 @@
+{
+  "passed": 12,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 Decimal rates round exactly in each direction",
+      "status": "PASS"
+    },
+    {
+      "name": "02 Zero rates and safe integer boundaries",
+      "status": "PASS"
+    },
+    {
+      "name": "03 Shop catalog and template reference shared items",
+      "status": "PASS"
+    },
+    {
+      "name": "04 Invalid stock IDs quantities rates and duplicate shops reject",
+      "status": "PASS"
+    },
+    {
+      "name": "05 Shop snapshots are independent of shared library",
+      "status": "PASS"
+    },
+    {
+      "name": "06 Stock grouping preserves equipment condition and item configuration",
+      "status": "PASS"
+    },
+    {
+      "name": "07 Saved stock roundtrip retains quantity rates and condition",
+      "status": "PASS"
+    },
+    {
+      "name": "08 Weights default to one, support one through four and reject other values",
+      "status": "PASS"
+    },
+    {
+      "name": "09 Weighted intervals allocate exact proportions",
+      "status": "PASS"
+    },
+    {
+      "name": "10 Invalid weighted selections reject",
+      "status": "PASS"
+    },
+    {
+      "name": "11 Origin map defaults and independent tile roster weights",
+      "status": "PASS"
+    },
+    {
+      "name": "12 All five dungeon types have correct attributes and Luck",
+      "status": "PASS"
+    }
+  ]
+}

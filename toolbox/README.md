@@ -41,6 +41,7 @@ node toolbox/test-terrain-enemies.cjs
 node toolbox/test-bulk-danger.cjs
 node toolbox/test-map-borders.cjs
 node toolbox/test-remove-space.cjs
+node toolbox/test-map-locations.cjs
 node tests/map-borders-rules.cjs
 ```
 
@@ -120,3 +121,11 @@ Choose Select / edit, click a map space, then click **Remove selected space** in
 City/dungeon markers move onto the absorbing neighbor so they remain available; the removed space's danger/enemy overrides are discarded. Center spaces and adventure starting spaces cannot be removed. Removing the sole space of the outermost ring removes that ring only when at least two surrounding rings remain. A required inner ring cannot be left empty.
 
 Undo restores the removed space and its settings. Apply entry and save maps.json to keep the removal.
+
+## Visual location markers and unique placements
+
+Map spaces show the same city and dungeon SVG markers used by the companion game. The toolbox embeds those original assets, so the standalone HTML still works offline. A number beside a marker means the space contains several locations of that type. Hover a space for its complete location list, or select it to see the names and markers directly in the inspector.
+
+The inspector's Locations section is always visible. Choose City or Dungeon, choose a location, and place it. Locations already on this tile are disabled. Locations on another tile are labeled with their existing space; the action offers **Move location here** and asks before removing the old placement. A starting city cannot be moved or removed until its adventure's starting configuration is changed.
+
+Each city/dungeon definition can occupy only one tile **per map**. Both the visual editor and advanced map forms use the same placement controls. Duplicate locations in imported JSON still reject the entire import. A city and dungeon may share one tile; different adventure maps may each place the same definition once. Placements, moves and removals support Undo/Redo. Apply entry and save maps.json when finished.

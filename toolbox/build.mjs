@@ -16,6 +16,7 @@ for(const name of fs.readdirSync('public/data').filter(name=>name.endsWith('.jso
  console.log('Validated public/data/'+name);
 }
 const escape=s=>s.replace(/</g,'\\u003c');
-const html=fs.readFileSync('toolbox/editor.template.html','utf8').replace('/* SHARED_RULES */',()=>rules+'\n'+world).replace('/* INITIAL_DATA */',()=>escape(JSON.stringify(data)));
+const markers=Object.fromEntries(['city','dungeon'].map(type=>[type,'data:image/svg+xml;base64,'+fs.readFileSync(`public/icons/location-${type}.svg`).toString('base64')]));
+const html=fs.readFileSync('toolbox/editor.template.html','utf8').replace('/* SHARED_RULES */',()=>rules+'\n'+world).replace('/* INITIAL_DATA */',()=>escape(JSON.stringify(data))).replace('/* LOCATION_MARKERS */',()=>JSON.stringify(markers));
 fs.writeFileSync('toolbox/data-editor.html',html);
 console.log('Built toolbox/data-editor.html (standalone, no runtime dependencies)');

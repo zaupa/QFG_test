@@ -1,13 +1,13 @@
 {
   "name": "quest-for-glory-pwa",
-  "version": "33.0.0",
+  "version": "34.0.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build && node scripts/build-sw.mjs",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "npm run build && node tests/offline-paths.cjs && node tests/pwa.cjs && node tests/custom-libraries.cjs && node tests/server-stopped.cjs && node tests/gameplay-pwa.cjs && npm run test:v31 && npm run test:v32 && npm run test:v33",
+    "test": "npm run build && node tests/offline-paths.cjs && node tests/pwa.cjs && node tests/custom-libraries.cjs && node tests/server-stopped.cjs && node tests/v31-rules.cjs && node tests/v32-rules.cjs && npm run test:v33 && npm run test:v34",
     "test:legacy": "node tests/baseline.cjs",
     "build:legacy": "node scripts/build-v28.cjs",
     "test:pwa": "node tests/pwa.cjs",
@@ -16,7 +16,9 @@
     "test:custom": "node tests/custom-libraries.cjs",
     "test:v31": "node tests/v31-rules.cjs && node tests/v31.cjs",
     "test:v32": "node tests/v32-rules.cjs && node tests/v32.cjs",
-    "test:v33": "node tests/v33-rules.cjs && node tests/v33.cjs"
+    "test:v33": "node tests/v33-rules.cjs && node tests/v33.cjs",
+    "test:historical": "npm run build && node tests/offline-paths.cjs && node tests/pwa.cjs && node tests/custom-libraries.cjs && node tests/server-stopped.cjs && node tests/gameplay-pwa.cjs && npm run test:v31 && npm run test:v32 && npm run test:v33",
+    "test:v34": "node tests/v34-rules.cjs && node tests/v34.cjs"
   },
   "dependencies": {
     "react": "19.2.0",

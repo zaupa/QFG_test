@@ -1,0 +1,3 @@
+Local server stopped; navigator.onLine: true
+{"documentIdentity":"same-document","gameVisible":true,"notice":"Your current game and libraries are unchanged. Using the last validated libraries (11/10/2026, 9:52:26 PM). The server files could not be loaded or validated. enemies.json: Failed to fetch","errors":[]}
+PASS actual stopped-server refresh and offline reload

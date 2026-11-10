@@ -1,3 +1,12 @@
+# V34 — Shops and dungeon Challenge variety
+
+- Adds per-shop JSON stock, quantities, decimal sell/purchase rates, confirmed buying and selling, and persistent character-owned stock. Sold equipment retains its remaining uses and becomes available to buy back.
+- Adds atomic loading/validation of `shops.json`, city shop references, and a shop template. Default Lithengard rates are 1.5 to sell and 0.5 to purchase.
+- Adds monster weights from 1 to 4 (default 1) to origin terrain encounter tables, preserving the existing Danger Level and movement sequence.
+- Randomizes five dungeon level Challenge types with enforced applicable attributes and Luck. Each level entry rerolls; retries and reloads retain the current type. Bosses retain the existing Combat flow.
+- Removes the duplicate Adventure Actions Rest button and global Dungeon Delve/Visit City buttons. Use Map to visit locations. Manual inventory additions are free; removal destroys without a sale.
+- Targets fresh characters, uses character export envelope 25, and leaves the toolbox unchanged.
+
 # V33 — Adventure Actions, local locations and movement encounters
 
 - Renames the travel button to Map; all tiles can be inspected, with local city/dungeon listings and Settlement/Stairs markers. Entries are restricted to the hero's current tile. Adventure Modules derive locations solely from their map.

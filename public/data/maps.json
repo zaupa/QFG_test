@@ -338,7 +338,13 @@
           "Skeleton",
           "Zombie",
           "Giant Spiders"
-        ]
+        ],
+        "enemyWeights": {
+          "Giant Rats": 1,
+          "Skeleton": 1,
+          "Zombie": 1,
+          "Giant Spiders": 1
+        }
       }
     }
   ]

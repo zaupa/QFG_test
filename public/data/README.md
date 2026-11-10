@@ -275,7 +275,7 @@ Map encounter configuration:
 }
 ```
 
-`dangerMode` is `global` or `tile`. Global mode uses the map's Danger Level. Tile mode uses the origin tile's `dangerLevel`, default 2 if omitted. Levels are integers 0–6: zero never triggers, six always triggers. A roll at most the applicable level triggers combat. Tiles may supply `enemyIds` to override the map's table, independently of danger mode. Lists must be nonempty, contain unique existing enemy IDs and currently use equal selection odds. Example additional origin-tile fields:
+`dangerMode` is `global` or `tile`. Global mode uses the map's Danger Level. Tile mode uses the origin tile's `dangerLevel`, default 2 if omitted. Levels are integers 0–6: zero never triggers, six always triggers. A roll at most the applicable level triggers combat. Tiles may supply `enemyIds` to override the map's table, independently of danger mode. Lists must be nonempty, contain unique existing enemy IDs and use equal selection odds unless V34 `enemyWeights` are supplied. Example additional origin-tile fields:
 
 ```json
 "dangerLevel":4,
@@ -287,3 +287,36 @@ Confirmed travel snapshots its origin, destination, CV, Danger Level and enemy c
 Character state now includes `meeple` (`hero`, `ranger`, `spellcaster`), `adventureActions` (0–2), `restOfferPending`, and optional `pendingTravel`. These are gameplay save fields, not map configuration. Completed Rest refills two actions; profile creation starts with two without charging for the initial city. Character exports use envelope version 24. Meeple/location SVGs live under `public/icons` and are precached for offline use.
 
 All eight libraries still refresh atomically. Missing locations/enemies, invalid CVs/Danger Levels/rings or incomplete adjacency retain the last valid bundle. Rebuild or copy the edited source JSON into `dist/data` when using preview. The toolbox is retained unchanged and is not expanded into a world-map editor by this release.
+
+## V34 shops and weighted encounters
+
+All **nine** libraries, including `shops.json`, load and refresh atomically. Shop IDs referenced by city amenities must exist; stock references the unique item **name** from `items.json` (case-insensitive). Use `shops.template.json` as a starting point:
+
+```json
+{
+  "format": "quest-for-glory-shops",
+  "version": 1,
+  "shops": [{
+    "id": "lithengard-shop",
+    "name": "Lithengard General Store",
+    "sellRate": 1.5,
+    "purchaseRate": 0.5,
+    "stock": [{"itemId": "Potion of Healing", "quantity": 4}]
+  }]
+}
+```
+
+A city's amenity uses `"shop": {"shopId": "lithengard-shop"}`. Shops may be shared by cities by referencing the same ID, or independent by assigning distinct IDs. Both rates are finite nonnegative numbers, including decimals. Quantities are nonnegative safe integers; zero means out of stock. Buy price is `ceil(baseValue × sellRate)`; the shop pays `floor(baseValue × purchaseRate)` when buying from the hero. Decimal arithmetic avoids binary floating-point rounding errors.
+
+Stock initializes from the JSON on the character's first use of that shop, then lives in the character save. Purchases decrease stock; sales increase it, preserving the full item and remaining equipment uses. Different configurations/conditions occupy separate stock rows. Refreshing definitions does not reset a character's existing shop stock or rates. New characters and shops not yet visited use the updated JSON. Equipped gear must first move into inventory to be sold. Manual item addition is free; removal destroys it without payment.
+
+Map and tile encounter configurations optionally add `enemyWeights`, keyed by IDs from their applicable `enemyIds` roster:
+
+```json
+"enemyIds": ["Giant Rats", "Skeleton", "Zombie"],
+"enemyWeights": {"Giant Rats": 4, "Skeleton": 2, "Zombie": 1}
+```
+
+Weights are integers **1–4**, default **1**. In this example the probabilities are 4/7, 2/7, and 1/7 after an encounter triggers. Danger Level still controls the chance of any encounter. A tile with its own roster uses its own weights/defaults; otherwise tile weights may override individual map weights. Unknown IDs and invalid weights reject the whole refresh. The origin's cards, weights and Danger Level are saved with pending travel.
+
+Dungeon level Challenge types are assigned by gameplay, not JSON: Trap (Body/Mind), Puzzle (Mind/Cunning), Physical Barrier (Body), Magical Barrier (Mind), or Deceiving Encounter (Cunning). Luck is always available. Types have equal odds, reroll on every level entry, and persist through retries/reloads within that visit. Boss levels have no Challenge type. Character export envelope is **25**. This release targets newly created characters; no old-character migration is required.

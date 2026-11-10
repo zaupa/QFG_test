@@ -1,0 +1,77 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 16,
+  "failed": 1,
+  "results": [
+    {
+      "name": "01 Fresh creation starts in Lithengard with no legacy navigation buttons",
+      "status": "PASS"
+    },
+    {
+      "name": "02 Cancelled buy is inert and confirmed buy charges rounded price and decrements stock",
+      "status": "PASS"
+    },
+    {
+      "name": "03 Selling floors value and sold item appears in stock for repurchase",
+      "status": "PASS"
+    },
+    {
+      "name": "04 Broken and partially used equipment retain condition and remain separate stock entries",
+      "status": "PASS"
+    },
+    {
+      "name": "05 Stock and rates persist through reload and offline reopening",
+      "status": "PASS"
+    },
+    {
+      "name": "06 Zero stock insufficient Coins and full inventory disable purchase",
+      "status": "PASS"
+    },
+    {
+      "name": "07 Repeated identical sold items merge quantities and Undo restores transaction",
+      "status": "PASS"
+    },
+    {
+      "name": "08 Manual inventory add is free and removal destroys without Coin gain",
+      "status": "FAIL",
+      "error": "locator.click: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-inventory-remove=\"0\"]')\u001b[22m\n\n    at Object.fn (/workspace/QuestForGloryApp/tests/v34.cjs:47:346)\n    at async /workspace/QuestForGloryApp/tests/v34.cjs:58:740",
+      "errors": []
+    },
+    {
+      "name": "09 Map opens local city and exit preserves Adventure Action cost",
+      "status": "PASS"
+    },
+    {
+      "name": "10 Each dungeon type filters initial cards and allows Luck",
+      "status": "PASS"
+    },
+    {
+      "name": "11 Failed dungeon Challenge retries and reloads retain its type",
+      "status": "PASS"
+    },
+    {
+      "name": "12 Entering a deeper level rerolls Challenge type",
+      "status": "PASS"
+    },
+    {
+      "name": "13 Reentering dungeon rerolls first level type",
+      "status": "PASS"
+    },
+    {
+      "name": "14 Movement snapshots origin weights and chooses weighted enemy",
+      "status": "PASS"
+    },
+    {
+      "name": "15 Invalid shop refresh rejects whole bundle and retains last valid stock catalog",
+      "status": "PASS"
+    },
+    {
+      "name": "16 Mobile shop fits and transaction cancel is keyboard accessible",
+      "status": "PASS"
+    },
+    {
+      "name": "17 Rest remains available in city after removing redundant counter button",
+      "status": "PASS"
+    }
+  ]
+}

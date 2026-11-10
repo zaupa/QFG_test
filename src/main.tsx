@@ -5,7 +5,7 @@ import {openDatabase,CharacterStorage,readRecord,type SaveState} from './platfor
 import {loadGameLayout} from './platform/layout';
 import {checkOfflineFiles} from './platform/offline';
 import {loadLibraries,type LibraryBundle} from './platform/libraries';
-const signature=(bundle:LibraryBundle)=>JSON.stringify([bundle.enemies,bundle.keywords,bundle.dungeons,bundle.items,bundle.world]);
+const signature=(bundle:LibraryBundle)=>JSON.stringify([bundle.enemies,bundle.keywords,bundle.dungeons,bundle.items,bundle.shops,bundle.world]);
 import './game/styles.css';
 import './pwa.css';
 type InstallEvent=Event&{prompt:()=>Promise<void>;userChoice:Promise<{outcome:string}>};

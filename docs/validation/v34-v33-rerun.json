@@ -1,0 +1,11 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 1,
+  "failed": 0,
+  "results": [
+    {
+      "name": "36 Pending movement locks inventory and other operations until resolved",
+      "status": "PASS"
+    }
+  ]
+}

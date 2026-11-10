@@ -9,7 +9,9 @@
         "blacksmith": {
           "repairCost": 5
         },
-        "shop": {},
+        "shop": {
+          "shopId": "lithengard-shop"
+        },
         "inn": {
           "restCost": 10,
           "supplyBundleCost": 1,

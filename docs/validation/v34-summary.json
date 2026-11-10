@@ -1,0 +1,165 @@
+{
+  "version": "34.0.0",
+  "recordedAt": "2026-11-10T22:00:47.784934+00:00",
+  "baseCommit": "8f2a22644f773c1605e007be6a5fa26ac6c36d19",
+  "freshCharacters": true,
+  "passed": 216,
+  "failed": 0,
+  "suites": [
+    {
+      "report": "v34-results.json",
+      "passed": 23,
+      "failed": 0
+    },
+    {
+      "report": "v34-rules-results.json",
+      "passed": 12,
+      "failed": 0
+    },
+    {
+      "report": "v34-v33-final.json",
+      "passed": 40,
+      "failed": 0
+    },
+    {
+      "report": "v34-v33-rules-results.json",
+      "passed": 25,
+      "failed": 0
+    },
+    {
+      "report": "v34-v32-rules-results.json",
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "report": "v34-v31-rules-results.json",
+      "passed": 16,
+      "failed": 0
+    },
+    {
+      "report": "v34-pwa-results.json",
+      "passed": 37,
+      "failed": 0
+    },
+    {
+      "report": "v34-custom-libraries-results.json",
+      "passed": 43,
+      "failed": 0
+    }
+  ],
+  "additionalChecks": [
+    {
+      "name": "Actual stopped-server refresh and offline reload",
+      "passed": 1
+    },
+    {
+      "name": "Windows/POSIX offline paths and JSON cache exclusion",
+      "passed": 1
+    }
+  ],
+  "notes": [
+    "Production build and final TypeScript check passed.",
+    "Suites ran independently against the same production build; V33 results include one targeted selector correction rerun.",
+    "No old-character migration implemented; legacy V33 case 41 excluded. Historical pre-V34 gameplay suites were not acceptance-tested.",
+    "Toolbox diff is empty. No commit or push performed."
+  ],
+  "sourceSha256": {
+    "package-lock.json": "ff2653c1944bf41f2cc438a14323fb24c1c77485ae1c0ad616a6ea0a5c1d024a",
+    "package.json": "3390e88e312e9b9e7a9faad2da5240ece1d2a1ab3e6ab85a600462e098d5cdde",
+    "public/app/game.html": "6a3d3c540c2d4c712f4daa759acc24e97d45b64acc0957a199174f0c290247d5",
+    "public/audio/README.md": "215e7649e4dc0d5b37d145f32a0fea653d2fc254b7f4b9523287dedc62edcbfc",
+    "public/audio/medieval_fantasy_victory_fanfare_3s.wav": "9a589a69ad85dbcc6211153af1460f8a748807b8f1577ac9fe67667ecf798bc7",
+    "public/data/README.md": "36dcb0fed3fef20b796690cb19271c370c7993a16a8b974b17bf86bbe221906a",
+    "public/data/adventure-modules.json": "ded72163e21c8dba828b68c40772e8b4a2fa968184d97041bd4a1df8ce91ca2d",
+    "public/data/adventure-modules.template.json": "ded72163e21c8dba828b68c40772e8b4a2fa968184d97041bd4a1df8ce91ca2d",
+    "public/data/cities.json": "20d2fff186d2c2e7c884f70e080e52bacffbf9c0a0bba47b4db4c5b8094ce6e8",
+    "public/data/cities.template.json": "20d2fff186d2c2e7c884f70e080e52bacffbf9c0a0bba47b4db4c5b8094ce6e8",
+    "public/data/dungeons.json": "d6696d5d03d384ce61e154a96ad57b6d49bae76ac2735d98f1ece9a45f7cf9ad",
+    "public/data/dungeons.template.json": "0a5d60a77e8abda8dfdf01fd5bc715ff42e547b8ac142ea51d8feee9a2b1f29d",
+    "public/data/enemies.json": "331ac798244849df4b432865744ca8923c012c081bcf0331ad059e052234f0a1",
+    "public/data/enemies.template.json": "b24b5f362257656b945071df41772185e5e5ecf6d4ba5914457b0eeb6f363a1f",
+    "public/data/items.json": "14f0cf3b31f9da5f7c29e5ae1eb83d07c1e0178ac148e321e7b4d21b708da144",
+    "public/data/items.template.json": "a56e28c6fa2dbaab75cd5633dad4bddcebeb25a4ecb57776ddf418b7973b89f5",
+    "public/data/keywords.json": "62ae5164fff6c82c13fca35c0435756214847a1b6d30226df5c077b461af1c34",
+    "public/data/maps.json": "b2f8413a85c24f1b8b260effb8a441facda86d9d9ba2a2628eb0be4949b409a1",
+    "public/data/maps.template.json": "b2f8413a85c24f1b8b260effb8a441facda86d9d9ba2a2628eb0be4949b409a1",
+    "public/data/shops.json": "7511328271413afffffbbb4ae70745e4d055437905c7ebd9871a9ec620368afe",
+    "public/data/shops.template.json": "7511328271413afffffbbb4ae70745e4d055437905c7ebd9871a9ec620368afe",
+    "public/data/terrain-types.json": "6edaff86cdb88229872a6de8969cb23d2406a5527fd0db8bcc74c480146a1493",
+    "public/data/terrain-types.template.json": "6edaff86cdb88229872a6de8969cb23d2406a5527fd0db8bcc74c480146a1493",
+    "public/fonts/README.md": "ded34907d9a930ecf0dad323ab7d337e7a9b6c3504cf94fc4adfa63b50915bff",
+    "public/fonts/body.ttf": "9d7583b7dc9e812afd32a14280c5cac3160012efe50c8d08938f4fea266ff67f",
+    "public/fonts/cinzel.ttf": "74c84080364d7a2a313abb524b8601ba14fe719d6c5cb400599861c38578fa40",
+    "public/fonts/gothic.ttf": "4793af5cf383f3d4a1b86ca8d030a29de0d2c73b3e0f2d6b0b13e7b5d846a06f",
+    "public/fonts/righteous.woff2": "65c40800bb8bc418beead0d6ee049412c10d22f3cc52f8d863408a1f17472461",
+    "public/icons/icon-192.png": "a3a2fa8739e8f815a9784c709d498c39f4ce0876c70455a9b52e598b0feb1237",
+    "public/icons/icon-512.png": "1b88120027431810af4259ae2517c15c9352609bb9fb42e90bc63e00234b0dbe",
+    "public/icons/location-city.svg": "af3610ef06b7f44d8c946cf99929a4d68813a358f06b091f9e4fc76119c1528a",
+    "public/icons/location-dungeon.svg": "f83c2be2528cc2d33c1ee710a9cc5feedbe047cb33f3435a4a1ece6462cc9a67",
+    "public/icons/meeple-hero.svg": "7f5ceab439c75de7a71ce87ea466c47cc3759740542b321f346a47acb90753a0",
+    "public/icons/meeple-ranger.svg": "a15b63b5e5ee481654a682029f0b4ff8de115bc9a417b8b4180c98db2674bea4",
+    "public/icons/meeple-spellcaster.svg": "798fcb477fce0f88454b6ef5a9a9a163cc7c2b7946fc3e97563f7263f57883d8",
+    "public/manifest.webmanifest": "f483ad1e4075ba33df56458965b2aab80a6fcde1129f38ea8485569dbaa9586d",
+    "scripts/build-sw.mjs": "3460d3b56bae384e949ce3363da38ef595cc1a255210862279d907e9025cf30b",
+    "scripts/build-v28.cjs": "a531c1342a059602eabd4cf97bbece323c806d9ef70c83ec8bba6d57a0ea4590",
+    "scripts/enemy-library-v28.cjs": "a8e89639761c8b7a17f30eb2cabf66d0e3e1aa721d62a5f4e9e16c4c8cd759f5",
+    "scripts/offline-assets.mjs": "952078d38aa405923e68fc9fdaf2a776bf3a7308b45b6086a9999d2c90be5573",
+    "src/game/adventure-rules.ts": "6054fd467f6c7a1e7de50253d1cbc42c1443281eb2ed77ccbc59c133ace5d692",
+    "src/game/commerce.ts": "527a57f25aeec2bed9efe60d8f28316ad6ed1cfd1534a0d78962ebbb6dca1221",
+    "src/game/custom-manager.ts": "331a5916fd12705a820567fee5fc7e6441ce5acd1cfc2c0afd5d5b6500ce6fb5",
+    "src/game/definitions.ts": "dd579538b98f11afb9210af8c025c49a943514bb4a6d005c0af8648e9d28b500",
+    "src/game/engine.ts": "f954121937bf6e77e8f21956f78a26a3ba6e9ce002e11b74eeb59aef0e08e58c",
+    "src/game/rules.ts": "c7246d896221210d636ede35f6404bfae2e27851bca3071226cd580161499781",
+    "src/game/styles.css": "cac57f0d2bdef0007e77e61ebdb54179bc3954e29054ae80428ceff26365d473",
+    "src/game/types.ts": "2ca60717eed07aecbb7834937748f22c2f553ead0c45a9cfdac7ce09eecc4640",
+    "src/game/world.ts": "8008ab95f4bf86b61e962ea40abd5be79433875d3a1a780292ce3e390293daf9",
+    "src/main.tsx": "7bf4dd6de42f1aac3e7307bf807eac28207a401a6efa666b131a030de9cdf5b8",
+    "src/platform/layout.ts": "bd783c4f0d346e591e9ae60c0ec8bd0f4a9ebd00ac8b31e6685de9b77c98c2e1",
+    "src/platform/libraries.ts": "052a3daf1dbaee4f972b854b5a65140aaef09e95e82da78b3f79a98778e5e361",
+    "src/platform/offline.ts": "a69dab1d0748f12a0fc872e375bbbbfbda0d92a666704bb4a3f4174a48a17aab",
+    "src/platform/service-worker.ts": "02efd5b5790ad8877d52dad77f081bd6d074b63abd28a4958cb2c90c6cf6a243",
+    "src/platform/storage.ts": "5e43d2a4e03d233811a3ec9ca901554bc8d541f6c3c572d83bedba3dbe9ced6c",
+    "src/pwa.css": "fd0afedbe132f6f93e58e40a80a55e711bc4be41731dc6b1120d456c9ae8a2b7",
+    "vite.config.ts": "832358394af3b35cdad040a2be96cf39c3806f4b82c3295f06a8a075ef6298e8"
+  },
+  "productionSha256": {
+    "dist/app/game.html": "6a3d3c540c2d4c712f4daa759acc24e97d45b64acc0957a199174f0c290247d5",
+    "dist/assets/index-BDex6jpA.js": "567716a012cbf31a761e71ccaf49d70834e1b654ce99cf00dadb2cc4a90056c2",
+    "dist/assets/index-BpBou3AB.css": "87255aa0b7759f962c8c0a71f1e18e7dbc9b183f95f6c8a3cffe603bcbbd9275",
+    "dist/audio/README.md": "215e7649e4dc0d5b37d145f32a0fea653d2fc254b7f4b9523287dedc62edcbfc",
+    "dist/audio/medieval_fantasy_victory_fanfare_3s.wav": "9a589a69ad85dbcc6211153af1460f8a748807b8f1577ac9fe67667ecf798bc7",
+    "dist/data/README.md": "65103df5cfd118e416a9853eea65c9048a4b48095e32160b358932c2e8e74887",
+    "dist/data/adventure-modules.json": "ded72163e21c8dba828b68c40772e8b4a2fa968184d97041bd4a1df8ce91ca2d",
+    "dist/data/adventure-modules.template.json": "ded72163e21c8dba828b68c40772e8b4a2fa968184d97041bd4a1df8ce91ca2d",
+    "dist/data/cities.json": "20d2fff186d2c2e7c884f70e080e52bacffbf9c0a0bba47b4db4c5b8094ce6e8",
+    "dist/data/cities.template.json": "20d2fff186d2c2e7c884f70e080e52bacffbf9c0a0bba47b4db4c5b8094ce6e8",
+    "dist/data/dungeons.json": "d6696d5d03d384ce61e154a96ad57b6d49bae76ac2735d98f1ece9a45f7cf9ad",
+    "dist/data/dungeons.template.json": "0a5d60a77e8abda8dfdf01fd5bc715ff42e547b8ac142ea51d8feee9a2b1f29d",
+    "dist/data/enemies.json": "331ac798244849df4b432865744ca8923c012c081bcf0331ad059e052234f0a1",
+    "dist/data/enemies.template.json": "b24b5f362257656b945071df41772185e5e5ecf6d4ba5914457b0eeb6f363a1f",
+    "dist/data/items.json": "14f0cf3b31f9da5f7c29e5ae1eb83d07c1e0178ac148e321e7b4d21b708da144",
+    "dist/data/items.template.json": "a56e28c6fa2dbaab75cd5633dad4bddcebeb25a4ecb57776ddf418b7973b89f5",
+    "dist/data/keywords.json": "62ae5164fff6c82c13fca35c0435756214847a1b6d30226df5c077b461af1c34",
+    "dist/data/maps.json": "b2f8413a85c24f1b8b260effb8a441facda86d9d9ba2a2628eb0be4949b409a1",
+    "dist/data/maps.template.json": "b2f8413a85c24f1b8b260effb8a441facda86d9d9ba2a2628eb0be4949b409a1",
+    "dist/data/shops.json": "7511328271413afffffbbb4ae70745e4d055437905c7ebd9871a9ec620368afe",
+    "dist/data/shops.template.json": "7511328271413afffffbbb4ae70745e4d055437905c7ebd9871a9ec620368afe",
+    "dist/data/terrain-types.json": "6edaff86cdb88229872a6de8969cb23d2406a5527fd0db8bcc74c480146a1493",
+    "dist/data/terrain-types.template.json": "6edaff86cdb88229872a6de8969cb23d2406a5527fd0db8bcc74c480146a1493",
+    "dist/fonts/README.md": "ded34907d9a930ecf0dad323ab7d337e7a9b6c3504cf94fc4adfa63b50915bff",
+    "dist/fonts/body.ttf": "9d7583b7dc9e812afd32a14280c5cac3160012efe50c8d08938f4fea266ff67f",
+    "dist/fonts/cinzel.ttf": "74c84080364d7a2a313abb524b8601ba14fe719d6c5cb400599861c38578fa40",
+    "dist/fonts/gothic.ttf": "4793af5cf383f3d4a1b86ca8d030a29de0d2c73b3e0f2d6b0b13e7b5d846a06f",
+    "dist/fonts/righteous.woff2": "65c40800bb8bc418beead0d6ee049412c10d22f3cc52f8d863408a1f17472461",
+    "dist/icons/icon-192.png": "a3a2fa8739e8f815a9784c709d498c39f4ce0876c70455a9b52e598b0feb1237",
+    "dist/icons/icon-512.png": "1b88120027431810af4259ae2517c15c9352609bb9fb42e90bc63e00234b0dbe",
+    "dist/icons/location-city.svg": "af3610ef06b7f44d8c946cf99929a4d68813a358f06b091f9e4fc76119c1528a",
+    "dist/icons/location-dungeon.svg": "f83c2be2528cc2d33c1ee710a9cc5feedbe047cb33f3435a4a1ece6462cc9a67",
+    "dist/icons/meeple-hero.svg": "7f5ceab439c75de7a71ce87ea466c47cc3759740542b321f346a47acb90753a0",
+    "dist/icons/meeple-ranger.svg": "a15b63b5e5ee481654a682029f0b4ff8de115bc9a417b8b4180c98db2674bea4",
+    "dist/icons/meeple-spellcaster.svg": "798fcb477fce0f88454b6ef5a9a9a163cc7c2b7946fc3e97563f7263f57883d8",
+    "dist/index.html": "b0b3c8896349a1aaae54263d921c9bb89db969f45fdaa20dc59a08f493462574",
+    "dist/manifest.webmanifest": "f483ad1e4075ba33df56458965b2aab80a6fcde1129f38ea8485569dbaa9586d",
+    "dist/sw.js": "223e8855127d41d2744633a55e4383dc82de71ea36da45cafa21325ca31aa377"
+  }
+}

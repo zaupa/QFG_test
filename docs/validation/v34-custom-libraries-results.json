@@ -1,0 +1,179 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 43,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 Event Keywords Add button is separated vertically from its tab header",
+      "status": "PASS"
+    },
+    {
+      "name": "02 Options labels include all three custom managers",
+      "status": "PASS"
+    },
+    {
+      "name": "03 confirmed enemy configuration persists as custom and survives combat cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "04 cancelled or invalid enemy form does not save a definition",
+      "status": "PASS"
+    },
+    {
+      "name": "05 enemy duplicates ignore capitalization and extra spaces without starting combat",
+      "status": "PASS"
+    },
+    {
+      "name": "06 game-defined enemy names also reject duplicate custom definitions",
+      "status": "PASS"
+    },
+    {
+      "name": "07 saved custom enemies can start future combat with the full original stats",
+      "status": "PASS"
+    },
+    {
+      "name": "08 custom enemy editing is a draft until Save and never rewrites a current combat",
+      "status": "PASS"
+    },
+    {
+      "name": "09 custom enemy manager Cancel discards live edits and additions",
+      "status": "PASS"
+    },
+    {
+      "name": "10 removing a definition does not remove the current enemy snapshot",
+      "status": "PASS"
+    },
+    {
+      "name": "11 item confirmation stores a complete custom template and autocomplete finds it",
+      "status": "PASS"
+    },
+    {
+      "name": "12 selecting a saved item adds another instance without a second definition",
+      "status": "PASS"
+    },
+    {
+      "name": "13 duplicate item definition with changed configuration is rejected before payment",
+      "status": "PASS"
+    },
+    {
+      "name": "14 cancelled item form never creates a template",
+      "status": "PASS"
+    },
+    {
+      "name": "15 game item JSON loads and fills weapon configuration",
+      "status": "PASS"
+    },
+    {
+      "name": "16 custom item manager can add edit and cancel without modifying owned instances",
+      "status": "PASS"
+    },
+    {
+      "name": "17 manager draft duplicate renames are rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "18 manager weapon fields require type and positive modifier",
+      "status": "PASS"
+    },
+    {
+      "name": "19 custom enemy export and import retain custom origin and item rewards",
+      "status": "PASS"
+    },
+    {
+      "name": "20 item definition import is atomic and rejects conflicting duplicate names",
+      "status": "PASS"
+    },
+    {
+      "name": "21 current item JSON can refresh without rebuilding",
+      "status": "PASS"
+    },
+    {
+      "name": "22 item JSON duplicate names preserve last valid offline libraries",
+      "status": "PASS"
+    },
+    {
+      "name": "23 dungeon enemy names show full stats without starting combat",
+      "status": "PASS"
+    },
+    {
+      "name": "24 new custom data survives reload and remains character-specific",
+      "status": "PASS"
+    },
+    {
+      "name": "25 missing cached items cannot invalidate shop references or erase character data",
+      "status": "PASS"
+    },
+    {
+      "name": "26 custom enemy and item catalogs remain available offline",
+      "status": "PASS"
+    },
+    {
+      "name": "27 custom manager and suggestions fit a narrow phone",
+      "status": "PASS"
+    },
+    {
+      "name": "28 custom JSON import rejects duplicate names inside one file",
+      "status": "PASS"
+    },
+    {
+      "name": "29 malformed and non-custom definition imports cannot alter the draft",
+      "status": "PASS"
+    },
+    {
+      "name": "30 duplicate custom names in a full character import reject the save atomically",
+      "status": "PASS"
+    },
+    {
+      "name": "31 same-name shared JSON update preserves one usable custom enemy entry",
+      "status": "PASS"
+    },
+    {
+      "name": "32 conflicting item rewards across enemy drafts cannot partially save",
+      "status": "PASS"
+    },
+    {
+      "name": "33 custom templates are not removed by ordinary gameplay Undo",
+      "status": "PASS"
+    },
+    {
+      "name": "34 item autocomplete prioritizes exact names and tolerates nearby misspellings",
+      "status": "PASS"
+    },
+    {
+      "name": "35 custom item export supports cancelable import in another manager session",
+      "status": "PASS"
+    },
+    {
+      "name": "36 shared item suggestions are available during character creation",
+      "status": "PASS"
+    },
+    {
+      "name": "37 owned game item edits leave the shared template unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "38 mobile custom definition can be completed and saved after scrolling",
+      "status": "PASS"
+    },
+    {
+      "name": "39 foreground refresh applies item-only JSON changes",
+      "status": "PASS"
+    },
+    {
+      "name": "40 custom item imports cannot redefine a game item name",
+      "status": "PASS"
+    },
+    {
+      "name": "41 custom item JSON roundtrip preserves its origin and never duplicates entries",
+      "status": "PASS"
+    },
+    {
+      "name": "42 equivalent keyword case and order reuse one custom item definition",
+      "status": "PASS"
+    },
+    {
+      "name": "43 cancelled manual addition does not learn a custom item definition",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,3 +1,11 @@
+# Quest For Glory — V34
+
+V34 adds JSON-configured shops with stock quantities and decimal buy/sell rates, weighted terrain encounters, and random dungeon Challenge types. Use **Map** to enter local cities or dungeons. Manual inventory addition is free and removal destroys the item; use shops for commerce.
+
+This version is intended for **new characters**. Shop stock, sold equipment condition, and active dungeon Challenge types save locally and work offline after the app has loaded online once. Existing shop stock is retained when libraries refresh; new characters use the latest JSON definitions. The toolbox is unchanged.
+
+See [data configuration](public/data/README.md#v34-shops-and-weighted-encounters), [release notes](RELEASE_NOTES.md), and the versioned audits in `docs`. The historical notes below describe earlier releases.
+
 # Quest For Glory — React + TypeScript PWA
 
 The companion now runs as an installable PWA with a service worker, IndexedDB character saves, and external JSON, font and audio files. The current release is V33, with map-owned locations, Adventure Actions, movement Challenges/encounters and selectable character meeples. The original standalone HTML is retained in `legacy/board_game_tracker_v28.html`; V27 remains in `backup/`.
@@ -172,3 +180,7 @@ Terrain `movementCV` defaults to 5. Map encounters use Danger Level 2 by default
 At zero actions, Rest is offered once the current movement/combat is resolved and existing Rest rules allow it. Decline to stay in the Round: viewing the character/map, dice, healing, inventory/equipment management and manual Combat/Challenge remain available. Movement and location entry are blocked. The Rest button remains available later; completed Rest advances Round and restores two actions. Costs/Wounds, Inn rules and the dungeon's one-Rest-per-cleared-level rule remain unchanged. Cancelling or dying during Rest does not refill actions. Manual Round-number corrections do not grant actions.
 
 Maps configure **2–6 surrounding rings**, excluding the center, with complete tile definitions and exact shared-border neighbor lists. Goriath's Revenge still uses 19 tiles: Lithengard on T01 and the test dungeon on T04. Update source JSON/templates under `public/data`; preview still serves `dist/data`. [V33 audit and screenshots](docs/V33_AUDIT.md). Toolbox files remain unchanged.
+
+## V34 verification
+
+`npm test` builds the production app and runs current PWA, custom-library, stopped-server, world/movement, recovery-rule, and V34 shop/Challenge suites. `npm run test:v34` runs the focused new behavior checks against an existing production build. Historical gameplay/release suites remain available through their existing scripts and `test:historical`; their obsolete pre-V34 inventory-commerce controls and legacy-character fixtures are not part of the V34 fresh-character acceptance checks.

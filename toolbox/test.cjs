@@ -64,7 +64,7 @@ const path=require('node:path');
   window.showDirectoryPicker=async()=>({name:'game-data',getFileHandle:async name=>{window.requestedFiles.push(name);const key=Object.keys(filenames).find(k=>filenames[k]===name);return {getFile:async()=>({name,text:async()=>JSON.stringify(initial[key])}),createWritable:async()=>({write:async text=>{window.folderWrites[name]=JSON.parse(text)},close:async()=>{}})}}});
  });
  await page.getByRole('button',{name:'Open data folder',exact:true}).click();await page.waitForFunction(()=>document.querySelector('#folderStatus').textContent.includes('game-data'));
- check(await page.evaluate(()=>requestedFiles.length===4&&Object.keys(labels).every(k=>handles[k])&&!dirty.size));
+ check(await page.evaluate(()=>requestedFiles.length===Object.keys(labels).length&&Object.keys(labels).every(k=>handles[k])&&!dirty.size));
  await tab('Enemies');await page.getByRole('button',{name:'+ Add entry',exact:true}).click();await page.getByLabel('Name',{exact:true}).fill('Folder Goblin');await page.getByRole('button',{name:'+ Add reward item',exact:true}).click();
  const reward=page.locator('fieldset').filter({has:page.locator('legend').filter({hasText:/^Reward item$/})});await reward.getByLabel('Name',{exact:true}).fill('Folder reward');await reward.getByLabel('Coin value',{exact:true}).fill('7');await page.getByRole('button',{name:'Apply entry',exact:true}).click();
  check(prompts.at(-1).includes('not in the item catalog'));
@@ -88,7 +88,7 @@ const path=require('node:path');
  await page.locator('#files').setInputFiles({name:'items.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(original.items))});await page.waitForFunction(()=>handles.items===null);check(await page.evaluate(()=>libraries.items.items.length===initial.items.items.length&&handles.enemies!==null));
  // Read-only folder fallback loads only standard files at the selected root.
  const fixture=fs.mkdtempSync(path.join(require('node:os').tmpdir(),'qfg-toolbox-'));try{
- for(const key of Object.keys(original))fs.writeFileSync(path.join(fixture,key+'.json'),JSON.stringify(original[key]));fs.mkdirSync(path.join(fixture,'nested'));fs.writeFileSync(path.join(fixture,'nested','enemies.json'),'{malformed ignored nested file');
+ const fileNames=await page.evaluate(()=>filenames);for(const key of Object.keys(original))fs.writeFileSync(path.join(fixture,fileNames[key]),JSON.stringify(original[key]));fs.mkdirSync(path.join(fixture,'nested'));fs.writeFileSync(path.join(fixture,'nested','enemies.json'),'{malformed ignored nested file');
  await page.evaluate(()=>{window.showDirectoryPicker=undefined;window.showSaveFilePicker=undefined});const choosing=page.waitForEvent('filechooser');await page.getByRole('button',{name:'Open data folder',exact:true}).click();await (await choosing).setFiles(fixture);await page.waitForFunction(()=>document.querySelector('#folderStatus').textContent.includes('download files to save changes'));check(await page.evaluate(()=>Object.keys(labels).every(k=>handles[k]===null)&&libraries.enemies.enemies[0].name==='Giant Rats'));
  }finally{fs.rmSync(fixture,{recursive:true,force:true})}
 

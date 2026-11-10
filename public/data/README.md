@@ -287,3 +287,9 @@ Confirmed travel snapshots its origin, destination, CV, Danger Level and enemy c
 Character state now includes `meeple` (`hero`, `ranger`, `spellcaster`), `adventureActions` (0–2), `restOfferPending`, and optional `pendingTravel`. These are gameplay save fields, not map configuration. Completed Rest refills two actions; profile creation starts with two without charging for the initial city. Character exports use envelope version 24. Meeple/location SVGs live under `public/icons` and are precached for offline use.
 
 All eight libraries still refresh atomically. Missing locations/enemies, invalid CVs/Danger Levels/rings or incomplete adjacency retain the last valid bundle. Rebuild or copy the edited source JSON into `dist/data` when using preview. The toolbox is retained unchanged and is not expanded into a world-map editor by this release.
+
+## Optional custom map borders
+
+A tile may define both `startAngle` and `endAngle` as finite degrees within 0–180 across the fan. Omit both for the original equal-width sector determined by index/count. The start must be smaller than the end. Within a ring, sectors sorted by index must cover 0–180 continuously without gaps or overlap; the center always spans 0–180.
+
+The toolbox's Edit borders tool writes these fields and rebuilds symmetric adjacentIds automatically. Shared-border overlap, excluding point-only contact, determines connections between neighboring rings. The PWA renderer and movement validation use the same endpoints. Deploy the application code supporting custom borders together with maps that use them.

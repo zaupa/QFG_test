@@ -39,6 +39,8 @@ node toolbox/test-world.cjs
 node toolbox/test-visual-map.cjs
 node toolbox/test-terrain-enemies.cjs
 node toolbox/test-bulk-danger.cjs
+node toolbox/test-map-borders.cjs
+node tests/map-borders-rules.cjs
 ```
 
 The editor uses the current game validator for dungeon `completionFateReward`, including its default of zero. Items with the exact `heal` keyword require a positive whole-number `healingAmount`; edit Healing amount in the Items tab, enemy rewards, or dungeon treasure. It is omitted from saved non-healing items. The `rest` keyword does not require a healing amount.
@@ -99,3 +101,13 @@ If the map was using global danger mode, applying a terrain level switches it to
 **Reset [terrain] danger** removes those space overrides; the game's tile-mode default is 2. It does not change the map's danger mode. Undo/Redo includes bulk changes and mode switching.
 
 Expanded map settings, space settings, ring layout, encounter board and advanced sections retain their open/closed state throughout edits, Apply entry and Undo/Redo. Space settings stay expanded when you select another space. Closing a section explicitly keeps it closed. Enemy-column scroll positions are retained when controls rebuild the editor. These preferences last for the current page session.
+
+## Dragging map borders
+
+Choose **Edit borders** from Map tool. Gold dividers appear between neighboring spaces within each ring. Drag a divider clockwise or counterclockwise to resize the two spaces. Neighbor lists update automatically as the border crosses spaces in adjacent rings. Apply entry and save maps.json to keep the geometry.
+
+Undo/Redo includes border edits. Press Escape during a drag to cancel. Focus a gold divider and use Left/Right arrows to adjust one degree, or Shift with an arrow for five degrees. Outer fan edges and ring radii stay fixed; dividers stop before collapsing a space.
+
+Changed spaces store optional `startAngle`/`endAngle` endpoints in degrees from 0 to 180 across the fan, left to right. Existing maps omit them and retain equal-width sectors. The game's shared validation, rendering, label positions and travel adjacency now understand these endpoints; use the updated application build when deploying edited maps. Rings must remain complete, ordered and free of gaps/overlaps. Corner-only contact is not adjacency.
+
+Moving spaces swaps their angular endpoints along with their sectors. Rebuilding a ring with a different number of spaces resets that ring to equal widths; rings whose counts are unchanged keep their edited borders.

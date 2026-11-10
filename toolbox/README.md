@@ -5,7 +5,7 @@ Open **data-editor.html** directly in a browser. It is a self-contained, offline
 ## Workflow
 
 1. Select Enemies, Keywords, Items or Dungeons. The included data is a snapshot from the repository at build time.
-2. Use **Open data folder** to choose the folder containing your JSON libraries. All eight standard files load together, with save destinations linked to that folder in supported browsers. Alternatively, use **Open JSON files** to edit just one file or any selected subset. You can select several libraries together so references are validated against the same set. Opening replaces that library in the editor; it does not merge records.
+2. Use **Open data folder** to choose the folder containing your JSON libraries. All nine standard files load together, with save destinations linked to that folder in supported browsers. Alternatively, use **Open JSON files** to edit just one file or any selected subset. You can select several libraries together so references are validated against the same set. Opening replaces that library in the editor; it does not merge records.
 3. Select an entry, edit the labeled fields and use **Apply entry**. Add, duplicate or delete entries using the controls. Add/remove buttons inside an entry manage keywords, encounter rows, dice rolls and optional equipment, rewards and treasure. Required schema fields remain fixed to keep files compatible with the app.
 4. Use **Save current file** for one library, or **Save all modified files** to write every changed library, including new keywords and item presets. The editor validates the full bundle before a bulk save. Writes happen one file at a time; if a write fails, completed files are reported and remaining files stay marked unsaved. Supported browsers can write back to files selected with the browser file picker. New libraries prompt for a destination. If direct writing is unavailable, use the JSON download and replace the original file yourself. Downloads remain marked unsaved because the tool cannot verify replacement.
 5. For development, place enemy, keyword, item and dungeon files in `public/data/`. For an existing deployment, replace the corresponding served `data/` files, then use the companion's Refresh libraries control. Save related enemy/dungeon changes together.
@@ -42,6 +42,7 @@ node toolbox/test-bulk-danger.cjs
 node toolbox/test-map-borders.cjs
 node toolbox/test-remove-space.cjs
 node toolbox/test-map-locations.cjs
+node toolbox/test-v34.cjs
 node tests/map-borders-rules.cjs
 ```
 
@@ -49,7 +50,7 @@ The editor uses the current game validator for dungeon `completionFateReward`, i
 
 ## Folder editing
 
-Choose the directory that directly contains `enemies.json`, `keywords.json`, `items.json`, `dungeons.json`, `cities.json`, `terrain-types.json`, `maps.json` and `adventure-modules.json` (normally `public/data`). Other files and nested folders are ignored. Reopen the folder when starting a new editor session. Chrome and Edge support direct folder writing when allowed by browser permissions. Other browsers can load a folder through the directory upload picker; use individual JSON downloads to replace those files afterward. Single-file loading and saving remain available at all times.
+Choose the directory that directly contains `enemies.json`, `keywords.json`, `items.json`, `dungeons.json`, `cities.json`, `terrain-types.json`, `maps.json` `adventure-modules.json` and `shops.json` (normally `public/data`). Other files and nested folders are ignored. Reopen the folder when starting a new editor session. Chrome and Edge support direct folder writing when allowed by browser permissions. Other browsers can load a folder through the directory upload picker; use individual JSON downloads to replace those files afterward. Single-file loading and saving remain available at all times.
 
 Missing standard files prompt before loading as empty libraries; embedded sample data is never mixed into a selected folder. A missing file is created only when you save that library. Malformed files or invalid cross-references leave the previous libraries and file destinations untouched. Bulk saving is sequential, not a filesystem transaction.
 
@@ -129,3 +130,15 @@ Map spaces show the same city and dungeon SVG markers used by the companion game
 The inspector's Locations section is always visible. Choose City or Dungeon, choose a location, and place it. Locations already on this tile are disabled. Locations on another tile are labeled with their existing space; the action offers **Move location here** and asks before removing the old placement. A starting city cannot be moved or removed until its adventure's starting configuration is changed.
 
 Each city/dungeon definition can occupy only one tile **per map**. Both the visual editor and advanced map forms use the same placement controls. Duplicate locations in imported JSON still reject the entire import. A city and dungeon may share one tile; different adventure maps may each place the same definition once. Placements, moves and removals support Undo/Redo. Apply entry and save maps.json when finished.
+
+## V34 shops and weighted encounters
+
+The Shops tab edits `shops.json`, which is included when opening a data folder. Define stable shop IDs, names, decimal sell/purchase rates, and stock rows using item-name dropdowns and nonnegative whole quantities. Sell rates determine what the shop charges (`ceil(base value × sell rate)`); purchase rates determine what the shop pays (`floor(base value × purchase rate)`). Zero quantities and zero rates are valid. City Shop amenities now select an existing shop definition. Shared shops can be referenced by multiple cities.
+
+Validation uses the game's commerce rules and checks the complete nine-library bundle, including item stock references and city shop links. Renaming an item updates stock references; save shops.json too when marked modified. Changes affect new/unvisited game shops, rather than resetting a character's existing saved stock.
+
+Terrain enemy cards have weight selectors from 1 to 4. Changing one updates matching spaces of that terrain in the selected map. Map-wide and individual-space settings also expose per-enemy weights. Missing weights default to 1. Weights control relative selection after Danger Level triggers an encounter. Mixed per-space weights are labeled; setting a value unifies only that enemy's weight in that terrain.
+
+Moving/copying enemies materializes inherited weights so existing odds are preserved. Removed enemies lose obsolete weight keys, and enemy renames update both roster entries and weight keys. Shop, weight, border and location edits retain their existing Undo/Redo and save workflows where applicable.
+
+The embedded snapshot includes the updated 15-space Goriath map, custom border angles, locations and danger levels. Dungeon Challenge categories added by V34 are gameplay rules and do not require additional authored JSON fields.

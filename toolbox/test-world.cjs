@@ -6,7 +6,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('n
  const tab=async name=>{await page.getByRole('navigation').getByRole('button',{name,exact:true}).click();if(name==='Maps')await page.locator('#advancedMap').evaluate(el=>el.open=true)};const apply=async()=>{await page.getByRole('button',{name:'Apply entry',exact:true}).click();if(await page.locator('#advancedMap').count())await page.locator('#advancedMap').evaluate(el=>el.open=true)};const discard=async()=>{await page.getByRole('button',{name:'Discard draft',exact:true}).click();if(await page.locator('#advancedMap').count())await page.locator('#advancedMap').evaluate(el=>el.open=true)};let checks=0;const check=v=>{assert.ok(v);checks++};
  try{
  await page.setContent(fs.readFileSync(path.join(__dirname,'data-editor.html'),'utf8'));await page.evaluate(()=>{window.showOpenFilePicker=undefined;window.showSaveFilePicker=undefined});
- check(await page.getByRole('navigation').getByRole('button').count()===8);check(await page.evaluate(()=>{validateBundle();return true}));
+ check(await page.getByRole('navigation').getByRole('button').count()===9);check(await page.evaluate(()=>{validateBundle();return true}));
  // City amenity forms preserve values and omit removed optional services.
  await tab('Cities');await page.getByLabel('Healing cost',{exact:true}).fill('12');await apply();check(await page.evaluate(()=>libraries.cities.cities[0].amenities.temple.healingCost===12));
  await page.getByRole('button',{name:'Remove blacksmith',exact:true}).click();await apply();check(await page.evaluate(()=>!Object.hasOwn(libraries.cities.cities[0].amenities,'blacksmith')));

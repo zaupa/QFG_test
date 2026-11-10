@@ -37,7 +37,7 @@ Browser regression checks:
 node toolbox/test.cjs
 ```
 
-The editor preserves and edits `completionFateReward` in dungeon data. The current game validator does not yet apply this field during gameplay; the toolbox does not change game rules.
+The editor uses the current game validator for dungeon `completionFateReward`, including its default of zero. Items with the exact `heal` keyword require a positive whole-number `healingAmount`; edit Healing amount in the Items tab, enemy rewards, or dungeon treasure. It is omitted from saved non-healing items. The `rest` keyword does not require a healing amount.
 
 ## Folder editing
 
@@ -46,3 +46,5 @@ Choose the directory that directly contains `enemies.json`, `keywords.json`, `it
 Missing standard files prompt before loading as empty libraries; embedded sample data is never mixed into a selected folder. A missing file is created only when you save that library. Malformed files or invalid cross-references leave the previous libraries and file destinations untouched. Bulk saving is sequential, not a filesystem transaction.
 
 When you create or change an enemy reward or dungeon treasure to an item name not already in the catalog, Apply entry asks whether to add it to `items.json`. Accepting copies the complete item, including keywords, value, equipment and usage; declining keeps it only in the reward/treasure. Existing catalog items are not overwritten. Save both the edited library and the item catalog, or use Save all modified files.
+
+The toolbox build validates all JSON libraries and templates under `public/data/` before regenerating the standalone HTML. Rebuild after data or rule changes to keep the starting snapshot and embedded validators current.

@@ -40,3 +40,7 @@ Raw candidate/rerun reports are retained with deduplicated aggregates. The final
 - [Six-ring Map](validation/v33-six-rings.png)
 
 Build and run `npm test` for all current suites, or `npm run test:v33` for the new rule/browser checks against an existing production build. Configure data with [public/data/README.md](../public/data/README.md).
+
+## Publication integration
+
+The user subsequently requested V33 publication and a backup of the previous version. Remote V32 commit `c114e2576bd2aada829dd64e90539c812e97f229`, including its latest toolbox and game-data edits, is the backup target. Those edits were merged into V33 without changing toolbox contents; both release branches use toolbox tree `42e8c7ed886881d2ac5a5227d1e15548a9de539f`. The production build, 25 world schema/geometry checks, 16 item/recovery/data checks and seven targeted browser checks passed after integration. The original 477-check report records the pre-integration release audit; application runtime and stylesheet bytes are unchanged by the merge. The earlier local-only/no-push statements describe audit-time status.

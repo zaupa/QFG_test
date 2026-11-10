@@ -1,0 +1,21 @@
+{
+  "releaseVersion": "33.0.0",
+  "releaseBranch": "pwa_wip",
+  "backupVersion": "32.0.0",
+  "backupBranch": "pwa_wip_backup",
+  "backupCommit": "c114e2576bd2aada829dd64e90539c812e97f229",
+  "toolboxTree": "42e8c7ed886881d2ac5a5227d1e15548a9de539f",
+  "toolboxIdenticalOnBothBranches": true,
+  "postIntegrationBuild": "PASS",
+  "postIntegrationChecks": {
+    "worldRules": 25,
+    "itemRecoveryData": 16,
+    "browserSmoke": 7,
+    "failed": 0
+  },
+  "preservedRemoteDataSHA256": {
+    "public/data/dungeons.json": "d6696d5d03d384ce61e154a96ad57b6d49bae76ac2735d98f1ece9a45f7cf9ad",
+    "public/data/enemies.json": "331ac798244849df4b432865744ca8923c012c081bcf0331ad059e052234f0a1",
+    "public/data/keywords.json": "62ae5164fff6c82c13fca35c0435756214847a1b6d30226df5c077b461af1c34"
+  }
+}

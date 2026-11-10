@@ -1,0 +1,13 @@
+{
+  "backupBranch": "pwa_wip_backup",
+  "backupCommit": "608b102bee45bd9b3f3e408db4b5af3c951ff2fd",
+  "releaseBranch": "pwa_wip",
+  "version": "32.0.0",
+  "toolboxTree": "3bc087a218cecc8ce9a5fd541e22f87011908591",
+  "toolboxIdenticalOnBothBranches": true,
+  "postIntegrationBuild": "PASS",
+  "postIntegrationWorldChecks": {
+    "passed": 20,
+    "failed": 0
+  }
+}

@@ -44,3 +44,7 @@ Two first-run world checks needed test corrections: Playwright correctly refused
 - [Mobile map](validation/v32-map-mobile.png)
 
 Reproduce with `npm test`, or build then run `npm run test:v32` for the new world checks. Configure source data with the schemas in [public/data/README.md](../public/data/README.md). Preview serves the built `dist/data` directory.
+
+## Publication integration
+
+The user subsequently requested publication and a V31 backup. Remote V31 commit `608b102bee45bd9b3f3e408db4b5af3c951ff2fd` already existed on both remote branches. Its newer toolbox-only update was merged into V32 without changing toolbox contents. Both branches are prepared with identical toolbox tree `3bc087a218cecc8ce9a5fd541e22f87011908591`; `pwa_wip_backup` retains V31, while `pwa_wip` receives V32. The production build and all 20 world schema/geometry checks passed after integration. The earlier local-only/no-push statements describe the original audit-time status.

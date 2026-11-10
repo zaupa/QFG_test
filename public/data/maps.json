@@ -14,8 +14,7 @@
             "T02",
             "T03",
             "T04",
-            "T05",
-            "T06"
+            "T05"
           ],
           "ring": 0,
           "index": 0,
@@ -28,13 +27,10 @@
             },
             {
               "type": "dungeon",
-              "id": "R2"
-            },
-            {
-              "type": "dungeon",
               "id": "T1"
             }
-          ]
+          ],
+          "dangerLevel": 2
         },
         {
           "id": "T02",
@@ -48,9 +44,12 @@
           ],
           "ring": 1,
           "index": 0,
-          "count": 5,
+          "count": 4,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "startAngle": 0,
+          "endAngle": 36,
+          "dangerLevel": 2
         },
         {
           "id": "T03",
@@ -65,9 +64,12 @@
           ],
           "ring": 1,
           "index": 1,
-          "count": 5,
+          "count": 4,
           "exterior": false,
-          "locations": []
+          "locations": [],
+          "startAngle": 36,
+          "endAngle": 72,
+          "dangerLevel": 2
         },
         {
           "id": "T04",
@@ -82,14 +84,17 @@
           ],
           "ring": 1,
           "index": 2,
-          "count": 5,
+          "count": 4,
           "exterior": false,
           "locations": [
             {
               "type": "dungeon",
               "id": "R1"
             }
-          ]
+          ],
+          "startAngle": 72,
+          "endAngle": 108,
+          "dangerLevel": 3
         },
         {
           "id": "T05",
@@ -98,31 +103,18 @@
           "adjacentIds": [
             "T01",
             "T04",
-            "T06",
             "T10",
-            "T11"
-          ],
-          "ring": 1,
-          "index": 3,
-          "count": 5,
-          "exterior": false,
-          "locations": []
-        },
-        {
-          "id": "T06",
-          "name": "Forest",
-          "terrainTypeId": "forest",
-          "adjacentIds": [
-            "T01",
-            "T05",
             "T11",
             "T20"
           ],
           "ring": 1,
-          "index": 4,
-          "count": 5,
-          "exterior": true,
-          "locations": []
+          "index": 3,
+          "count": 4,
+          "exterior": false,
+          "locations": [],
+          "startAngle": 108,
+          "endAngle": 180,
+          "dangerLevel": 2
         },
         {
           "id": "T07",
@@ -137,7 +129,10 @@
           "index": 0,
           "count": 6,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "startAngle": 0,
+          "endAngle": 12.933,
+          "dangerLevel": 2
         },
         {
           "id": "T08",
@@ -155,7 +150,15 @@
           "index": 1,
           "count": 6,
           "exterior": false,
-          "locations": []
+          "locations": [
+            {
+              "type": "dungeon",
+              "id": "R2"
+            }
+          ],
+          "startAngle": 12.933,
+          "endAngle": 62.531,
+          "dangerLevel": 2
         },
         {
           "id": "T09",
@@ -172,7 +175,10 @@
           "index": 2,
           "count": 6,
           "exterior": false,
-          "locations": []
+          "locations": [],
+          "startAngle": 62.531,
+          "endAngle": 90,
+          "dangerLevel": 3
         },
         {
           "id": "T10",
@@ -189,7 +195,10 @@
           "index": 3,
           "count": 6,
           "exterior": false,
-          "locations": []
+          "locations": [],
+          "startAngle": 90,
+          "endAngle": 130.57,
+          "dangerLevel": 2
         },
         {
           "id": "T11",
@@ -197,7 +206,6 @@
           "terrainTypeId": "plains",
           "adjacentIds": [
             "T05",
-            "T06",
             "T10",
             "T20",
             "T15",
@@ -207,7 +215,10 @@
           "index": 4,
           "count": 6,
           "exterior": false,
-          "locations": []
+          "locations": [],
+          "startAngle": 130.57,
+          "endAngle": 164.146,
+          "dangerLevel": 2
         },
         {
           "id": "T20",
@@ -218,11 +229,14 @@
           "count": 6,
           "exterior": true,
           "adjacentIds": [
-            "T06",
+            "T05",
             "T11",
             "T16"
           ],
-          "locations": []
+          "locations": [],
+          "startAngle": 164.146,
+          "endAngle": 180,
+          "dangerLevel": 2
         },
         {
           "id": "T13",
@@ -237,7 +251,10 @@
           "index": 0,
           "count": 4,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "startAngle": 0,
+          "endAngle": 20.582,
+          "dangerLevel": 2
         },
         {
           "id": "T14",
@@ -253,12 +270,15 @@
           "index": 1,
           "count": 4,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "startAngle": 20.582,
+          "endAngle": 90,
+          "dangerLevel": 2
         },
         {
           "id": "T15",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
+          "name": "Forest",
+          "terrainTypeId": "forest",
           "adjacentIds": [
             "T10",
             "T11",
@@ -269,12 +289,13 @@
           "index": 2,
           "count": 4,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "dangerLevel": 2
         },
         {
           "id": "T16",
-          "name": "Horseshoe Mountains",
-          "terrainTypeId": "mountains",
+          "name": "Forest",
+          "terrainTypeId": "forest",
           "adjacentIds": [
             "T11",
             "T20",
@@ -284,12 +305,13 @@
           "index": 3,
           "count": 4,
           "exterior": true,
-          "locations": []
+          "locations": [],
+          "dangerLevel": 2
         }
       ],
       "ringCount": 3,
       "encounters": {
-        "dangerMode": "global",
+        "dangerMode": "tile",
         "dangerLevel": 2,
         "enemyIds": [
           "Giant Rats",

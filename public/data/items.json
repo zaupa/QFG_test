@@ -53,6 +53,56 @@
       ],
       "baseValue": 10,
       "healingAmount": 5
+    },
+    {
+      "name": "Sword",
+      "description": "A standard long sword two-hands",
+      "keywords": [
+        "melee",
+        "mundane",
+        "slash",
+        "metal"
+      ],
+      "baseValue": 12,
+      "equipment": {
+        "type": "weapon",
+        "modifier": 1,
+        "usage": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "Leather Armor",
+      "description": "A standard Leather armor, partial coverage",
+      "keywords": [
+        "mundane",
+        "leather",
+        "Partial Protection"
+      ],
+      "baseValue": 12,
+      "equipment": {
+        "type": "armor",
+        "modifier": 1,
+        "usage": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "Sleeping bag",
+      "description": "A bare bones sleeping bag, one use",
+      "keywords": [
+        "rest",
+        "fabric"
+      ],
+      "baseValue": 10
     }
   ]
 }

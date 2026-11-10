@@ -10,5 +10,7 @@ export interface DungeonLibrary {format:'quest-for-glory-dungeons';version:numbe
 export type {ItemLibrary,CustomDefinition} from "./definitions";
 
 export type RestType='Bad'|'Partial'|'Complete';
-export interface RestPlan {level:0|1|2;recovery:5|15|30;location:'normal'|'dungeon'|'inn';cost:0|10;supply:0|1;wound:boolean}
-export interface CityVisit {action:''|'blacksmith'|'shop'|'inn'|'guild'}
+export interface RestPlan {level:0|1|2;recovery:5|15|30;location:'normal'|'dungeon'|'inn';cost:number;supply:0|1;wound:boolean}
+export interface CityVisit {id?:string;definition?:import('./world').CityDefinition;action:''|'blacksmith'|'shop'|'inn'|'guild'|'temple'}
+
+export type CharacterPosition={type:'wilderness';spaceId:string|null}|{type:'city';cityId:string;spaceId:string|null}|{type:'dungeon';dungeonId:string;spaceId:string|null};

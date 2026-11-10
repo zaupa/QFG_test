@@ -1,6 +1,6 @@
 # Quest For Glory — React + TypeScript PWA
 
-The companion now runs as an installable PWA with a service worker, IndexedDB character saves, and external JSON, font and audio files. The current release is V31, with city services and item-based recovery built on the original V28 gameplay. The original standalone HTML is retained in `legacy/board_game_tracker_v28.html`; V27 remains in `backup/`.
+The companion now runs as an installable PWA with a service worker, IndexedDB character saves, and external JSON, font and audio files. The current release is V32, with JSON-defined adventures, cities, character positions and an interactive terrain map built on the original V28 gameplay. The original standalone HTML is retained in `legacy/board_game_tracker_v28.html`; V27 remains in `backup/`.
 
 ## Run on your computer
 
@@ -140,3 +140,19 @@ The **Inn** also sells integer Supply bundles: 1 Coin buys 2 Supply. The **Black
 Build and preview the update with `npm.cmd run build` then `npm.cmd run preview`. Keep the same browser profile, host and port to retain your local saves. Source JSON lives in `public/data`; preview serves the built `dist/data` copy.
 
 V31 validation and transaction details are in [docs/V31_AUDIT.md](docs/V31_AUDIT.md).
+
+## V32 — Adventures, cities and terrain movement
+
+New characters choose a predefined Adventure Module. The supplied test adventure is **Goriath’s Revenge**, starting inside **Lithengard** on map space **T01**. Its fan-shaped map has 19 spaces. All exterior non-start spaces are Mountains named **Horseshoe Mountains**; the starting city occupies the opening at the base.
+
+Exit the city to enter Wilderness. **Move to Another Terrain**, beside Visit City, opens the map: choose a highlighted border-sharing space and confirm **Move here**. Corner contact does not count. On phones the map scrolls horizontally and initially centers on the hero. Current position and adventure ID save locally, survive offline reloads, and participate in Undo.
+
+**Visit City** opens a list filtered by the selected adventure. Its city screen shows only configured amenities: Blacksmith, Shop, Inn, Guild and optional Temple. The Temple defaults to 10 Coins for up to 5 Wound-card points, requires no item, and charges only on confirmed healing. Each city controls Inn prices, Supply bundle price/quantity, Guild points per Fate, Temple price/recovery, and default repair payment. Blacksmith payment remains adjustable as in V31. Active city visits retain their configuration snapshot; reentry uses refreshed definitions.
+
+The four new catalogs live beside the existing game libraries in `public/data`: `adventure-modules.json`, `cities.json`, `terrain-types.json`, and `maps.json`, each with a matching template. All eight catalogs refresh and validate atomically; invalid references or geometry preserve the last good offline bundle. See [public/data/README.md](public/data/README.md) for schemas. Preview serves `dist/data`, so rebuild or copy changed source JSON into the served folder before refreshing.
+
+The current adventure lists govern city/dungeon availability throughout Wilderness. Visits preserve the map space to return to; map movement itself always crosses one shared border. Terrain discovery, travel Challenges, two-Action Rounds and Event/encounter automation remain separate future mechanics.
+
+Old character names and progress are preserved. Recognized adventure names migrate to IDs; unmatched names remain visible and require choosing a predefined module before map/city/dungeon selection. Existing city and dungeon activities can finish using their saved state. An old offline cache without the new world catalogs can still open characters; reconnect and refresh to enable the new catalogs. Character export envelope version is 23; IndexedDB’s database version is unchanged.
+
+V32 audit evidence and screenshots: [docs/V32_AUDIT.md](docs/V32_AUDIT.md). No toolbox files are changed.

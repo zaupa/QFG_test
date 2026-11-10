@@ -1,0 +1,123 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 29,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 Adventure creation uses a predefined selection and starts in Lithengard at T01",
+      "status": "PASS"
+    },
+    {
+      "name": "02 Exit starting city returns to Wilderness on the same map space",
+      "status": "PASS"
+    },
+    {
+      "name": "03 Map has nineteen unique spaces and only border-sharing neighbors are selectable",
+      "status": "PASS"
+    },
+    {
+      "name": "04 Selecting a destination is a draft; Cancel leaves current position and resources unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "05 Confirming adjacent travel changes one space, persists after reload and supports Undo",
+      "status": "PASS"
+    },
+    {
+      "name": "06 Map supports keyboard selection and recalculates neighbors after movement",
+      "status": "PASS"
+    },
+    {
+      "name": "07 Visit City opens a module-filtered chooser and entering preserves the return space",
+      "status": "PASS"
+    },
+    {
+      "name": "08 Temple heals up to five points for ten Coins without consuming an item",
+      "status": "PASS"
+    },
+    {
+      "name": "09 Temple Cancel and unaffordable healing do not charge or move cards",
+      "status": "PASS"
+    },
+    {
+      "name": "10 City amenities and prices come from JSON; unlisted cities stay hidden",
+      "status": "PASS"
+    },
+    {
+      "name": "11 Configured Inn Rest price and Supply bundles replace hard-coded defaults",
+      "status": "PASS"
+    },
+    {
+      "name": "12 Configured Guild rate governs Fate purchases",
+      "status": "PASS"
+    },
+    {
+      "name": "13 Blacksmith repair defaults to the configured city price",
+      "status": "PASS"
+    },
+    {
+      "name": "14 Dungeon list contains only selected adventure dungeons; entering/exiting preserves origin space",
+      "status": "PASS"
+    },
+    {
+      "name": "15 Editing adventure uses selection and moves to configured start without losing possessions",
+      "status": "PASS"
+    },
+    {
+      "name": "16 Older typed module names remain intact and unknown adventures require explicit selection",
+      "status": "PASS"
+    },
+    {
+      "name": "17 Legacy active city and paid Rest migrate without relocation or duplicate payment",
+      "status": "PASS"
+    },
+    {
+      "name": "18 Invalid world JSON refresh preserves the complete previous bundle",
+      "status": "PASS"
+    },
+    {
+      "name": "19 Travel and selected adventure remain available offline after reload",
+      "status": "PASS"
+    },
+    {
+      "name": "20 Map and city chooser fit a 320px mobile screen with contained map scrolling",
+      "status": "PASS"
+    },
+    {
+      "name": "21 Desktop map shows the Horseshoe Mountains and starting city",
+      "status": "PASS"
+    },
+    {
+      "name": "22 A second adventure filters cities and dungeons and uses its own Wilderness start",
+      "status": "PASS"
+    },
+    {
+      "name": "23 Older offline caches without world libraries keep characters usable until refresh restores maps",
+      "status": "PASS"
+    },
+    {
+      "name": "24 Temple Undo restores Coins and Wound cards without consuming inventory",
+      "status": "PASS"
+    },
+    {
+      "name": "25 Active city configuration survives library updates; reentry uses the updated prices",
+      "status": "PASS"
+    },
+    {
+      "name": "26 Travel is disabled throughout an active Challenge and returns after cancellation",
+      "status": "PASS"
+    },
+    {
+      "name": "27 Terrain names render as literal text and cannot inject SVG markup",
+      "status": "PASS"
+    },
+    {
+      "name": "28 Zero-priced Temple Inn and Supply configurations are honored without false Wound warnings",
+      "status": "PASS"
+    },
+    {
+      "name": "29 Renaming an Adventure in JSON updates the displayed module and migrates its saved name on reload",
+      "status": "PASS"
+    }
+  ]
+}

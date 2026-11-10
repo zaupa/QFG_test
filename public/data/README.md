@@ -185,3 +185,53 @@ Items with the exact `heal` keyword (case-insensitive) require a positive safe i
 An item with `rest` can be consumed to promote Rest by one type. It needs no numeric recovery field: Bad/Partial/Complete have fixed maxima of 5/15/30.
 
 Dungeon `completionFateReward` is a nonnegative safe integer, default 0 for older files. It is additional to the boss card's own `F`. After victory it is banked once, shown in congratulations, and paid atomically with pending Coins on Exit Dungeon. An overflowing Coin or Fate pool leaves both payments pending until corrected. The treasure choice does not re-award currency. Changing JSON does not rewrite a dungeon snapshot already being explored.
+
+## V32 world catalogs
+
+Four additional external catalogs are loaded with enemies, keywords, dungeons and items. The complete bundle is validated before replacement; offline play uses its last validated IndexedDB copy. Corresponding `.template.json` files contain the playable test examples. IDs are unique, stable ASCII letters/digits/hyphens/underscores beginning with a letter or digit; names are ordinary text. IDs are case-sensitive.
+
+| File | Format | Root list |
+| --- | --- | --- |
+| adventure-modules.json | quest-for-glory-adventure-modules | modules |
+| cities.json | quest-for-glory-cities | cities |
+| terrain-types.json | quest-for-glory-terrain-types | terrainTypes |
+| maps.json | quest-for-glory-maps | maps |
+
+Each uses `version: 1`. An adventure entry has this structure:
+
+```json
+{
+  "id": "goriaths-revenge",
+  "name": "Goriath's Revenge",
+  "mapId": "goriath-map",
+  "cityIds": ["lithengard"],
+  "dungeonIds": ["R1"],
+  "startingLocation": {"type":"city", "cityId":"lithengard", "spaceId":"T01"}
+}
+```
+
+For a Wilderness start use `{"type":"wilderness","spaceId":"T03"}`. Every referenced city, dungeon, map and starting space must exist. A starting city must belong to `cityIds`. Empty city/dungeon lists are valid. Module selection is required for new characters. Changing an existing character's selected module moves it to that module's start while keeping resources, cards, inventory, custom preferences, event keywords and dungeon history. Changing modules is blocked during an activity or city/dungeon visit.
+
+City configuration:
+
+```json
+{
+  "id":"lithengard",
+  "name":"Lithengard",
+  "amenities":{
+    "blacksmith":{"repairCost":5},
+    "shop":{},
+    "inn":{"restCost":10,"supplyBundleCost":1,"supplyBundleAmount":2},
+    "guild":{"attributePointsPerFate":3},
+    "temple":{"healingCost":10,"healingAmount":5}
+  }
+}
+```
+
+Omit an amenity to make it unavailable. Costs are nonnegative safe integers; healing amount, Supply bundle amount and Attribute Points per Fate are positive safe integers. Zero-priced configured services are supported. Shop buying rules are not yet defined. Template repair price is the default editable payment; other configured prices/rates apply directly. Visiting a city snapshots its definition to protect ongoing operations from later library edits; exit/reenter to use new settings.
+
+Terrain types have `id` and `name`. The initial five are Forest, Plains, Mountains, Deep Forest and Swamp. Map entries contain `id`, `name` and `tiles`. A tile has `id`, `name`, `terrainTypeId`, `adjacentIds`, `ring`, `index`, `count` and `exterior`. The fan map supports a center (`ring:0,index:0,count:1`) and up to three surrounding half-circle rings. Each ring must contain every index from zero to count minus one, use one consistent count (at most 30), and have no duplicated sector. Neighbor lists must exactly match shared borders, be symmetric, and keep the map connected. Same-ring neighbors differ by one index; adjacent rings connect where their angular intervals overlap with positive width. Point-only contact and skipped rings are unavailable.
+
+The test map has 1 center + 5 inner + 6 middle + 7 outer spaces = 19. Its outer ring and side boundary spaces are Mountains named Horseshoe Mountains. T01 is the starting city opening. Cities and dungeons are currently available according to module lists, rather than discovered per-tile locations; entering/leaving retains the Wilderness space. Individual visit restrictions and travel Challenges can be added later.
+
+Saved characters reference the module ID and a position such as `{"type":"wilderness","spaceId":"T03"}`, `{"type":"city","cityId":"lithengard","spaceId":"T03"}`, or `{"type":"dungeon","dungeonId":"R1","spaceId":"T03"}`. The space is the return position for a city/dungeon visit. Old unknown module names and their progress remain intact until the player selects a new module.

@@ -1,0 +1,39 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 8,
+  "failed": 0,
+  "results": [
+    {
+      "name": "03 Map has nineteen unique spaces and only border-sharing neighbors are selectable",
+      "status": "PASS"
+    },
+    {
+      "name": "04 Selecting a destination is a draft; Cancel leaves current position and resources unchanged",
+      "status": "PASS"
+    },
+    {
+      "name": "05 Confirming adjacent travel changes one space, persists after reload and supports Undo",
+      "status": "PASS"
+    },
+    {
+      "name": "06 Map supports keyboard selection and recalculates neighbors after movement",
+      "status": "PASS"
+    },
+    {
+      "name": "19 Travel and selected adventure remain available offline after reload",
+      "status": "PASS"
+    },
+    {
+      "name": "20 Map and city chooser fit a 320px mobile screen with contained map scrolling",
+      "status": "PASS"
+    },
+    {
+      "name": "21 Desktop map shows the Horseshoe Mountains and starting city",
+      "status": "PASS"
+    },
+    {
+      "name": "27 Terrain names render as literal text and cannot inject SVG markup",
+      "status": "PASS"
+    }
+  ]
+}

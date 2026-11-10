@@ -1,0 +1,26 @@
+{
+  "format": "quest-for-glory-terrain-types",
+  "version": 1,
+  "terrainTypes": [
+    {
+      "id": "forest",
+      "name": "Forest"
+    },
+    {
+      "id": "plains",
+      "name": "Plains"
+    },
+    {
+      "id": "mountains",
+      "name": "Mountains"
+    },
+    {
+      "id": "deep-forest",
+      "name": "Deep Forest"
+    },
+    {
+      "id": "swamp",
+      "name": "Swamp"
+    }
+  ]
+}

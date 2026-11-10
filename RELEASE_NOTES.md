@@ -1,3 +1,13 @@
+# V32 — Adventure modules and graphical terrain movement
+
+- Replaces typed Adventure Modules with selection from an external catalog, including per-module city/dungeon lists and starting locations.
+- Adds configured city definitions and a Visit City picker, with optional amenities and city-specific prices/rates. Temple healing defaults to 10 Coins for up to 5 Wound points without an item.
+- Saves Wilderness/City/Dungeon position and return-space information. Adds an accessible SVG travel map with shared-border adjacency, confirmation, Undo, offline persistence and mobile panning centered on the hero.
+- Supplies Goriath’s Revenge, Lithengard and its 19-space map; exterior non-start spaces are Horseshoe Mountains.
+- Adds external adventure/city/terrain/map JSON and templates to atomic library refresh and offline storage, with ID/reference/price/geometry validation and literal text rendering.
+- Preserves old typed names and active city/dungeon saves, including paid recovery. New character exports use envelope version 23.
+- Keeps toolbox files unchanged.
+
 # V31 — City, item healing and location-based Rest
 
 - Adds Visit City with a collapsed Character Sheet, Guild, Inn, Blacksmith, and a Shop placeholder.

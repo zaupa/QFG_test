@@ -24,10 +24,6 @@
             {
               "type": "city",
               "id": "lithengard"
-            },
-            {
-              "type": "dungeon",
-              "id": "T1"
             }
           ],
           "dangerLevel": 2
@@ -169,7 +165,8 @@
             "T04",
             "T08",
             "T10",
-            "T14"
+            "T14",
+            "T15"
           ],
           "ring": 2,
           "index": 2,
@@ -189,7 +186,8 @@
             "T05",
             "T09",
             "T11",
-            "T15"
+            "T15",
+            "T16"
           ],
           "ring": 2,
           "index": 3,
@@ -197,27 +195,27 @@
           "exterior": false,
           "locations": [],
           "startAngle": 90,
-          "endAngle": 130.57,
+          "endAngle": 130.463,
           "dangerLevel": 2
         },
         {
           "id": "T11",
-          "name": "Plains",
-          "terrainTypeId": "plains",
+          "name": "Deep Forest",
+          "terrainTypeId": "deep-forest",
           "adjacentIds": [
             "T05",
             "T10",
             "T20",
-            "T15",
-            "T16"
+            "T16",
+            "T06"
           ],
           "ring": 2,
           "index": 4,
           "count": 6,
           "exterior": false,
           "locations": [],
-          "startAngle": 130.57,
-          "endAngle": 164.146,
+          "startAngle": 130.463,
+          "endAngle": 166.589,
           "dangerLevel": 2
         },
         {
@@ -231,85 +229,184 @@
           "adjacentIds": [
             "T05",
             "T11",
-            "T16"
+            "T06"
           ],
           "locations": [],
-          "startAngle": 164.146,
+          "startAngle": 166.589,
           "endAngle": 180,
           "dangerLevel": 2
         },
         {
           "id": "T13",
-          "name": "Horseshoe Mountains",
+          "name": "Mountains",
           "terrainTypeId": "mountains",
           "adjacentIds": [
             "T07",
             "T08",
-            "T14"
+            "T14",
+            "T12",
+            "T17"
           ],
           "ring": 3,
           "index": 0,
-          "count": 4,
+          "count": 5,
           "exterior": true,
           "locations": [],
-          "startAngle": 0,
-          "endAngle": 20.582,
           "dangerLevel": 2
         },
         {
           "id": "T14",
-          "name": "Horseshoe Mountains",
+          "name": "Mountains",
           "terrainTypeId": "mountains",
           "adjacentIds": [
             "T08",
             "T09",
             "T13",
-            "T15"
+            "T15",
+            "T17"
           ],
           "ring": 3,
           "index": 1,
-          "count": 4,
+          "count": 5,
           "exterior": true,
           "locations": [],
-          "startAngle": 20.582,
-          "endAngle": 90,
-          "dangerLevel": 2
+          "dangerLevel": 2,
+          "startAngle": 36,
+          "endAngle": 81.106
         },
         {
           "id": "T15",
-          "name": "Forest",
-          "terrainTypeId": "forest",
+          "name": "Mountain",
+          "terrainTypeId": "mountains",
           "adjacentIds": [
+            "T09",
             "T10",
-            "T11",
             "T14",
-            "T16"
+            "T16",
+            "T17"
           ],
           "ring": 3,
           "index": 2,
-          "count": 4,
+          "count": 5,
           "exterior": true,
           "locations": [],
-          "dangerLevel": 2
+          "dangerLevel": 2,
+          "startAngle": 81.106,
+          "endAngle": 108
         },
         {
           "id": "T16",
           "name": "Forest",
           "terrainTypeId": "forest",
           "adjacentIds": [
+            "T10",
             "T11",
-            "T20",
-            "T15"
+            "T15",
+            "T06",
+            "T17",
+            "T18",
+            "T19"
           ],
           "ring": 3,
+          "index": 3,
+          "count": 5,
+          "exterior": true,
+          "locations": [],
+          "dangerLevel": 2
+        },
+        {
+          "id": "T06",
+          "name": "Swamp",
+          "terrainTypeId": "swamp",
+          "ring": 3,
+          "index": 4,
+          "count": 5,
+          "exterior": false,
+          "locations": [],
+          "adjacentIds": [
+            "T11",
+            "T20",
+            "T16",
+            "T19"
+          ]
+        },
+        {
+          "id": "T12",
+          "name": "Forest",
+          "terrainTypeId": "plains",
+          "ring": 4,
+          "index": 0,
+          "count": 4,
+          "exterior": true,
+          "locations": [],
+          "adjacentIds": [
+            "T13",
+            "T17"
+          ],
+          "startAngle": 0,
+          "endAngle": 26.99
+        },
+        {
+          "id": "T17",
+          "name": "Forest",
+          "terrainTypeId": "plains",
+          "ring": 4,
+          "index": 1,
+          "count": 4,
+          "exterior": true,
+          "locations": [],
+          "adjacentIds": [
+            "T13",
+            "T14",
+            "T15",
+            "T16",
+            "T12",
+            "T18"
+          ],
+          "startAngle": 26.99,
+          "endAngle": 116.087
+        },
+        {
+          "id": "T18",
+          "name": "Forest",
+          "terrainTypeId": "forest",
+          "ring": 4,
+          "index": 2,
+          "count": 4,
+          "exterior": true,
+          "locations": [
+            {
+              "type": "dungeon",
+              "id": "T1"
+            }
+          ],
+          "adjacentIds": [
+            "T16",
+            "T17",
+            "T19"
+          ],
+          "startAngle": 116.087,
+          "endAngle": 135.579
+        },
+        {
+          "id": "T19",
+          "name": "Swamp",
+          "terrainTypeId": "swamp",
+          "ring": 4,
           "index": 3,
           "count": 4,
           "exterior": true,
           "locations": [],
-          "dangerLevel": 2
+          "adjacentIds": [
+            "T16",
+            "T06",
+            "T18"
+          ],
+          "startAngle": 135.579,
+          "endAngle": 180
         }
       ],
-      "ringCount": 3,
+      "ringCount": 4,
       "encounters": {
         "dangerMode": "tile",
         "dangerLevel": 2,

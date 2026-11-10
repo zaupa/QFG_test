@@ -1,26 +1,31 @@
 {
   "format": "quest-for-glory-terrain-types",
-  "version": 1,
+  "version": 2,
   "terrainTypes": [
     {
       "id": "forest",
-      "name": "Forest"
+      "name": "Forest",
+      "movementCV": 5
     },
     {
       "id": "plains",
-      "name": "Plains"
+      "name": "Plains",
+      "movementCV": 5
     },
     {
       "id": "mountains",
-      "name": "Mountains"
+      "name": "Mountains",
+      "movementCV": 5
     },
     {
       "id": "deep-forest",
-      "name": "Deep Forest"
+      "name": "Deep Forest",
+      "movementCV": 5
     },
     {
       "id": "swamp",
-      "name": "Swamp"
+      "name": "Swamp",
+      "movementCV": 5
     }
   ]
 }

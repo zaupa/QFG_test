@@ -1,0 +1,171 @@
+{
+  "browser": "156.0.8078.79",
+  "passed": 41,
+  "failed": 0,
+  "results": [
+    {
+      "name": "01 Creation offers all three meeples and saves the selected Ranger",
+      "status": "PASS"
+    },
+    {
+      "name": "02 Map button permits inspection of every tile without moving or spending an Action",
+      "status": "PASS"
+    },
+    {
+      "name": "03 Tile locations are local: T01 has the city and T04 has the dungeon",
+      "status": "PASS"
+    },
+    {
+      "name": "04 Confirming movement spends one Action and opens the origin CV5 Challenge",
+      "status": "PASS"
+    },
+    {
+      "name": "05 Successful movement with no encounter reaches the destination once",
+      "status": "PASS"
+    },
+    {
+      "name": "06 Failed movement stays on the origin and still spends the Action",
+      "status": "PASS"
+    },
+    {
+      "name": "07 Abandoning a movement Challenge does not refund its Action",
+      "status": "PASS"
+    },
+    {
+      "name": "08 Origin terrain CV overrides the destination CV",
+      "status": "PASS"
+    },
+    {
+      "name": "09 Origin per-tile danger and enemy table trigger combat before arrival",
+      "status": "PASS"
+    },
+    {
+      "name": "10 Winning movement combat grants rewards and then moves the hero",
+      "status": "PASS"
+    },
+    {
+      "name": "11 Reload during a movement Challenge preserves its spent Action and target",
+      "status": "PASS"
+    },
+    {
+      "name": "12 Visiting a location costs one Action and exiting is free",
+      "status": "PASS"
+    },
+    {
+      "name": "13 Last Action offers Rest, declining keeps zero Actions and a viewable Map",
+      "status": "PASS"
+    },
+    {
+      "name": "14 Completing Rest starts a new Round with two Actions",
+      "status": "PASS"
+    },
+    {
+      "name": "15 Both City B and Dungeon B markers appear when a tile contains both",
+      "status": "PASS"
+    },
+    {
+      "name": "16 Legacy characters receive two Actions and the default Hero meeple",
+      "status": "PASS"
+    },
+    {
+      "name": "17 Meeple and movement persist offline with cached SVG assets",
+      "status": "PASS"
+    },
+    {
+      "name": "18 Mobile Map displays meeple, local locations and the Action balance",
+      "status": "PASS"
+    },
+    {
+      "name": "19 Reloading a movement encounter preserves the selected enemy and roll without a second Action",
+      "status": "PASS"
+    },
+    {
+      "name": "20 Fleeing a failed movement combat leaves the hero at the origin with its Action spent",
+      "status": "PASS"
+    },
+    {
+      "name": "21 The final movement encounter finishes before the zero-Action Rest offer",
+      "status": "PASS"
+    },
+    {
+      "name": "22 A failed final movement still offers Rest without changing tiles",
+      "status": "PASS"
+    },
+    {
+      "name": "23 Zero Actions still permits healing inventory dice and manual Challenge/Combat",
+      "status": "PASS"
+    },
+    {
+      "name": "24 Selecting the Spellcaster survives creation-form rerenders and stays cosmetic",
+      "status": "PASS"
+    },
+    {
+      "name": "25 Dungeon entry is local and spends one Action while exit is free",
+      "status": "PASS"
+    },
+    {
+      "name": "26 Adventure-level city/dungeon lists cannot override map placement",
+      "status": "PASS"
+    },
+    {
+      "name": "27 Six-ring maps render all 46 tiles with valid labels and paths",
+      "status": "PASS"
+    },
+    {
+      "name": "28 Two-ring maps render twelve spaces",
+      "status": "PASS"
+    },
+    {
+      "name": "29 Invalid encounter tables reject updates and retain the previous map",
+      "status": "PASS"
+    },
+    {
+      "name": "30 Two movements exhaust the Round; Rest refills Actions before local dungeon entry",
+      "status": "PASS"
+    },
+    {
+      "name": "31 Exact movement success waits for the normal recovery choice before rolling an encounter",
+      "status": "PASS"
+    },
+    {
+      "name": "32 No Attribute cards prevents starting movement without spending an Action",
+      "status": "PASS"
+    },
+    {
+      "name": "33 Default DL2 encounters occur on a roll of two",
+      "status": "PASS"
+    },
+    {
+      "name": "34 Default DL2 does not trigger on a roll of three",
+      "status": "PASS"
+    },
+    {
+      "name": "35 Fatal no-Supply Rest does not refill Actions",
+      "status": "PASS"
+    },
+    {
+      "name": "36 Pending movement locks inventory and other operations until resolved",
+      "status": "PASS"
+    },
+    {
+      "name": "37 An encounter with no usable hand remains reload-safe and can abandon before combat starts",
+      "status": "PASS"
+    },
+    {
+      "name": "38 Forced encounters can use existing Deadly Effort when movement used the last Attribute cards",
+      "status": "PASS"
+    },
+    {
+      "name": "39 Malformed Action balances meeples and pending journeys reject import without replacing the character",
+      "status": "PASS"
+    },
+    {
+      "name": "40 Last-Action dungeon entry defers Rest until its level is cleared, then uses old dungeon Rest rules",
+      "status": "PASS"
+    },
+    {
+      "name": "41 Legacy dungeon saves without a return position infer their unique map tile",
+      "status": "PASS"
+    }
+  ]
+}

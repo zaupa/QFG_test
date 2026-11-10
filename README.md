@@ -1,6 +1,6 @@
 # Quest For Glory — React + TypeScript PWA
 
-The companion now runs as an installable PWA with a service worker, IndexedDB character saves, and external JSON, font and audio files. The current release is V32, with JSON-defined adventures, cities, character positions and an interactive terrain map built on the original V28 gameplay. The original standalone HTML is retained in `legacy/board_game_tracker_v28.html`; V27 remains in `backup/`.
+The companion now runs as an installable PWA with a service worker, IndexedDB character saves, and external JSON, font and audio files. The current release is V33, with map-owned locations, Adventure Actions, movement Challenges/encounters and selectable character meeples. The original standalone HTML is retained in `legacy/board_game_tracker_v28.html`; V27 remains in `backup/`.
 
 ## Run on your computer
 
@@ -156,3 +156,19 @@ The current adventure lists govern city/dungeon availability throughout Wilderne
 Old character names and progress are preserved. Recognized adventure names migrate to IDs; unmatched names remain visible and require choosing a predefined module before map/city/dungeon selection. Existing city and dungeon activities can finish using their saved state. An old offline cache without the new world catalogs can still open characters; reconnect and refresh to enable the new catalogs. Character export envelope version is 23; IndexedDB’s database version is unchanged.
 
 V32 audit evidence and screenshots: [docs/V32_AUDIT.md](docs/V32_AUDIT.md). No toolbox files are changed.
+
+## V33 — Adventure Actions and map locations
+
+Create fresh V33 characters for this release. Choose **Wandering Hero**, **Ranger**, or **Spellcaster** during creation; the meeple is cosmetic and marks the character's map tile.
+
+The **Map** button opens a view where every tile can be inspected, including its cities/dungeons. Settlement and stairs symbols identify cities and dungeons. The map owns all location placement; Adventure Modules reference their map rather than separate city/dungeon lists. Visit City, Dungeon Delve and the Map's entry buttons allow only locations on the character's current Wilderness tile.
+
+Each Round grants **2 Adventure Actions**. A confirmed movement attempt or location entry spends one. Inspection, cancellation before confirmation, exiting a location, inventory management, healing, dice rolls and manual Combat/Challenge do not spend these actions. Existing activities within a city/dungeon visit retain their existing rules.
+
+Movement follows the confirmed sequence: spend one action → starting terrain's Challenge → on success, starting tile's encounter roll → win any triggered combat → arrive at the adjacent destination. Failure, abandoning the movement Challenge, or fleeing combat leaves the hero on the starting tile with the action spent. Existing Challenge modifiers, Fate adjustments, exact recovery, equipment, wounds and rewards still apply. A forced encounter can use Deadly Effort when no Attribute cards remain; if combat cannot start, abandon the attempt rather than become stuck. Rolls, enemy choice and pending stages save without charging or rerolling on reload.
+
+Terrain `movementCV` defaults to 5. Map encounters use Danger Level 2 by default (1–2 on 1d6), either globally or per tile. Each successful movement Challenge gets its own encounter check; there is no one-encounter-per-Round cap. The enemy list comes from the starting tile, falling back to the map table, and uses equal selection odds.
+
+At zero actions, Rest is offered once the current movement/combat is resolved and existing Rest rules allow it. Decline to stay in the Round: viewing the character/map, dice, healing, inventory/equipment management and manual Combat/Challenge remain available. Movement and location entry are blocked. The Rest button remains available later; completed Rest advances Round and restores two actions. Costs/Wounds, Inn rules and the dungeon's one-Rest-per-cleared-level rule remain unchanged. Cancelling or dying during Rest does not refill actions. Manual Round-number corrections do not grant actions.
+
+Maps configure **2–6 surrounding rings**, excluding the center, with complete tile definitions and exact shared-border neighbor lists. Goriath's Revenge still uses 19 tiles: Lithengard on T01 and the test dungeon on T04. Update source JSON/templates under `public/data`; preview still serves `dist/data`. [V33 audit and screenshots](docs/V33_AUDIT.md). Toolbox files remain unchanged.

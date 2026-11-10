@@ -1,0 +1,16 @@
+{
+  "passed": 2,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Windows/POSIX cache paths",
+      "status": "PASS",
+      "output": "PASS Windows/POSIX asset URLs and JSON exclusion\n"
+    },
+    {
+      "name": "Actually stopped server: refresh and offline reload",
+      "status": "PASS",
+      "output": "Local server stopped; navigator.onLine: true\n{\"documentIdentity\":\"same-document\",\"gameVisible\":true,\"notice\":\"Your current game and libraries are unchanged. Using the last validated libraries (11/10/2026, 2:24:27 PM). The server files could not be loaded or validated. enemies.json: Failed to fetch\",\"errors\":[]}\nPASS actual stopped-server refresh and offline reload\n"
+    }
+  ]
+}

@@ -14,3 +14,7 @@ export interface RestPlan {level:0|1|2;recovery:5|15|30;location:'normal'|'dunge
 export interface CityVisit {id?:string;definition?:import('./world').CityDefinition;action:''|'blacksmith'|'shop'|'inn'|'guild'|'temple'}
 
 export type CharacterPosition={type:'wilderness';spaceId:string|null}|{type:'city';cityId:string;spaceId:string|null}|{type:'dungeon';dungeonId:string;spaceId:string|null};
+
+export type MeepleId='hero'|'ranger'|'spellcaster';
+export interface PendingTravel {origin:import('./world').MapTile;destination:import('./world').MapTile;cv:number;dangerLevel:number;enemies:EnemyCard[];stage:'challenge'|'encounter'|'combat';roll:number|null;enemyIndex:number|null}
+export interface AdventureProgress {adventureActions:0|1|2;restOfferPending:boolean;meeple:MeepleId;pendingTravel:PendingTravel|null}

@@ -235,3 +235,55 @@ Terrain types have `id` and `name`. The initial five are Forest, Plains, Mountai
 The test map has 1 center + 5 inner + 6 middle + 7 outer spaces = 19. Its outer ring and side boundary spaces are Mountains named Horseshoe Mountains. T01 is the starting city opening. Cities and dungeons are currently available according to module lists, rather than discovered per-tile locations; entering/leaving retains the Wilderness space. Individual visit restrictions and travel Challenges can be added later.
 
 Saved characters reference the module ID and a position such as `{"type":"wilderness","spaceId":"T03"}`, `{"type":"city","cityId":"lithengard","spaceId":"T03"}`, or `{"type":"dungeon","dungeonId":"R1","spaceId":"T03"}`. The space is the return position for a city/dungeon visit. Old unknown module names and their progress remain intact until the player selects a new module.
+
+## V33 authoritative map locations, rings and encounters
+
+Use schema version **2** for `maps.json`, `adventure-modules.json` and `terrain-types.json`. Cities and the original enemy/item/keyword/dungeon catalogs keep their own existing versions. V33 is intended for fresh characters. Templates contain a ready-to-play Goriath's Revenge configuration.
+
+Adventure entries now reference their map and start only; remove `cityIds` and `dungeonIds` lists:
+
+```json
+{"id":"goriaths-revenge","name":"Goriath's Revenge","mapId":"goriath-map","startingLocation":{"type":"city","spaceId":"T01","cityId":"lithengard"}}
+```
+
+Each tile owns a `locations` array; empty means no locations. City IDs reference `cities.json`; dungeon IDs reference `dungeons.json`. A location can be placed on only one tile per map, but a tile may hold both types. Example tile fields:
+
+```json
+"locations": [
+  {"type":"city","id":"lithengard"},
+  {"type":"dungeon","id":"R1"}
+]
+```
+
+Adventure availability comes entirely from its map, and the starting city must physically exist on the configured start tile. Deprecated module-level lists do not override map placement. In the test map Lithengard is on T01 and R1 is on T04; all exterior non-start spaces remain Horseshoe Mountains.
+
+Each map has `ringCount`, an integer from **2 to 6**, excluding the center. Add/remove complete tile rings when changing it. Every ring has all indices from 0 to count minus one, no duplicated sectors, and consistent count. Maintain exact `adjacentIds`: same-ring neighboring sectors, or positive angular overlap between adjacent rings. Corner-only contact is not adjacency. The SVG radii adapt to ring count; incomplete or contradictory geometry rejects the update rather than changing the map partially.
+
+Terrain entries now include `movementCV`, a positive safe integer with room for the existing ±6 random modifier; omission defaults to 5:
+
+```json
+{"id":"forest","name":"Forest","movementCV":5}
+```
+
+Map encounter configuration:
+
+```json
+"encounters": {
+  "dangerMode":"global",
+  "dangerLevel":2,
+  "enemyIds":["Giant Rats","Skeleton","Zombie","Giant Spiders"]
+}
+```
+
+`dangerMode` is `global` or `tile`. Global mode uses the map's Danger Level. Tile mode uses the origin tile's `dangerLevel`, default 2 if omitted. Levels are integers 0–6: zero never triggers, six always triggers. A roll at most the applicable level triggers combat. Tiles may supply `enemyIds` to override the map's table, independently of danger mode. Lists must be nonempty, contain unique existing enemy IDs and currently use equal selection odds. Example additional origin-tile fields:
+
+```json
+"dangerLevel":4,
+"enemyIds":["Skeleton","Zombie"]
+```
+
+Confirmed travel snapshots its origin, destination, CV, Danger Level and enemy cards. It spends one Adventure Action before the Challenge, rolls an encounter only after success, and arrives only after winning any encounter. The destination never supplies this attempt's CV, chance or enemy list. Failed/abandoned movement stays at the origin without refund. Reload resumes a pending stage; changing JSON cannot reroll an already selected encounter. Each later movement checks again.
+
+Character state now includes `meeple` (`hero`, `ranger`, `spellcaster`), `adventureActions` (0–2), `restOfferPending`, and optional `pendingTravel`. These are gameplay save fields, not map configuration. Completed Rest refills two actions; profile creation starts with two without charging for the initial city. Character exports use envelope version 24. Meeple/location SVGs live under `public/icons` and are precached for offline use.
+
+All eight libraries still refresh atomically. Missing locations/enemies, invalid CVs/Danger Levels/rings or incomplete adjacency retain the last valid bundle. Rebuild or copy the edited source JSON into `dist/data` when using preview. The toolbox is retained unchanged and is not expanded into a world-map editor by this release.

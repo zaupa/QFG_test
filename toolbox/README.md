@@ -40,6 +40,7 @@ node toolbox/test-visual-map.cjs
 node toolbox/test-terrain-enemies.cjs
 node toolbox/test-bulk-danger.cjs
 node toolbox/test-map-borders.cjs
+node toolbox/test-remove-space.cjs
 node tests/map-borders-rules.cjs
 ```
 
@@ -111,3 +112,11 @@ Undo/Redo includes border edits. Press Escape during a drag to cancel. Focus a g
 Changed spaces store optional `startAngle`/`endAngle` endpoints in degrees from 0 to 180 across the fan, left to right. Existing maps omit them and retain equal-width sectors. The game's shared validation, rendering, label positions and travel adjacency now understand these endpoints; use the updated application build when deploying edited maps. Rings must remain complete, ordered and free of gaps/overlaps. Corner-only contact is not adjacency.
 
 Moving spaces swaps their angular endpoints along with their sectors. Rebuilding a ring with a different number of spaces resets that ring to equal widths; rings whose counts are unchanged keep their edited borders.
+
+## Removing a selected space
+
+Choose Select / edit, click a map space, then click **Remove selected space** in its inspector. Confirm the removal. The previous space in that ring expands into the gap (or the next space when deleting the first sector), and sector indices/counts and adjacency lists are updated. Existing custom borders on other spaces are preserved.
+
+City/dungeon markers move onto the absorbing neighbor so they remain available; the removed space's danger/enemy overrides are discarded. Center spaces and adventure starting spaces cannot be removed. Removing the sole space of the outermost ring removes that ring only when at least two surrounding rings remain. A required inner ring cannot be left empty.
+
+Undo restores the removed space and its settings. Apply entry and save maps.json to keep the removal.

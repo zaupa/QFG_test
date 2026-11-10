@@ -117,11 +117,35 @@ function drawMapCanvas(){const host=$('visualMapCanvas');if(!host)return;host.re
  let drag=null;svg.onpointerdown=e=>{const handle=e.target.closest('[data-border-ring]');if(mapMode==='borders'&&handle&&e.button===0){borderDrag={ring:Number(handle.dataset.borderRing),index:Number(handle.dataset.borderIndex),before:clone(draft)};handle.focus();svg.setPointerCapture(e.pointerId);e.preventDefault();return}const path=e.target.closest('[data-space]');if(mapMode!=='move'||!path||e.button!==0)return;drag={id:path.dataset.space,x:e.clientX,y:e.clientY};svg.setPointerCapture(e.pointerId)};svg.onpointermove=e=>{if(!borderDrag)return;const point=new DOMPoint(e.clientX,e.clientY).matrixTransform(svg.getScreenCTM().inverse());const angle=(Math.atan2(Math.min(-.001,point.y-440),point.x-450)+Math.PI)*180/Math.PI;setBorder(borderDrag.ring,borderDrag.index,angle);updateBorderCanvas(svg)};svg.onpointerup=e=>{if(borderDrag){finishBorder(false);return}if(!drag)return;const from=drag;drag=null;const target=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-space]');mapSkipClick=Date.now()+350;if(target&&Math.hypot(e.clientX-from.x,e.clientY-from.y)>6&&target.dataset.space!==from.id){mapSwap(from.id,target.dataset.space)}else if(target){mapChoose(from.id)}};svg.onpointercancel=()=>{drag=null;finishBorder(true)};svg.onkeydown=e=>{if(e.key==='Escape'&&borderDrag){e.preventDefault();finishBorder(true)}};
  if(!valid.length){const note=document.createElement('p');note.textContent='No spaces yet. Use the ring layout controls below to create your map.';host.append(note)}
 }
+function removeSelectedMapSpace(){
+ const tile=draft.tiles.find(t=>t.id===mapSelectedId);if(!tile)return;
+ if(tile.ring===0){message('The center space cannot be removed. Select a surrounding space.',true);return}
+ const referenced=libraries.modules.modules.filter(module=>[draft.id,libraries.maps.maps[selected]?.id].includes(module.mapId)&&module.startingLocation.spaceId===tile.id);
+ if(referenced.length){message('Cannot remove an adventure starting space. Change its starting location first: '+referenced.map(module=>module.name).join(', '),true);return}
+ const next=clone(draft),row=next.tiles.filter(t=>t.ring===tile.ring).sort((a,b)=>a.index-b.index);let receiver;
+ if(row.length===1){
+  if(tile.ring!==next.ringCount||next.ringCount<=2){message('This is the last space in a required ring. Keep at least two complete surrounding rings, or change the ring layout.',true);return}
+  const angle=tileAngles(tile),mid=(angle.start+angle.end)/2;receiver=next.tiles.filter(t=>t.ring===tile.ring-1).sort((a,b)=>{const x=tileAngles(a),y=tileAngles(b);return Math.abs((x.start+x.end)/2-mid)-Math.abs((y.start+y.end)/2-mid)})[0];next.ringCount--;
+ }else{
+  const index=row.findIndex(t=>t.id===tile.id);receiver=row[index>0?index-1:1];
+  // Capture every interval before changing indices/count; the neighboring space absorbs the gap.
+  for(const t of row)Object.assign(t,{startAngle:tileAngles(t).start,endAngle:tileAngles(t).end});
+  if(index>0)receiver.endAngle=tileAngles(tile).end;else receiver.startAngle=tileAngles(tile).start;
+  const remaining=row.filter(t=>t.id!==tile.id);remaining.forEach((t,i)=>{t.index=i;t.count=remaining.length});
+ }
+ receiver.locations=[...(receiver.locations??[]),...(tile.locations??[])];next.tiles=next.tiles.filter(t=>t.id!==tile.id);
+ for(const t of next.tiles)t.adjacentIds=next.tiles.filter(other=>tilesAdjacent(t,other)).map(other=>other.id);
+ try{const all=clone(libraries.maps);all.maps[selected]=next;validated('maps',all)}catch(e){message('Cannot remove space: '+e.message,true);return}
+ if(!confirm('Remove '+tile.id+' · '+tile.name+'?\n\n'+receiver.id+' expands to fill the gap.'+((tile.locations??[]).length?' City/dungeon markers move to '+receiver.id+'.':'')+' This space’s enemy and danger overrides are removed. Undo can restore it.'))return;
+ mapHistory();draft=next;mapSelectedId=receiver.id;mapMoveSource='';mapChanged();message('Removed '+tile.id+'. Connections updated. Apply entry and save maps.json.')
+}
+
 function drawMapInspector(){const host=$('mapInspector');if(!host)return;rememberEditorSections(host);host.replaceChildren();const tile=draft.tiles.find(t=>t.id===mapSelectedId);const heading=document.createElement('h3');heading.textContent=tile?'Selected space · '+tile.id:'Select a space';host.append(heading);if(!tile)return;
  const description=document.createElement('small');description.textContent=`Ring ${tile.ring} · Sector ${tile.index+1}/${tile.count} · Neighbors: ${tile.adjacentIds.join(', ')||'none'}`;host.append(description);
  const field=(text,input)=>{const label=document.createElement('label');label.className='field';label.textContent=text;input.setAttribute('aria-label',text);label.append(input);host.append(label);return input};
  const name=field('Selected space name',document.createElement('input'));name.value=tile.name;const terrain=field('Selected space terrain',document.createElement('select'));for(const t of [...libraries.terrainTypes.terrainTypes].sort((a,b)=>alphabetical(a.name,b.name)))terrain.append(new Option(t.name,t.id));terrain.value=tile.terrainTypeId;const exterior=field('Selected space exterior',document.createElement('input'));exterior.type='checkbox';exterior.checked=tile.exterior;
  let typing=false;name.onfocus=()=>{typing=false};name.oninput=()=>{if(!typing){mapHistory();typing=true}tile.name=name.value;mark();drawMapCanvas();updateMapHistoryButtons()};terrain.onchange=()=>{mapHistory();tile.terrainTypeId=terrain.value;mapChanged()};exterior.onchange=()=>{mapHistory();tile.exterior=exterior.checked;mapChanged()};
+ const remove=document.createElement('button');remove.type='button';remove.className='danger';remove.textContent='Remove selected space';remove.onclick=removeSelectedMapSpace;host.append(remove);
  const advanced=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Space locations and encounter settings';advanced.append(summary);host.append(advanced);for(const key of ['locations','dangerLevel','enemyIds'])draw(schemas.maps.fields.tiles.entry.fields[key],tile[key],v=>{mapHistory();tile[key]=v},advanced);
  const note=document.createElement('p');note.textContent=mapMode==='move'?(mapMoveSource?'Select a destination or drag this space onto another sector.':'Click a source, then a destination, or drag between spaces.'):mapMode==='borders'?'Drag a gold divider to change the shared border. Arrow keys move 1°; Shift moves 5°. Escape cancels a drag.':'Click another space to edit it. IDs stay stable when spaces move.';host.append(note);restoreEditorSections(host);
 }

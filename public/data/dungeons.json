@@ -8,14 +8,15 @@
       "type": "Ruins",
       "description": "",
       "maxLevel": 5,
+      "completionFateReward": 4,
       "challenge": {
-        "base": 2,
+        "base": 4,
         "perLevel": 2
       },
       "monsterChance": {
         "die": 6,
         "thresholdPerLevel": 1,
-        "base": 0
+        "base": 1
       },
       "coinReward": {
         "base": 3,
@@ -77,8 +78,7 @@
       "timing": {
         "actions": 1,
         "perLevels": 2
-      },
-      "completionFateReward": 0
+      }
     },
     {
       "id": "R2",
@@ -86,14 +86,15 @@
       "type": "Ruins",
       "description": "Description: An old decrepit estate hidden in the middle of nowhere, from the state of the decaying wood gate, the walls covered in overgrown moss and the general sense of uneasy that you feel you know that something wrong and corrupted happened inside the walls.\n\t- Passing by the the outer walls, easy passed by the destroyed gate you can see the mansion. It is a big construction looking to easily more than 15 rooms and 3 floors, a decaying stable and a garden turned to jungle frame the white peeling walls of the main building.\n\t- Looking close you can see bones scattered around the ground half hidden by the overgrown plants, some clearly animal but some looking very close to human.",
       "maxLevel": 4,
+      "completionFateReward": 8,
       "challenge": {
-        "base": 2,
+        "base": 6,
         "perLevel": 2
       },
       "monsterChance": {
         "die": 6,
         "thresholdPerLevel": 1,
-        "base": 1
+        "base": 2
       },
       "coinReward": {
         "base": 6,
@@ -135,8 +136,7 @@
           "ring of many lives"
         ],
         "baseValue": 50
-      },
-      "completionFateReward": 8
+      }
     },
     {
       "id": "T1",
@@ -144,8 +144,9 @@
       "type": "Ruins",
       "description": "",
       "maxLevel": 4,
+      "completionFateReward": 5,
       "challenge": {
-        "base": 4,
+        "base": 7,
         "perLevel": 2
       },
       "monsterChance": {
@@ -194,8 +195,7 @@
         "level": 4,
         "enemyId": "Stone Golen"
       },
-      "treasure": null,
-      "completionFateReward": 0
+      "treasure": null
     }
   ]
 }

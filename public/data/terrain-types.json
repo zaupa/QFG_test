@@ -10,22 +10,22 @@
     {
       "id": "plains",
       "name": "Plains",
-      "movementCV": 5
+      "movementCV": 3
     },
     {
       "id": "mountains",
       "name": "Mountains",
-      "movementCV": 5
+      "movementCV": 8
     },
     {
       "id": "deep-forest",
       "name": "Deep Forest",
-      "movementCV": 5
+      "movementCV": 10
     },
     {
       "id": "swamp",
       "name": "Swamp",
-      "movementCV": 5
+      "movementCV": 8
     }
   ]
 }

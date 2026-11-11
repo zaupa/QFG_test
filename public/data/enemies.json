@@ -65,12 +65,25 @@
       "C": 2,
       "KW": [],
       "Item": {
-        "name": "A dagger",
+        "name": "Dagger",
         "description": "A dagger",
         "keywords": [
-          "weapon"
+          "slash",
+          "mundane",
+          "melee",
+          "metal"
         ],
-        "baseValue": 5
+        "baseValue": 5,
+        "equipment": {
+          "type": "weapon",
+          "modifier": 1,
+          "usage": [
+            true,
+            true,
+            true,
+            true
+          ]
+        }
       }
     },
     {
@@ -78,7 +91,7 @@
       "name": "Giant Zombified Rat",
       "description": "A mummified gigantic Rat, 2 meters tall, dressed in old bandages with decaying flesh peeking in part. Glyphs and jewels are placed around its body in a macabre to make this abomination look regal",
       "boss": true,
-      "CV": 18,
+      "CV": 27,
       "WV": 4,
       "F": 3,
       "C": 0,
@@ -201,7 +214,7 @@
       "name": " Cursed Necromancer",
       "description": " In the library room found in the 3 floor of the mansion you find the source of the corruption. A decaying corpse with members held together by some viscous internal membrane he is dressed in a rotten black robe covered in obscure arcane glyphs, his eyes look empty of life but shine in a bright red glow when he sees you. He moans barely discernible words before attacking.",
       "boss": true,
-      "CV": 22,
+      "CV": 28,
       "WV": 5,
       "F": 4,
       "C": 0,
@@ -216,7 +229,7 @@
       "name": "Stone Golen",
       "description": "",
       "boss": true,
-      "CV": 18,
+      "CV": 30,
       "WV": 4,
       "F": 3,
       "C": 0,

@@ -1,0 +1,244 @@
+{
+  "format": "quest-for-glory-enemy-cards",
+  "version": 5,
+  "enemies": [
+    {
+      "id": "Giant Rats",
+      "name": "Giant Rats",
+      "description": "A group of giant rats each teh size of a big cat",
+      "boss": false,
+      "CV": 6,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": null
+    },
+    {
+      "id": "Skeleton",
+      "name": "Skeleton",
+      "description": "An undead Skeleton weaponless",
+      "boss": false,
+      "CV": 8,
+      "WV": 1,
+      "F": 1,
+      "C": 1,
+      "KW": [
+        "resistant slash"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Zombie",
+      "name": "Zombie",
+      "description": "An undead Zombie weaponless",
+      "boss": false,
+      "CV": 8,
+      "WV": 2,
+      "F": 1,
+      "C": 2,
+      "KW": [
+        "Unprotected fire"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Giant Spiders",
+      "name": "Giant Spiders",
+      "description": "A giant venomous spider the size of a dog",
+      "boss": false,
+      "CV": 10,
+      "WV": 3,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": null
+    },
+    {
+      "id": "Thief",
+      "name": "Thief",
+      "description": "A human Thief",
+      "boss": false,
+      "CV": 9,
+      "WV": 1,
+      "F": 1,
+      "C": 2,
+      "KW": [],
+      "Item": {
+        "name": "Dagger",
+        "description": "A dagger",
+        "keywords": [
+          "slash",
+          "mundane",
+          "melee",
+          "metal"
+        ],
+        "baseValue": 5,
+        "equipment": {
+          "type": "weapon",
+          "modifier": 1,
+          "usage": [
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      }
+    },
+    {
+      "id": "Giant Zombified Rat",
+      "name": "Giant Zombified Rat",
+      "description": "A mummified gigantic Rat, 2 meters tall, dressed in old bandages with decaying flesh peeking in part. Glyphs and jewels are placed around its body in a macabre to make this abomination look regal",
+      "boss": true,
+      "CV": 27,
+      "WV": 4,
+      "F": 3,
+      "C": 0,
+      "KW": [
+        "Unprotected fire"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Corrupted Cats",
+      "name": "Corrupted Cats",
+      "description": "A somewhat normal looking cat at first glance but with an aura of decay and evil surround it",
+      "boss": false,
+      "CV": 6,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [
+        "Unprotected against holy"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Corrupted Servant Ghost",
+      "name": "Corrupted Servant Ghost",
+      "description": "",
+      "boss": false,
+      "CV": 8,
+      "WV": 1,
+      "F": 1,
+      "C": 1,
+      "KW": [
+        "Unprotected against holy",
+        "Resistant against mundane"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Corrupted goblins",
+      "name": "Corrupted goblins",
+      "description": "",
+      "boss": false,
+      "CV": 8,
+      "WV": 2,
+      "F": 1,
+      "C": 2,
+      "KW": [
+        "Unprotected against holy"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Animated Furniture",
+      "name": "Animated Furniture",
+      "description": "",
+      "boss": false,
+      "CV": 4,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [
+        "Unprotected against fire"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Animated Broom",
+      "name": "Animated Broom",
+      "description": "",
+      "boss": false,
+      "CV": 6,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [
+        "Unprotected against fire"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Cloud of Animated Cutlery",
+      "name": "Cloud of Animated Cutlery",
+      "description": "",
+      "boss": false,
+      "CV": 8,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [
+        "Resistant against pierce"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Animated Armor",
+      "name": "Animated Armor",
+      "description": "",
+      "boss": false,
+      "CV": 8,
+      "WV": 2,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": null
+    },
+    {
+      "id": "Imp",
+      "name": "Imp",
+      "description": "",
+      "boss": false,
+      "CV": 10,
+      "WV": 3,
+      "F": 1,
+      "C": 4,
+      "KW": [],
+      "Item": null
+    },
+    {
+      "id": " Cursed Necromancer",
+      "name": " Cursed Necromancer",
+      "description": " In the library room found in the 3 floor of the mansion you find the source of the corruption. A decaying corpse with members held together by some viscous internal membrane he is dressed in a rotten black robe covered in obscure arcane glyphs, his eyes look empty of life but shine in a bright red glow when he sees you. He moans barely discernible words before attacking.",
+      "boss": true,
+      "CV": 28,
+      "WV": 5,
+      "F": 4,
+      "C": 0,
+      "KW": [
+        "Resistant against mundane",
+        "Unprotected against holy"
+      ],
+      "Item": null
+    },
+    {
+      "id": "Stone Golen",
+      "name": "Stone Golen",
+      "description": "",
+      "boss": true,
+      "CV": 30,
+      "WV": 4,
+      "F": 3,
+      "C": 0,
+      "KW": [
+        "Resistant against mundane",
+        "Resistant against masterpiece",
+        "Resistant against slash"
+      ],
+      "Item": null
+    }
+  ]
+}

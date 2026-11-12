@@ -1,0 +1,84 @@
+{
+  "format": "quest-for-glory-dungeons",
+  "version": 1,
+  "dungeons": [
+    {
+      "id": "R1",
+      "name": "The Tomb of the Undying Mice",
+      "type": "Ruins",
+      "description": "",
+      "maxLevel": 5,
+      "challenge": {
+        "base": 2,
+        "perLevel": 2
+      },
+      "monsterChance": {
+        "die": 6,
+        "thresholdPerLevel": 1,
+        "base": 0
+      },
+      "coinReward": {
+        "base": 3,
+        "perLevel": 1
+      },
+      "completionFateReward": 0,
+      "encounters": [
+        {
+          "rolls": [
+            1,
+            2,
+            3
+          ],
+          "enemyId": "Giant Rats"
+        },
+        {
+          "rolls": [
+            4
+          ],
+          "enemyId": "Skeleton"
+        },
+        {
+          "rolls": [
+            5
+          ],
+          "enemyId": "Zombie"
+        },
+        {
+          "rolls": [
+            6
+          ],
+          "enemyId": "Giant Spiders"
+        }
+      ],
+      "boss": {
+        "level": 5,
+        "enemyId": "Giant Zombified Rat"
+      },
+      "treasure": {
+        "name": "Specter of the unholy mice",
+        "description": "A decorated mace with a black jewel carved in the face of a rat in the base.",
+        "keywords": [
+          "melee",
+          "magic",
+          "bludgeon",
+          "metal"
+        ],
+        "baseValue": 50,
+        "equipment": {
+          "type": "weapon",
+          "modifier": 2,
+          "usage": [
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      "timing": {
+        "actions": 1,
+        "perLevels": 2
+      }
+    }
+  ]
+}

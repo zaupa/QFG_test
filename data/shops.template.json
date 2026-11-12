@@ -1,0 +1,22 @@
+{
+  "format": "quest-for-glory-shops",
+  "version": 1,
+  "shops": [
+    {
+      "id": "lithengard-shop",
+      "name": "Lithengard General Store",
+      "sellRate": 1.5,
+      "purchaseRate": 0.5,
+      "stock": [
+        {
+          "itemId": "Potion of Healing",
+          "quantity": 4
+        },
+        {
+          "itemId": "Dagger",
+          "quantity": 2
+        }
+      ]
+    }
+  ]
+}

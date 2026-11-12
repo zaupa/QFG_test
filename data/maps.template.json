@@ -1,0 +1,351 @@
+{
+  "format": "quest-for-glory-maps",
+  "version": 2,
+  "maps": [
+    {
+      "id": "goriath-map",
+      "name": "Goriath's Revenge",
+      "tiles": [
+        {
+          "id": "T01",
+          "name": "Lithengard",
+          "terrainTypeId": "plains",
+          "adjacentIds": [
+            "T02",
+            "T03",
+            "T04",
+            "T05",
+            "T06"
+          ],
+          "ring": 0,
+          "index": 0,
+          "count": 1,
+          "exterior": false,
+          "locations": [
+            {
+              "type": "city",
+              "id": "lithengard"
+            }
+          ]
+        },
+        {
+          "id": "T02",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T01",
+            "T03",
+            "T07",
+            "T08"
+          ],
+          "ring": 1,
+          "index": 0,
+          "count": 5,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T03",
+          "name": "Forest",
+          "terrainTypeId": "forest",
+          "adjacentIds": [
+            "T01",
+            "T02",
+            "T04",
+            "T08",
+            "T09"
+          ],
+          "ring": 1,
+          "index": 1,
+          "count": 5,
+          "exterior": false,
+          "locations": []
+        },
+        {
+          "id": "T04",
+          "name": "Swamp",
+          "terrainTypeId": "swamp",
+          "adjacentIds": [
+            "T01",
+            "T03",
+            "T05",
+            "T09",
+            "T10"
+          ],
+          "ring": 1,
+          "index": 2,
+          "count": 5,
+          "exterior": false,
+          "locations": [
+            {
+              "type": "dungeon",
+              "id": "R1"
+            }
+          ]
+        },
+        {
+          "id": "T05",
+          "name": "Deep Forest",
+          "terrainTypeId": "deep-forest",
+          "adjacentIds": [
+            "T01",
+            "T04",
+            "T06",
+            "T10",
+            "T11"
+          ],
+          "ring": 1,
+          "index": 3,
+          "count": 5,
+          "exterior": false,
+          "locations": []
+        },
+        {
+          "id": "T06",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T01",
+            "T05",
+            "T11",
+            "T12"
+          ],
+          "ring": 1,
+          "index": 4,
+          "count": 5,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T07",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T02",
+            "T08",
+            "T13",
+            "T14"
+          ],
+          "ring": 2,
+          "index": 0,
+          "count": 6,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T08",
+          "name": "Plains",
+          "terrainTypeId": "plains",
+          "adjacentIds": [
+            "T02",
+            "T03",
+            "T07",
+            "T09",
+            "T14",
+            "T15"
+          ],
+          "ring": 2,
+          "index": 1,
+          "count": 6,
+          "exterior": false,
+          "locations": []
+        },
+        {
+          "id": "T09",
+          "name": "Swamp",
+          "terrainTypeId": "swamp",
+          "adjacentIds": [
+            "T03",
+            "T04",
+            "T08",
+            "T10",
+            "T15",
+            "T16"
+          ],
+          "ring": 2,
+          "index": 2,
+          "count": 6,
+          "exterior": false,
+          "locations": []
+        },
+        {
+          "id": "T10",
+          "name": "Deep Forest",
+          "terrainTypeId": "deep-forest",
+          "adjacentIds": [
+            "T04",
+            "T05",
+            "T09",
+            "T11",
+            "T16",
+            "T17"
+          ],
+          "ring": 2,
+          "index": 3,
+          "count": 6,
+          "exterior": false,
+          "locations": []
+        },
+        {
+          "id": "T11",
+          "name": "Plains",
+          "terrainTypeId": "plains",
+          "adjacentIds": [
+            "T05",
+            "T06",
+            "T10",
+            "T12",
+            "T17",
+            "T18"
+          ],
+          "ring": 2,
+          "index": 4,
+          "count": 6,
+          "exterior": false,
+          "locations": []
+        },
+        {
+          "id": "T12",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T06",
+            "T11",
+            "T18",
+            "T19"
+          ],
+          "ring": 2,
+          "index": 5,
+          "count": 6,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T13",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T07",
+            "T14"
+          ],
+          "ring": 3,
+          "index": 0,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T14",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T07",
+            "T08",
+            "T13",
+            "T15"
+          ],
+          "ring": 3,
+          "index": 1,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T15",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T08",
+            "T09",
+            "T14",
+            "T16"
+          ],
+          "ring": 3,
+          "index": 2,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T16",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T09",
+            "T10",
+            "T15",
+            "T17"
+          ],
+          "ring": 3,
+          "index": 3,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T17",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T10",
+            "T11",
+            "T16",
+            "T18"
+          ],
+          "ring": 3,
+          "index": 4,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T18",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T11",
+            "T12",
+            "T17",
+            "T19"
+          ],
+          "ring": 3,
+          "index": 5,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        },
+        {
+          "id": "T19",
+          "name": "Horseshoe Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T12",
+            "T18"
+          ],
+          "ring": 3,
+          "index": 6,
+          "count": 7,
+          "exterior": true,
+          "locations": []
+        }
+      ],
+      "ringCount": 3,
+      "encounters": {
+        "dangerMode": "global",
+        "dangerLevel": 2,
+        "enemyIds": [
+          "Giant Rats",
+          "Skeleton",
+          "Zombie",
+          "Giant Spiders"
+        ],
+        "enemyWeights": {
+          "Giant Rats": 1,
+          "Skeleton": 1,
+          "Zombie": 1,
+          "Giant Spiders": 1
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "format": "quest-for-glory-enemy-cards",
+  "version": 5,
+  "enemies": [
+    {
+      "id": "Enemy Name 1",
+      "name": "Enemy Name 1",
+      "description": "Replace with this enemy's description.",
+      "CV": 5,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": null,
+      "boss": false
+    },
+    {
+      "id": "Enemy Name 2",
+      "name": "Enemy Name 2",
+      "description": "Replace with this enemy's description.",
+      "CV": 5,
+      "WV": 0,
+      "F": 1,
+      "C": 2,
+      "KW": [
+        "Resistant against slash",
+        "Strong against metal"
+      ],
+      "Item": {
+        "name": "Reward item name",
+        "description": "Replace with the reward item's description.",
+        "keywords": [
+          "melee",
+          "slash",
+          "metal"
+        ],
+        "baseValue": 1,
+        "equipment": {
+          "type": "weapon",
+          "modifier": 1,
+          "usage": [
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      "boss": false
+    },
+    {
+      "id": "Healing Reward Enemy Example",
+      "name": "Healing Reward Enemy Example",
+      "description": "Example enemy with a healing item reward.",
+      "CV": 5,
+      "WV": 1,
+      "F": 1,
+      "C": 0,
+      "KW": [],
+      "Item": {
+        "name": "Healing Potion Example",
+        "description": "",
+        "keywords": [
+          "heal"
+        ],
+        "baseValue": 2,
+        "healingAmount": 5
+      },
+      "boss": false
+    }
+  ]
+}

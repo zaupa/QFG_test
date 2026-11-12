@@ -1,0 +1,285 @@
+{
+  "format": "quest-for-glory-keywords",
+  "version": 1,
+  "keywords": [
+    {
+      "keyword": "melee",
+      "category": "Attack type",
+      "uses": [
+        "weapon"
+      ]
+    },
+    {
+      "keyword": "ranged",
+      "category": "Attack type",
+      "uses": [
+        "weapon"
+      ]
+    },
+    {
+      "keyword": "slash",
+      "category": "Damage type",
+      "uses": [
+        "weapon"
+      ]
+    },
+    {
+      "keyword": "bludgeon",
+      "category": "Damage type",
+      "uses": [
+        "weapon"
+      ]
+    },
+    {
+      "keyword": "pierce",
+      "category": "Damage type",
+      "uses": [
+        "weapon"
+      ]
+    },
+    {
+      "keyword": "metal",
+      "category": "Material",
+      "uses": [
+        "weapon",
+        "armor",
+        "generic"
+      ]
+    },
+    {
+      "keyword": "glass",
+      "category": "Material",
+      "uses": [
+        "weapon",
+        "generic"
+      ]
+    },
+    {
+      "keyword": "wood",
+      "category": "Material",
+      "uses": [
+        "weapon",
+        "armor",
+        "generic"
+      ]
+    },
+    {
+      "keyword": "cristal",
+      "category": "Material",
+      "uses": [
+        "weapon",
+        "armor",
+        "generic"
+      ]
+    },
+    {
+      "keyword": "leather",
+      "category": "Material",
+      "uses": [
+        "armor"
+      ]
+    },
+    {
+      "keyword": "paper",
+      "category": "Material",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "fabric",
+      "category": "Material",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "stone",
+      "category": "Material",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "bone",
+      "category": "Material",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "organic",
+      "category": "Material",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "mundane",
+      "category": "Quality",
+      "uses": [
+        "weapon",
+        "armor",
+        "generic"
+      ]
+    },
+    {
+      "keyword": "masterpiece",
+      "category": "Quality",
+      "uses": [
+        "weapon",
+        "armor",
+        "generic"
+      ]
+    },
+    {
+      "keyword": "magical",
+      "category": "Quality",
+      "uses": [
+        "weapon",
+        "armor",
+        "generic"
+      ]
+    },
+    {
+      "keyword": "Partial Protection",
+      "category": "Protection",
+      "uses": [
+        "armor"
+      ]
+    },
+    {
+      "keyword": "Full Body",
+      "category": "Protection",
+      "uses": [
+        "armor"
+      ]
+    },
+    {
+      "keyword": "ring",
+      "category": "Format",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "glove",
+      "category": "Format",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "table",
+      "category": "Format",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "mirror",
+      "category": "Format",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "book",
+      "category": "Format",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "hat",
+      "category": "Format",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "plate",
+      "category": "Format",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "fire",
+      "category": "Effect",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "cold",
+      "category": "Effect",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "shock",
+      "category": "Effect",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "light",
+      "category": "Effect",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "darkness",
+      "category": "Effect",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "holy",
+      "category": "Effect",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "profane",
+      "category": "Effect",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "heal",
+      "category": "Effect",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "rest",
+      "category": "Effect",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "Potion",
+      "category": "Format",
+      "uses": [
+        "generic"
+      ]
+    },
+    {
+      "keyword": "ring of many lives",
+      "category": "Custom",
+      "uses": [
+        "generic"
+      ]
+    }
+  ]
+}

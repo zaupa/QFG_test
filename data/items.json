@@ -1,0 +1,108 @@
+{
+  "format": "quest-for-glory-items",
+  "version": 1,
+  "items": [
+    {
+      "name": "Dagger",
+      "description": "A dagger",
+      "keywords": [
+        "slash",
+        "mundane",
+        "melee",
+        "metal"
+      ],
+      "baseValue": 5,
+      "equipment": {
+        "type": "weapon",
+        "modifier": 1,
+        "usage": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "Specter of the unholy mice",
+      "description": "A decorated mace with a black jewel carved in the face of a rat in the base.",
+      "keywords": [
+        "melee",
+        "magic",
+        "bludgeon",
+        "metal"
+      ],
+      "baseValue": 50,
+      "equipment": {
+        "type": "weapon",
+        "modifier": 2,
+        "usage": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "Potion of Healing",
+      "description": "The hero recovers 5 points of cards from the Wound Pile.",
+      "keywords": [
+        "heal",
+        "potion"
+      ],
+      "baseValue": 10,
+      "healingAmount": 5
+    },
+    {
+      "name": "Sword",
+      "description": "A standard long sword two-hands",
+      "keywords": [
+        "melee",
+        "mundane",
+        "slash",
+        "metal"
+      ],
+      "baseValue": 12,
+      "equipment": {
+        "type": "weapon",
+        "modifier": 1,
+        "usage": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "Leather Armor",
+      "description": "A standard Leather armor, partial coverage",
+      "keywords": [
+        "mundane",
+        "leather",
+        "Partial Protection"
+      ],
+      "baseValue": 12,
+      "equipment": {
+        "type": "armor",
+        "modifier": 1,
+        "usage": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    },
+    {
+      "name": "Sleeping bag",
+      "description": "A bare bones sleeping bag, one use",
+      "keywords": [
+        "rest",
+        "fabric"
+      ],
+      "baseValue": 10
+    }
+  ]
+}

@@ -1,0 +1,634 @@
+{
+  "format": "quest-for-glory-maps",
+  "version": 2,
+  "maps": [
+    {
+      "id": "goriath-map",
+      "name": "Goriath's Revenge",
+      "tiles": [
+        {
+          "id": "T01",
+          "name": "Lithengard",
+          "terrainTypeId": "plains",
+          "adjacentIds": [
+            "T02",
+            "T03",
+            "T04",
+            "T05"
+          ],
+          "ring": 0,
+          "index": 0,
+          "count": 1,
+          "exterior": false,
+          "locations": [
+            {
+              "type": "city",
+              "id": "lithengard"
+            }
+          ],
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Giant Rats",
+            "Thief"
+          ],
+          "enemyWeights": {
+            "Giant Rats": 1,
+            "Thief": 1
+          }
+        },
+        {
+          "id": "T02",
+          "name": "Forest",
+          "terrainTypeId": "forest",
+          "adjacentIds": [
+            "T01",
+            "T03",
+            "T07",
+            "T08"
+          ],
+          "ring": 1,
+          "index": 0,
+          "count": 4,
+          "exterior": true,
+          "locations": [],
+          "startAngle": 0,
+          "endAngle": 36,
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Thief",
+            "Giant Rats"
+          ],
+          "enemyWeights": {
+            "Thief": 1,
+            "Giant Rats": 1
+          }
+        },
+        {
+          "id": "T03",
+          "name": "Forest",
+          "terrainTypeId": "forest",
+          "adjacentIds": [
+            "T01",
+            "T02",
+            "T04",
+            "T08",
+            "T09"
+          ],
+          "ring": 1,
+          "index": 1,
+          "count": 4,
+          "exterior": false,
+          "locations": [],
+          "startAngle": 36,
+          "endAngle": 72,
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Thief",
+            "Giant Rats"
+          ],
+          "enemyWeights": {
+            "Thief": 1,
+            "Giant Rats": 1
+          }
+        },
+        {
+          "id": "T04",
+          "name": "Swamp",
+          "terrainTypeId": "swamp",
+          "adjacentIds": [
+            "T01",
+            "T03",
+            "T05",
+            "T09",
+            "T10"
+          ],
+          "ring": 1,
+          "index": 2,
+          "count": 4,
+          "exterior": false,
+          "locations": [],
+          "startAngle": 72,
+          "endAngle": 108,
+          "dangerLevel": 3,
+          "enemyWeights": {
+            "Giant Spiders": 3,
+            "Zombie": 2,
+            "Corrupted goblins": 1
+          },
+          "enemyIds": [
+            "Giant Spiders",
+            "Zombie",
+            "Corrupted goblins"
+          ]
+        },
+        {
+          "id": "T05",
+          "name": "Deep Forest",
+          "terrainTypeId": "deep-forest",
+          "adjacentIds": [
+            "T01",
+            "T04",
+            "T10",
+            "T11",
+            "T20"
+          ],
+          "ring": 1,
+          "index": 3,
+          "count": 4,
+          "exterior": false,
+          "locations": [],
+          "startAngle": 108,
+          "endAngle": 180,
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Giant Spiders",
+            "Thief",
+            "Zombie",
+            "Imp"
+          ],
+          "enemyWeights": {
+            "Giant Spiders": 1,
+            "Thief": 1,
+            "Zombie": 1,
+            "Imp": 1
+          }
+        },
+        {
+          "id": "T07",
+          "name": "Forest",
+          "terrainTypeId": "forest",
+          "adjacentIds": [
+            "T02",
+            "T08",
+            "T13"
+          ],
+          "ring": 2,
+          "index": 0,
+          "count": 6,
+          "exterior": true,
+          "locations": [],
+          "startAngle": 0,
+          "endAngle": 23.21,
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Thief",
+            "Giant Rats"
+          ],
+          "enemyWeights": {
+            "Thief": 1,
+            "Giant Rats": 1
+          }
+        },
+        {
+          "id": "T08",
+          "name": "Plains",
+          "terrainTypeId": "plains",
+          "adjacentIds": [
+            "T02",
+            "T03",
+            "T07",
+            "T09",
+            "T13",
+            "T14"
+          ],
+          "ring": 2,
+          "index": 1,
+          "count": 6,
+          "exterior": false,
+          "locations": [
+            {
+              "type": "dungeon",
+              "id": "R2"
+            }
+          ],
+          "startAngle": 23.21,
+          "endAngle": 62.531,
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Giant Rats",
+            "Thief"
+          ],
+          "enemyWeights": {
+            "Giant Rats": 1,
+            "Thief": 1
+          }
+        },
+        {
+          "id": "T09",
+          "name": "Swamp",
+          "terrainTypeId": "swamp",
+          "adjacentIds": [
+            "T03",
+            "T04",
+            "T08",
+            "T10",
+            "T14",
+            "T15"
+          ],
+          "ring": 2,
+          "index": 2,
+          "count": 6,
+          "exterior": false,
+          "locations": [],
+          "startAngle": 62.531,
+          "endAngle": 90,
+          "dangerLevel": 3,
+          "enemyWeights": {
+            "Giant Spiders": 3,
+            "Zombie": 2,
+            "Corrupted goblins": 1
+          },
+          "enemyIds": [
+            "Giant Spiders",
+            "Zombie",
+            "Corrupted goblins"
+          ]
+        },
+        {
+          "id": "T10",
+          "name": "Deep Forest",
+          "terrainTypeId": "deep-forest",
+          "adjacentIds": [
+            "T04",
+            "T05",
+            "T09",
+            "T11",
+            "T15",
+            "T16"
+          ],
+          "ring": 2,
+          "index": 3,
+          "count": 6,
+          "exterior": false,
+          "locations": [],
+          "startAngle": 90,
+          "endAngle": 130.463,
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Giant Spiders",
+            "Thief",
+            "Zombie",
+            "Imp"
+          ],
+          "enemyWeights": {
+            "Giant Spiders": 1,
+            "Thief": 1,
+            "Zombie": 1,
+            "Imp": 1
+          }
+        },
+        {
+          "id": "T11",
+          "name": "Deep Forest",
+          "terrainTypeId": "deep-forest",
+          "adjacentIds": [
+            "T05",
+            "T10",
+            "T20",
+            "T16",
+            "T06"
+          ],
+          "ring": 2,
+          "index": 4,
+          "count": 6,
+          "exterior": false,
+          "locations": [],
+          "startAngle": 130.463,
+          "endAngle": 166.589,
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Giant Spiders",
+            "Thief",
+            "Zombie",
+            "Imp"
+          ],
+          "enemyWeights": {
+            "Giant Spiders": 1,
+            "Thief": 1,
+            "Zombie": 1,
+            "Imp": 1
+          }
+        },
+        {
+          "id": "T20",
+          "name": "New space",
+          "terrainTypeId": "forest",
+          "ring": 2,
+          "index": 5,
+          "count": 6,
+          "exterior": true,
+          "adjacentIds": [
+            "T05",
+            "T11",
+            "T06"
+          ],
+          "locations": [],
+          "startAngle": 166.589,
+          "endAngle": 180,
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Thief",
+            "Giant Rats"
+          ],
+          "enemyWeights": {
+            "Thief": 1,
+            "Giant Rats": 1
+          }
+        },
+        {
+          "id": "T13",
+          "name": "Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T07",
+            "T08",
+            "T14",
+            "T12"
+          ],
+          "ring": 3,
+          "index": 0,
+          "count": 5,
+          "exterior": true,
+          "locations": [],
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Thief",
+            "Giant Rats"
+          ],
+          "enemyWeights": {
+            "Thief": 1,
+            "Giant Rats": 1
+          },
+          "startAngle": 0,
+          "endAngle": 31.259
+        },
+        {
+          "id": "T14",
+          "name": "Mountains",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T08",
+            "T09",
+            "T13",
+            "T15",
+            "T12",
+            "T17",
+            "T18"
+          ],
+          "ring": 3,
+          "index": 1,
+          "count": 5,
+          "exterior": true,
+          "locations": [],
+          "dangerLevel": 2,
+          "startAngle": 31.259,
+          "endAngle": 81.106,
+          "enemyIds": [
+            "Thief",
+            "Giant Rats"
+          ],
+          "enemyWeights": {
+            "Thief": 1,
+            "Giant Rats": 1
+          }
+        },
+        {
+          "id": "T15",
+          "name": "Mountain",
+          "terrainTypeId": "mountains",
+          "adjacentIds": [
+            "T09",
+            "T10",
+            "T14",
+            "T16",
+            "T18",
+            "T22"
+          ],
+          "ring": 3,
+          "index": 2,
+          "count": 5,
+          "exterior": true,
+          "locations": [],
+          "dangerLevel": 2,
+          "startAngle": 81.106,
+          "endAngle": 108,
+          "enemyIds": [
+            "Thief",
+            "Giant Rats"
+          ],
+          "enemyWeights": {
+            "Thief": 1,
+            "Giant Rats": 1
+          }
+        },
+        {
+          "id": "T16",
+          "name": "Forest",
+          "terrainTypeId": "forest",
+          "adjacentIds": [
+            "T10",
+            "T11",
+            "T15",
+            "T06",
+            "T21",
+            "T22"
+          ],
+          "ring": 3,
+          "index": 3,
+          "count": 5,
+          "exterior": true,
+          "locations": [],
+          "dangerLevel": 2,
+          "enemyIds": [
+            "Thief",
+            "Giant Rats"
+          ],
+          "enemyWeights": {
+            "Thief": 1,
+            "Giant Rats": 1
+          }
+        },
+        {
+          "id": "T06",
+          "name": "Swamp",
+          "terrainTypeId": "swamp",
+          "ring": 3,
+          "index": 4,
+          "count": 5,
+          "exterior": false,
+          "locations": [],
+          "adjacentIds": [
+            "T11",
+            "T20",
+            "T16",
+            "T19",
+            "T21"
+          ],
+          "dangerLevel": 3,
+          "enemyWeights": {
+            "Giant Spiders": 3,
+            "Zombie": 2,
+            "Corrupted goblins": 1
+          },
+          "enemyIds": [
+            "Giant Spiders",
+            "Zombie",
+            "Corrupted goblins"
+          ]
+        },
+        {
+          "id": "T12",
+          "name": "Forest",
+          "terrainTypeId": "plains",
+          "ring": 4,
+          "index": 0,
+          "count": 6,
+          "exterior": true,
+          "locations": [
+            {
+              "type": "dungeon",
+              "id": "R1"
+            }
+          ],
+          "adjacentIds": [
+            "T13",
+            "T14",
+            "T17"
+          ],
+          "enemyIds": [
+            "Giant Rats",
+            "Thief"
+          ],
+          "enemyWeights": {
+            "Giant Rats": 1,
+            "Thief": 1
+          },
+          "startAngle": 0,
+          "endAngle": 41.332
+        },
+        {
+          "id": "T17",
+          "name": "Forest",
+          "terrainTypeId": "plains",
+          "ring": 4,
+          "index": 1,
+          "count": 6,
+          "exterior": true,
+          "locations": [],
+          "adjacentIds": [
+            "T14",
+            "T12",
+            "T18"
+          ],
+          "enemyIds": [
+            "Giant Rats",
+            "Thief"
+          ],
+          "enemyWeights": {
+            "Giant Rats": 1,
+            "Thief": 1
+          },
+          "startAngle": 41.332,
+          "endAngle": 68.252
+        },
+        {
+          "id": "T18",
+          "name": "Forest",
+          "terrainTypeId": "forest",
+          "ring": 4,
+          "index": 2,
+          "count": 6,
+          "exterior": true,
+          "locations": [],
+          "adjacentIds": [
+            "T14",
+            "T15",
+            "T17",
+            "T22"
+          ],
+          "enemyIds": [
+            "Thief",
+            "Giant Rats"
+          ],
+          "enemyWeights": {
+            "Thief": 1,
+            "Giant Rats": 1
+          },
+          "startAngle": 68.252,
+          "endAngle": 90
+        },
+        {
+          "id": "T19",
+          "name": "Swamp",
+          "terrainTypeId": "swamp",
+          "ring": 4,
+          "index": 5,
+          "count": 6,
+          "exterior": true,
+          "locations": [
+            {
+              "type": "dungeon",
+              "id": "T1"
+            }
+          ],
+          "adjacentIds": [
+            "T06",
+            "T21"
+          ],
+          "dangerLevel": 3,
+          "enemyWeights": {
+            "Giant Spiders": 3,
+            "Zombie": 2,
+            "Corrupted goblins": 1
+          },
+          "enemyIds": [
+            "Giant Spiders",
+            "Zombie",
+            "Corrupted goblins"
+          ]
+        },
+        {
+          "id": "T21",
+          "name": "New space",
+          "terrainTypeId": "forest",
+          "ring": 4,
+          "index": 4,
+          "count": 6,
+          "exterior": true,
+          "locations": [],
+          "adjacentIds": [
+            "T16",
+            "T06",
+            "T19",
+            "T22"
+          ]
+        },
+        {
+          "id": "T22",
+          "name": "New space",
+          "terrainTypeId": "forest",
+          "ring": 4,
+          "index": 3,
+          "count": 6,
+          "exterior": true,
+          "locations": [],
+          "adjacentIds": [
+            "T15",
+            "T16",
+            "T18",
+            "T21"
+          ]
+        }
+      ],
+      "ringCount": 4,
+      "encounters": {
+        "dangerMode": "tile",
+        "dangerLevel": 2,
+        "enemyIds": [
+          "Giant Rats"
+        ],
+        "enemyWeights": {}
+      }
+    }
+  ]
+}

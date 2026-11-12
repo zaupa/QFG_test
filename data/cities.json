@@ -1,0 +1,30 @@
+{
+  "format": "quest-for-glory-cities",
+  "version": 1,
+  "cities": [
+    {
+      "id": "lithengard",
+      "name": "Lithengard",
+      "amenities": {
+        "blacksmith": {
+          "repairCost": 5
+        },
+        "shop": {
+          "shopId": "lithengard-shop"
+        },
+        "inn": {
+          "restCost": 10,
+          "supplyBundleCost": 1,
+          "supplyBundleAmount": 2
+        },
+        "guild": {
+          "attributePointsPerFate": 3
+        },
+        "temple": {
+          "healingCost": 10,
+          "healingAmount": 5
+        }
+      }
+    }
+  ]
+}

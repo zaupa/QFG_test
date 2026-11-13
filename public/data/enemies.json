@@ -239,6 +239,24 @@
         "Resistant against slash"
       ],
       "Item": null
+    },
+    {
+      "id": "Jherzad - Lich",
+      "name": "Jherzad - Lich",
+      "description": "",
+      "boss": true,
+      "CV": 36,
+      "WV": 6,
+      "F": 5,
+      "C": 12,
+      "KW": [
+        "Unprotected against holy",
+        "Resistant against mundane",
+        "Resistant against masterpiece",
+        "Strong against mundane",
+        "Strong against masterpiece"
+      ],
+      "Item": null
     }
   ]
 }

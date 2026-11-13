@@ -7,9 +7,9 @@
       "name": "Goriath's Revenge",
       "mapId": "goriath-map",
       "startingLocation": {
-        "type": "city",
+        "type": "wilderness",
         "spaceId": "T01",
-        "cityId": "lithengard"
+        "cityId": ""
       }
     }
   ]

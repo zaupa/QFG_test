@@ -17,6 +17,18 @@
           "quantity": 2
         }
       ]
+    },
+    {
+      "id": "St1",
+      "name": "Gregs Good Shop",
+      "sellRate": 1.25,
+      "purchaseRate": 0.4,
+      "stock": [
+        {
+          "itemId": "Potion of Healing",
+          "quantity": 5
+        }
+      ]
     }
   ]
 }

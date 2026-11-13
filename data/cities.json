@@ -3,7 +3,25 @@
   "version": 1,
   "cities": [
     {
-      "id": "lithengard",
+      "id": "C2",
+      "name": "Milderihn",
+      "amenities": {
+        "temple": {
+          "healingCost": 10,
+          "healingAmount": 5
+        },
+        "inn": {
+          "restCost": 10,
+          "supplyBundleCost": 1,
+          "supplyBundleAmount": 2
+        },
+        "shop": {
+          "shopId": "St1"
+        }
+      }
+    },
+    {
+      "id": "C1",
       "name": "Lithengard",
       "amenities": {
         "blacksmith": {

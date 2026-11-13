@@ -196,6 +196,65 @@
         "enemyId": "Stone Golen"
       },
       "treasure": null
+    },
+    {
+      "id": "T2",
+      "name": "Jherzad's Lost Tower",
+      "type": "Ruins",
+      "description": "",
+      "maxLevel": 8,
+      "completionFateReward": 8,
+      "challenge": {
+        "base": 6,
+        "perLevel": 2
+      },
+      "monsterChance": {
+        "die": 6,
+        "thresholdPerLevel": 1,
+        "base": 2
+      },
+      "coinReward": {
+        "base": 3,
+        "perLevel": 2
+      },
+      "encounters": [
+        {
+          "rolls": [
+            1,
+            2
+          ],
+          "enemyId": "Skeleton"
+        },
+        {
+          "rolls": [
+            3
+          ],
+          "enemyId": "Giant Zombified Rat"
+        },
+        {
+          "rolls": [
+            4
+          ],
+          "enemyId": "Zombie"
+        },
+        {
+          "rolls": [
+            5
+          ],
+          "enemyId": "Corrupted goblins"
+        },
+        {
+          "rolls": [
+            6
+          ],
+          "enemyId": "Imp"
+        }
+      ],
+      "boss": {
+        "level": 8,
+        "enemyId": "Jherzad - Lich"
+      },
+      "treasure": null
     }
   ]
 }
